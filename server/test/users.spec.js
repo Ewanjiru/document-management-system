@@ -43,13 +43,34 @@ chai.use(chaiHttp);
   });
 
   describe('/get/users/id endpoint', () => {
-    it('Should retrieve user given the id',(done)=>{
+    let user={
+      firstName: 'Niccie',
+      lastName: 'Sheero',
+      email: 'exe.gmail.com',
+      password:'123',
+      roleId:1
+    }
+    let id = null
+    it('it should create a test user', (done) => {
       chai.request(app)
-      .get('/users/1')
+        .post('/users')
+        .send(user)
+        .end((err, res) => {
+          id = res.body.id
+          done();
+      });
+    });
+    it('Should retrieve user just created by the given the id',(done)=> {
+      chai.request(app)
+      .get('/users/'+id)
       .end((err,res)=>{
         res.should.have.status(200);
         res.body.should.be.a('object');
-        res.body.length.should.be.eql(1);
+        res.body.should.have.property('id');
+        res.body.should.have.property('firstName');
+        res.body.should.have.property('lastName');
+        res.body.should.have.property('email');
+        res.body.should.have.property('roleId');
         done();
       })
     });

@@ -12,6 +12,7 @@ module.exports = {
         message: 'Sorry an error occured.Confirm your input is correct else contact admin'
       }));
   },
+  
   list(req, res) {
     return Role
       .findAll()
@@ -21,6 +22,7 @@ module.exports = {
         message: 'Sorry, an error occured. Try again'
       }));
   },
+
   delete(req, res) {
     return Role
       .find({

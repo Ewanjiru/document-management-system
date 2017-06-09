@@ -60,6 +60,7 @@ chai.use(chaiHttp);
           done();
       });
     });
+    
     it('Should retrieve user just created by the given the id',(done)=> {
       chai.request(app)
       .get('/users/'+id)

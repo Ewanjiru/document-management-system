@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./server/routes/documents')(app);
 require('./server/routes/users')(app);
+require('./server/routes/roles')(app);
 app.get('/', (req, res) => res.status(200).send({
   message: 'Welcome to the Document Management System.',
 }));

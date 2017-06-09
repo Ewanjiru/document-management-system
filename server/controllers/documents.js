@@ -108,7 +108,7 @@ module.exports = {
             limit: req.query.limit
         })
         .then(doc => {
-          if (!doc) {
+          if (!doc || doc.length < 1) {
             return res.status(404).send({
               message: 'Documents not found',
             })

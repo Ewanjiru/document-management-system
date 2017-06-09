@@ -6,7 +6,7 @@ module.exports = (app) => {
   //app.post('/users/login', userController.login);
   app.get('/search/users/', userController.searchUser);
   app.get('/users/:userId', userController.retrieveOne);
-  app.get('/api/users/', userController.retrieveLimited);
+  app.get('/limit/users/', userController.retrieveLimited);
   app.put('/users/:userId', userController.update);
   app.delete('/users/:userId', userController.delete);
 

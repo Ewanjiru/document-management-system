@@ -7,9 +7,9 @@ module.exports = {
       .create(req.body)
       .then((user) => res.status(201).send({
         message: 'User Created Successfully',
-        userId: user.userId,
         firstName: user.firstName,
         lastName: user.lastName,
+        id: user.id,
       }))
       .catch(error => res.status(400).send(error.errors));
   },
@@ -36,7 +36,7 @@ module.exports = {
   list(req, res) {
     return User
       .findAll()
-      .then(user => res.status(201).send(user))
+      .then(user => res.status(200).send(user))
       .catch(error => res.status(400).send(error));
   },
 
@@ -61,7 +61,7 @@ module.exports = {
           offset: req.query.offset,
         })
         .then(user => {
-          if (!user) {
+          if (!user || user.length < 1) {
             return res.status(404).send({
               message: 'user not found',
             })

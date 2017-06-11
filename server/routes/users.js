@@ -3,7 +3,7 @@ const userController = require('../controllers').users;
 module.exports = (app) => {
   app.post('/users', userController.create);
   app.get('/users', userController.list);
-  //app.post('/users/login', userController.login);
+  app.post('/users/login', userController.login);
   app.get('/search/users/', userController.searchUser);
   app.get('/users/:userId', userController.retrieveOne);
   app.get('/limit/users/', userController.retrieveLimited);

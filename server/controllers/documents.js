@@ -10,7 +10,10 @@ module.exports = {
         access: req.body.access,
         userId: req.body.userId,
       })
-      .then(doc => res.status(201).send(doc))
+      .then(doc => res.status(201).send({
+        doc,
+        message:'Document Created Successfully',
+      }))
       .catch(error => res.status(400).send(error));
   },
 
@@ -105,7 +108,8 @@ module.exports = {
       return Document
         .findAll({
             offset: req.query.offset,
-            limit: req.query.limit
+            limit: req.query.limit,
+            order: '"createdAt" ASC',
         })
         .then(doc => {
           if (!doc || doc.length < 1) {

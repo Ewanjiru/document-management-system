@@ -14,24 +14,30 @@ module.exports = {
       .catch(error => res.status(400).send(error.errors));
   },
   
-  // login(req, res) {
-  //   User
-  //     .findOne({
-  //       where: {
-  //         email: req.body.email,
-  //         password: req.body.password
-  //       }
-  //     })
-  //     .then(user => {
-  //       const token = jwt.sign(user.email, process.env.SECRET_KEY = 'superSecretString');
-  //       if (!user) {
-  //         return res.status(404).send({
-  //           message: 'user not found'
-  //         })
-  //       }
-  //       return res.status(200).send(token);
-  //     })
-  // },
+  login(req, res) {
+    if(req.body.email && req.body.password){
+      const email = req.body.email;
+      const password = req.body.password;
+      return User
+      .findOne({where: {email: req.body.email}})
+      .then(user => {
+        if (user){
+          if (User.isPassword(user.password, password)){
+            const payload = {email: user.email}
+            const token = jwt.sign(payload, process.env.SECRET);
+            console.log(token)
+            return res.status(200).send({ message: 'Loggin Successful.', email: user.email, Token: token})
+          }else{
+            return res.status(401).send({
+                message: 'Reconfirm Your password.',
+            });
+          }
+        }
+        return res.status(404).send({ message: 'That user email does not exist' });
+      })
+      .catch(error => res.status(400).send(error));
+    }
+  },
 
   list(req, res) {
     return User
@@ -59,6 +65,7 @@ module.exports = {
         .findAll({
           limit: req.query.limit,
           offset: req.query.offset,
+          order: '"createdAt" ASC',
         })
         .then(user => {
           if (!user || user.length < 1) {

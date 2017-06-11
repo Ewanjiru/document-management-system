@@ -1,4 +1,5 @@
-'use strict';
+const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, DataTypes) => {
   const users = sequelize.define('users', {
     firstName: {
@@ -19,6 +20,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
   }, {
+      hooks: {
+        beforeCreate: user => {
+        const SALT_FACTOR = 5;
+        const salt = bcrypt.genSaltSync(SALT_FACTOR);
+        user.password = bcrypt.hashSync(user.password,salt);        
+        },
+      },
       classMethods: {
         associate: (models) => {
           users.belongsTo(models.roles, {
@@ -30,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
             as: 'userDocuments'
           });
         },
+        isPassword:(encodedPassword,password) =>{
+          return bcrypt.compareSync(password,encodedPassword);
+         
+        }
       },
     });
   return users;

@@ -28,7 +28,9 @@ chai.use(chaiHttp);
         });
     });
   });
-
+/*
+ * Test the /GET route
+ */
   describe('/get endpoint', () => {
     it('it should retrieve all the users', (done) => {
         chai.request(app)
@@ -41,7 +43,9 @@ chai.use(chaiHttp);
         });
       });
   });
-
+/*
+ * Test the /GET by id route
+ */
   describe('/get/users/id endpoint', () => {
     let user={
       firstName: 'Niccie',
@@ -75,17 +79,69 @@ chai.use(chaiHttp);
       })
     });
   });
+/*
+ * Test the get by offset
+ */
+  describe('/get by given offset and limit endpoint', () => {
+    let limit = 1;
+    let offset = 1;
+    it('it should retrieve the second user id 2', (done) => {
+        chai.request(app)
+        .get('/limit/users/?limit='+limit+'&offset='+offset)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            res.body.length.should.be.eql(1);
+          done();
+        });
+      });
+  });
+/*
+ * Test the update 
+ */
+  describe('/put router',()=>{
+    it('it should retrieve the fist user and update their name to Nancy', (done) => {
+        chai.request(app)
+        .put('/users/1')
+        .send({firstName:'Nancy'})
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            res.body.should.have.property('message').eql('user updated Successfully.');
+          done();
+        });
+      });
 
-  //   describe('/delete/roles/:id ', () => {
-  //     it('it should delete a role by the given id', (done) => {
-  //       let roleId = 1;
-  //       chai.request(app)
-  //       .delete('/roles/' + roleId)
-  //       .end((err, res) => {
-  //           res.should.have.status(200);
-  //           res.body.should.be.a('object');
-  //           res.body.should.have.property('message').eql('Role Deleted Successfully');
-  //         done();
-  //       });
-  //     });
-  // });
+  });
+/*
+ * Test the /delete route
+ */
+  describe('/delete/users/:id ', () => {
+    let user={
+      firstName: 'Niccie',
+      lastName: 'Sheero',
+      email: 'exes.gmail.com',
+      password:'123',
+      roleId:1
+    }
+    let id = null
+    it('it should create a test user', (done) => {
+      chai.request(app)
+        .post('/users')
+        .send(user)
+        .end((err, res) => {
+          id = res.body.id
+          done();
+        });
+    });
+    it('it should delete  the test user by the given id', (done) => {
+      chai.request(app)
+      .delete('/users/' + id)
+      .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('user Deleted Successfully');
+        done();
+      });
+    });
+  });

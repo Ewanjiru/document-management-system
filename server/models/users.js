@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
       hooks: {
-        beforeCreate: user => {
-        const SALT_FACTOR = 5;
-        const salt = bcrypt.genSaltSync(SALT_FACTOR);
-        user.password = bcrypt.hashSync(user.password,salt);        
+        beforeCreate: (user) => {
+          const SALT_FACTOR = 5;
+          const salt = bcrypt.genSaltSync(SALT_FACTOR);
+          user.password = bcrypt.hashSync(user.password, salt);
         },
       },
       classMethods: {
@@ -38,10 +38,7 @@ module.exports = (sequelize, DataTypes) => {
             as: 'userDocuments'
           });
         },
-        isPassword:(encodedPassword,password) =>{
-          return bcrypt.compareSync(password,encodedPassword);
-         
-        }
+        isPassword: (encodedPassword, password) => bcrypt.compareSync(password, encodedPassword)
       },
     });
   return users;

@@ -1,6 +1,5 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var documents = sequelize.define('documents', {
+  const documents = sequelize.define('documents', {
     title: {
       type: DataTypes.STRING,
       allowNull: false
@@ -19,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
           documents.belongsTo(models.users, {
             foreignKey: 'userId',
             OnDelete: 'CASCADE',
-          })
+          });
         },
       },
     });

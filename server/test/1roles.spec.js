@@ -1,7 +1,8 @@
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let app = require('../../app');
-let should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const app = require('../../app');
+
+const should = chai.should();
 
 chai.use(chaiHttp);
 
@@ -10,14 +11,13 @@ chai.use(chaiHttp);
  */
 describe('/post endpoint', () => {
   it('it should create a new role', (done) => {
-    let arole = {
-      role: "admin"
-    }
+    const arole = {
+      role: 'admin'
+    };
     chai.request(app)
       .post('/roles')
       .send(arole)
       .end((err, res) => {
-        console.log(res.body);
         res.should.have.status(201);
         res.body.should.be.a('object');
         done();
@@ -37,22 +37,22 @@ describe('/post endpoint', () => {
 });
 
 describe('/delete/roles/:id ', () => {
-  let arole = {
-    role: "testRole"
-  }
-  let roleId = null
-  it('it should create a new role', (done) => {
+  const arole = {
+    role: 'testRole'
+  };
+  let roleId = null;
+  it('it should a test role', (done) => {
     chai.request(app)
       .post('/roles')
       .send(arole)
       .end((err, res) => {
-        roleId = res.body.id
+        roleId = res.body.id;
         done();
       });
   });
   it('it should delete a role by the given id', (done) => {
     chai.request(app)
-      .delete('/roles/' + roleId)
+      .delete(`/roles/${roleId}`)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');

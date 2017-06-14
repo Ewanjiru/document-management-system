@@ -5,12 +5,7 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 let Token = '';
-/*
- * Test the /POST route
- */
-describe('/login endpoint', () => {
 
-});
 /*
  * Test the /POST route
  */
@@ -117,7 +112,7 @@ describe('/get by given offset and limit endpoint', () => {
   });
 });
 /*
- * Test the update
+ * Test the update user
  */
 describe('/put router', () => {
   it('it should retrieve the fist user and update their name to Nancy', (done) => {
@@ -134,7 +129,7 @@ describe('/put router', () => {
   });
 });
 /*
- * Test the /delete route
+ * Test the /delete user
  */
 describe('/delete/users/:id ', () => {
   const user = {
@@ -145,6 +140,7 @@ describe('/delete/users/:id ', () => {
     roleId: 1
   };
   let id = null;
+
   it('it should create a test user', (done) => {
     chai.request(app)
       .post('/users')
@@ -154,9 +150,24 @@ describe('/delete/users/:id ', () => {
         done();
       });
   });
+
+  it('it should log in that user', (done) => {
+    const testUser = {
+      email: 'exes.gmail.com',
+      password: '123',
+    };
+    chai.request(app)
+      .post('/users/login')
+      .send(testUser)
+      .end((err, res) => {
+        Token = res.body.Token;
+        done();
+      });
+  });
   it('it should delete  the test user by the given id', (done) => {
     chai.request(app)
       .delete(`/users/${id}`)
+      .set('x-access-token', Token)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');

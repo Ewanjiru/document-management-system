@@ -77,7 +77,11 @@ module.exports = {
             message: 'Sorry. User not found',
           });
         }
-        return res.status(200).send(user);
+        return res.status(200).send({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        });
       })
       .catch(error => res.status(400).send(error));
   },

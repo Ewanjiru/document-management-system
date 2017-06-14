@@ -9,7 +9,7 @@ module.exports = {
     if (!token) {
       return res.status(403).send({ success: false, message: 'No token provided.' });
     }
-    // verifies secret and checks exp
+    // verifies secret
     return jwt.verify(token, secret, (err, decoded) => {
       if (err) {
         return res.json({ success: false, message: 'Failed to authenticate token.' });
@@ -18,6 +18,11 @@ module.exports = {
       next();
     });
   },
+
+  // verifyRole(req, res, next) {
+  //   const id = req.body.id,
+
+  // }
 
 };
 

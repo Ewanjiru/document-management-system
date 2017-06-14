@@ -1,4 +1,5 @@
 const documentController = require('../controllers').documents;
+const middlewares = require('../helpers/middleware');
 
 module.exports = (app) => {
   app.post('/documents', documentController.create);
@@ -12,4 +13,4 @@ module.exports = (app) => {
     res.status(405).send({
       message: 'Method Not Allowed',
     }));
-}
+};

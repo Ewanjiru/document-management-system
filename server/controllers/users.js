@@ -25,14 +25,13 @@ module.exports = {
         .then((user) => {
           if (user) {
             if (User.isPassword(user.password, password)) {
-              const payload = { email: user.email };
+              const payload = { userId: user.id };
               const token = jwt.sign(payload, secret, { expiresIn: 1440 });
               return res.status(200).send({ message: 'Loggin Successful.', email: user.email, Token: token });
             }
             return res.status(401).send({
               message: 'Reconfirm Your password.',
             });
-
           }
           return res.status(404).send({ message: 'That user email does not exist' });
         })
@@ -60,12 +59,11 @@ module.exports = {
           error,
           message: 'There was a problem with the query params check if they are all numbers',
         }));
-    } else {
-      User
-        .findAll()
-        .then(user => res.status(200).send(user))
-        .catch(error => res.status(400).send(error));
     }
+    User
+      .findAll()
+      .then(user => res.status(200).send(user))
+      .catch(error => res.status(400).send(error));
   },
 
   retrieveOne(req, res) {
@@ -87,23 +85,25 @@ module.exports = {
   },
 
   update(req, res) {
-    return User
-      .findById(req.params.userId)
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send({
-            message: 'Sorry. User Not Found',
-          });
-        }
-        return user
-          .update(req.body, { fields: Object.keys(req.body) })
-          .then(updatedUser => res.status(200).send({
-            message: 'user updated Successfully.',
-            firstName: req.body.firstName
-          }))
-          .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
+    if (req.params.userId) {
+      return User
+        .findById(req.params.userId)
+        .then((user) => {
+          if (!user || user.length < 1) {
+            return res.status(404).send({
+              message: 'Sorry. User Not Found',
+            });
+          }
+          return user
+            .update(req.body, { fields: Object.keys(req.body) })
+            .then(updatedUser => res.status(200).send({
+              message: 'user updated Successfully.',
+              firstName: req.body.firstName
+            }))
+            .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
+    }
   },
 
   searchUser(req, res) {

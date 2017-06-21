@@ -7,7 +7,7 @@ module.exports = {
         title: req.body.title,
         content: req.body.content,
         access: req.body.access,
-        userId: req.body.userId,
+        userId: req.decoded.userId,
       })
       .then(doc => res.status(201).send({
         doc,

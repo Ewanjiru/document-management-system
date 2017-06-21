@@ -19,10 +19,9 @@ module.exports = {
     });
   },
 
-  // verifyRole(req, res, next) {
-  //   const id = req.body.id,
+  verifyRole(req, res, next) {
 
-  // }
+  }
 
 };
 

@@ -28,7 +28,7 @@ module.exports = {
           id: req.params.roleId,
         },
       })
-      .then(arole => {
+      .then((arole) => {
         if (!arole) {
           return res.status(404).send({
             message: 'Role Not Found',
@@ -39,8 +39,8 @@ module.exports = {
           .then(() => res.status(200).send({
             message: 'Role Deleted Successfully'
           }))
-          .catch(error => res.status(400).send(error))
+          .catch(error => res.status(400).send(error));
       })
-      .catch(error => res.status(400).send(error))
+      .catch(error => res.status(400).send(error));
   },
 };

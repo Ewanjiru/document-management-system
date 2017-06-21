@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import * as docActions from '../../actions/DocumentsAction';
 import Content from './MainDiv';
 import SideBar from './SideBar';
 import Header from '../common/Header';

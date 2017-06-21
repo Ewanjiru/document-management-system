@@ -1,0 +1,19 @@
+.mainframe{
+  background-color:	#E8E8E8;
+  height: 690px;
+  .header{
+    height: 20%;
+    h2{
+      text-align: center;
+    }
+  }
+  .signups{
+    height: 100%;
+    width: 100%;
+    padding: 10%;
+    background-image: url('../../images/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: 90%;
+    margin-left: 5%;
+  }
+}

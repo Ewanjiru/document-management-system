@@ -7,7 +7,7 @@ export const SignUpAction = (profile) => {
   .then((response) => {
     dispatch(createUser(response));
   }).catch((error) => {
-    throw error;              
+    throw error;
   });
   return {
     type: SIGN_UP,

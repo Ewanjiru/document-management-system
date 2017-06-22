@@ -1,5 +1,6 @@
 const User = require('../models').users;
 const jwt = require('jsonwebtoken');
+
 const secret = 'docmanagementsystem';
 const Document = require('../models').documents;
 
@@ -17,11 +18,12 @@ module.exports = {
   },
 
   login(req, res) {
+    console.log('i was called');
     if (req.body.email && req.body.password) {
       const email = req.body.email;
       const password = req.body.password;
       return User
-        .findOne({ where: { email: req.body.email } })
+        .findOne({ where: { email } })
         .then((user) => {
           if (user) {
             if (User.isPassword(user.password, password)) {

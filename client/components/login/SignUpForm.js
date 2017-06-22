@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'react-proptypes';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import PasswordField from 'material-ui-password-field';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import './Login.scss';
 
 const style = {
   margin: 12,
 };
 const SignUpForm = props => (
-  <MuiThemeProvider id="wrapper">
+  <MuiThemeProvider>
     <div className="container">
       <div className="row">
         <div className="col-lg-12">
@@ -65,7 +64,7 @@ const SignUpForm = props => (
             label="Cancel"
             secondary
             style={style}
-            onClick={props.onCancel}
+            onClick={props.logCancel}
           />
         </div>
       </div>
@@ -80,6 +79,6 @@ SignUpForm.propTypes = {
   user: PropTypes.object.isRequired,
   onchange: PropTypes.func.isRequired,
   userRegister: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired
+  logCancel: PropTypes.func.isRequired
 };
 export default SignUpForm;

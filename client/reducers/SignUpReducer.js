@@ -1,13 +1,15 @@
-import redux from 'redux';
-import SIGN_UP from '../actionCreators/SignUpAction';
+import * as actionTypes from '../actions/ActionTypes';
+import initialState from './InitialState';
 
-const initialState = [];
-
-export default function (state = initialState, action) {
+function SignUpReducer(state = initialState.user, action) {
   switch (action.type) {
-    case SIGN_UP:
-      return action.payload.data;
+    case actionTypes.CREATE_USERS:
+      return [
+        ...state,
+        Object.assign({}, action.data)
+      ];
     default:
       return state;
   }
 }
+export default SignUpReducer;

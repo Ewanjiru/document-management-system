@@ -5,6 +5,11 @@ function DocumentsReducer(state = initialState.documents, action) {
   switch (action.type) {
     case actionTypes.LOAD_DOCUMENTS_SUCCESS:
       return action.docs;
+    case actionTypes.CREATED_DOCUMENT_SUCCESS:
+      return [
+        ...state,
+        Object.assign({}, action.records)
+      ];
     default:
       return state;
   }

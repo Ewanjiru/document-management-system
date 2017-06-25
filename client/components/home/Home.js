@@ -36,7 +36,9 @@ class Home extends React.Component {
           <h2>Welcome To eDocz Document Management System</h2>
         </div>
         <div className="signups">
-          <Login />
+          <Login
+            renderToggle={this.renderToggle}
+          />
         </div>
       </div>
     );

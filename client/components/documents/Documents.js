@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Content from './MainDiv';
+import View from './ViewDocuments';
+import Content from './CreateForm';
 import SideBar from './SideBar';
 import Header from '../common/Header';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -17,7 +18,7 @@ class Documents extends React.Component {
         title: '',
         content: '',
         access: '',
-        userId: 2
+        userId: sessionStorage.Token
       },
     };
     this.create = this.create.bind(this);
@@ -27,10 +28,9 @@ class Documents extends React.Component {
   onchange(event) {
     const label = event.target.name;
     this.state.documents[label] = event.target.value;
-    console.log(this.state.documents);
     return this.setState({
       documents: this.state.documents,
-    });  
+    });
   }
 
   create(event) {
@@ -46,7 +46,7 @@ class Documents extends React.Component {
           <SideBar />
         </MuiThemeProvider>
         <MuiThemeProvider>
-          <Content
+          <View
             documents={this.state.documents}
             onchange={this.onchange}
             create={this.create}

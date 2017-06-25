@@ -1,3 +1,4 @@
+import { browserHistory } from 'react-router';
 import * as actionTypes from './ActionTypes';
 import appApi from '../api/AppApi';
 
@@ -22,6 +23,7 @@ export const LoginAction = (user) => (dispatch) => {
       .then((response) => {
         if (response.message === 'Loggin Successful.') {
           sessionStorage.setItem('Token', response.Token);
+          browserHistory.push('/documents');
           dispatch(loggedUser(response));
         }else{
           console.log("error occured");

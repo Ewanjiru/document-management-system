@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'react-proptypes';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import PasswordField from 'material-ui-password-field';
 import { Link } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import './Login.scss';
 
 const style = {
   margin: 12,
@@ -25,7 +25,7 @@ const LoginForm = props => (
       </div>
       <div className="row">
         <div className="col-lg-12">
-          <TextField
+          <PasswordField
             hintText="your password"
             name="password"
             value={props.user.password}
@@ -45,7 +45,7 @@ const LoginForm = props => (
       </div>
       <div className="row">
         <div className="col-lg-4">
-          <b>Create account:</b> <Link to="/signup" className="active"> signup </Link>
+          <b>Create account:<Link to='/signup'>SignUp</Link></b>
         </div>
       </div>
     </div>
@@ -54,6 +54,7 @@ const LoginForm = props => (
 
 LoginForm.propTypes = {
   user: PropTypes.object.isRequired,
+  toggleLog: PropTypes.object.isRequired,
   onchange: PropTypes.func.isRequired,
   userLog: PropTypes.func.isRequired,
   logCancel: PropTypes.func.isRequired

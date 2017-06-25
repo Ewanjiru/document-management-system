@@ -18,11 +18,11 @@ const Content = props => (
         />
       </CardTitle>
       <CardHeader>
-      Access Type:
+        Access Type:
           <select value={props.documents.access} name="access" onChange={props.onchange}>
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-          </select>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
       </CardHeader>
       <CardText>
         <textarea

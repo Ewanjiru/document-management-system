@@ -4,7 +4,6 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import PasswordField from 'material-ui-password-field';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import './Login.scss';
 
 const style = {
   margin: 12,
@@ -73,7 +72,7 @@ const SignUpForm = props => (
       </div>
     </div>
   </MuiThemeProvider>
-    );
+);
 
 SignUpForm.propTypes = {
   user: PropTypes.object.isRequired,

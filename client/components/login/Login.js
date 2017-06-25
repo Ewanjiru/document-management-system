@@ -4,14 +4,17 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'react-proptypes';
 import LoginForm from './LoginForm';
 import * as SignUpActions from '../../actions/SignUpAction';
+import '../home/Home.scss';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: {
-      email: '',
-      password: '',
-    } };
+    this.state = {
+      user: {
+        email: '',
+        password: '',
+      }
+    };
     this.userLog = this.userLog.bind(this);
     this.onchange = this.onchange.bind(this);
   }
@@ -35,7 +38,7 @@ class Login extends React.Component {
   }
   render() {
     return (
-      <div id="logWrapper">
+      <div className="logWrapper">
         <LoginForm
           user={this.state.user}
           onchange={this.onchange}

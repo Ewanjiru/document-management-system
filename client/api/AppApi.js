@@ -1,10 +1,19 @@
 import axios from 'axios';
 
 export default {
-  getAllDocuments: () => axios
+  getAllDocuments: () => {
+    return axios
       .get('/documents')
+    // .then(response => response.data)
+    // .catch(error => console.log(error));
+  },
+
+  getDocumentById: (id) => {
+    return axios
+      .get(`/documents/${id}`, { headers: { 'x-access-token': sessionStorage.Token } })
       .then(response => response.data)
-      .catch(error => error),
+      .catch(error => error);
+  },
 
   createUser: (user) => {
     const request = axios({
@@ -37,8 +46,35 @@ export default {
       url: '/documents',
       headers: {
         'Content-Type': 'application/json',
+        'x-access-token': sessionStorage.Token
       }
     });
     return request.then(response => response.data).catch(error => error);
+  },
+
+  updateDocument: (id, record) => {
+    console.log("We will update with", id, record);
+    const request = axios({
+      method: 'PUT',
+      data: record,
+      url: `/documents/${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': sessionStorage.Token
+      }
+    });
+    return request.then(response => response.data).catch(error => error);
+  },
+
+  deleteById: (id) => {
+    const request = axios({
+      method: 'DELETE',
+      url: `/documents/${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': sessionStorage.Token
+      },
+    });
+    return request.then(response => response).catch(error => error);
   },
 };

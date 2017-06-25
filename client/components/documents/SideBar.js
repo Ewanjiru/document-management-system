@@ -11,9 +11,10 @@ class SideBar extends React.Component {
     return (
       <div className="aside">
         <Drawer openSecondary >
-          <AppBar title="Options" />
+          <AppBar title="Options" showMenuIconButton={false} />
           <List>
             <ListItem
+              value="create"
               primaryText={'Create New'}
             />
             <Divider />
@@ -35,11 +36,8 @@ class SideBar extends React.Component {
     );
   }
 }
-SideBar.propTypes = {
-  doc: PropTypes.array.isRequired,
-};
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   let doc = [{ title: '', content: '', createdAt: '', userId: '' }];
 
   if (state.documents.length > 0) {

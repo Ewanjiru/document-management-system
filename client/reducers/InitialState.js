@@ -1,5 +1,5 @@
 export default {
-  documents: [],
+  documents: { all: [], byId: {} },
   user: [],
   session: !!sessionStorage.token,
 

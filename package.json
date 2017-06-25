@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm-run-all --parallel open:src && npm run test",
-    "open:src": "babel-node ./bin/www",
+    "open:src": "nodemon ./bin/www --exec babel-node ",
     "lint": "node_modules/.bin/esw webpack.config.* client server server.*",
     "lint:watch": "npm run lint -- --watch",
     "test": "export NODE_ENV=test && sequelize db:migrate:undo:all && sequelize db:migrate && babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -R spec ./server/test/*.spec.js",
@@ -29,6 +29,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
     "jsonwebtoken": "^7.4.1",
+    "jwt-decode": "^2.2.0",
     "material-design-lite": "^1.3.0",
     "material-ui": "^0.18.3",
     "material-ui-password-field": "^1.2.0",

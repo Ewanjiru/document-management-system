@@ -18,7 +18,6 @@ module.exports = {
   },
 
   login(req, res) {
-    console.log('i was called');
     if (req.body.email && req.body.password) {
       const email = req.body.email;
       const password = req.body.password;
@@ -27,7 +26,7 @@ module.exports = {
         .then((user) => {
           if (user) {
             if (User.isPassword(user.password, password)) {
-              const payload = { id: user.id };
+              const payload = { id: user.id, roleId: user.roleId };
               const token = jwt.sign(payload, secret, { expiresIn: 1440 });
               return res.status(200).send({ message: 'Loggin Successful.', email: user.email, Token: token });
             }

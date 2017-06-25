@@ -2,12 +2,13 @@ const Document = require('../models').documents;
 
 module.exports = {
   create(req, res) {
+    console.log("called hereeeeee", req.decoded);
     return Document
       .create({
         title: req.body.title,
         content: req.body.content,
         access: req.body.access,
-        userId: req.body.userId,
+        userId: req.decoded.id
       })
       .then(doc => res.status(201).send({
         doc,
@@ -65,23 +66,25 @@ module.exports = {
   },
 
   update(req, res) {
-    return Document
-      .findById(req.params.documentId)
-      .then((doc) => {
-        if (!doc) {
-          return res.status(404).send({
-            message: 'Document Not Found',
-          });
-        }
-        return doc
-          .update(req.body, { fields: Object.keys(req.body) })
-          .then(updatedDocument => res.status(200).send({
-            message: 'Document updated Successfully.',
-            updatedDocument
-          }))
-          .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
+    if (req.params) {
+      return Document
+        .findById(req.params.documentId)
+        .then((doc) => {
+          if (!doc) {
+            return res.status(404).send({
+              message: 'Document Not Found',
+            });
+          }
+          return doc
+            .update(req.body, { fields: Object.keys(req.body) })
+            .then(updatedDocument => res.status(200).send({
+              message: 'Document updated Successfully.',
+              updatedDocument
+            }))
+            .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
+    }
   },
 
   searchDocument(req, res) {

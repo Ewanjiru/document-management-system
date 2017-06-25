@@ -5,7 +5,7 @@ const User = require('../models').users;
 module.exports = {
   verifyToken(req, res, next) {
     // check header or url parameters or post parameters for token
-    const token = req.body.token || req.query.token || req.headers['x-access-token'];
+    const token = req.headers['x-access-token'];
     if (!token) {
       return res.status(403).send({ success: false, message: 'No token provided.' });
     }
@@ -20,8 +20,13 @@ module.exports = {
   },
 
   verifyRole(req, res, next) {
-
+    const roleId = req.decoded.roleId;
+    if (roleId !== 1) {
+      return res.status(403).send({
+        message: 'You do not have permission to access this'
+      });
+    }
+    next();
   }
-
 };
 

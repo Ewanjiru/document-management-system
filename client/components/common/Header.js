@@ -5,11 +5,11 @@ import { Link } from 'react-router';
 
 const Header = () => (
   <nav>
-    <Link to="/documents" activeClassName="active"> Documents </Link>
+    <Link to="/edocx/documents" activeClassName="active"> Documents </Link>
     {' | '}
-    <Link to="/users" activeClassName="active"> Users </Link>
+    <Link to="/edocx/users" activeClassName="active"> Users </Link>
     {' | '}
-    <Link to="/about" activeClassName="active"> About</Link>
+    <Link to="/edocx/about" activeClassName="active"> About</Link>
   </nav>
 );
 export default Header;

@@ -12,22 +12,22 @@ export function loggedUser() {
 
 export const SignUpAction = (user) => (dispatch) => {
   return appApi.createUser(user)
-      .then((response) => {
-        dispatch(createdUser(response));
-      })
-      .catch((error) => { throw (error); });
+    .then((response) => {
+      dispatch(createdUser(response));
+    })
+    .catch((error) => { throw (error); });
 };
 
 export const LoginAction = (user) => (dispatch) => {
   return appApi.logUser(user)
-      .then((response) => {
-        if (response.message === 'Loggin Successful.') {
-          sessionStorage.setItem('Token', response.Token);
-          browserHistory.push('/documents');
-          dispatch(loggedUser(response));
-        }else{
-          console.log("error occured");
-        }
-      })
-      .catch((error) => { throw (error); });
+    .then((response) => {
+      if (response.message === 'Loggin Successful.') {
+        sessionStorage.setItem('Token', response.Token);
+        browserHistory.push('/edocx/documents');
+        dispatch(loggedUser(response));
+      } else {
+        console.log("error occured");
+      }
+    })
+    .catch((error) => { throw (error); });
 };

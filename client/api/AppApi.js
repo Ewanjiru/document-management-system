@@ -2,15 +2,24 @@ import axios from 'axios';
 
 export default {
   getAllDocuments: () => {
+    console.log('api');
     return axios
-      .get('/documents')
+      .get('/documents', { headers: { 'x-access-token': sessionStorage.Token } });
     // .then(response => response.data)
     // .catch(error => console.log(error));
   },
 
-  getDocumentById: (id) => {
-    return axios
+  getDocumentById: id => axios
       .get(`/documents/${id}`, { headers: { 'x-access-token': sessionStorage.Token } })
+      .then(response => response.data)
+      .catch(error => error),
+
+  getAllDocumentsByUser: (token) => {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    const userid = JSON.parse(window.atob(base64)).id;
+    return axios
+      .get(`/users/${userid}/documents`, { headers: { 'x-access-token': token } })
       .then(response => response.data)
       .catch(error => error);
   },
@@ -53,7 +62,7 @@ export default {
   },
 
   updateDocument: (id, record) => {
-    console.log("We will update with", id, record);
+    console.log('We will update with', id, record);
     const request = axios({
       method: 'PUT',
       data: record,

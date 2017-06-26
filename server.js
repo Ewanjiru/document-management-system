@@ -18,13 +18,14 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './client/index.html'));
-});
-
 require('./server/routes/documents')(app);
 require('./server/routes/users')(app);
 require('./server/routes/roles')(app);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './client/index.html'));
+});
+
 
 app.get('/', (req, res) => res.status(200).send({
   message: 'Welcome to the Document Management System.',

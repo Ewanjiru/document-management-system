@@ -9,6 +9,10 @@ export function loadDocumentsSuccess(docs) {
   return { type: actionTypes.LOAD_DOCUMENTS_SUCCESS, docs };
 }
 
+export function loadMyDocumentsSuccess(docs) {
+  return { type: actionTypes.LOADMY_DOCUMENTS_SUCCESS, docs };
+}
+
 export function loadDocumentByIdSuccess(doc) {
   console.log("I was here");
   return { type: actionTypes.LOAD_DOCUMENTBYID_SUCCESS, doc };
@@ -33,10 +37,21 @@ export const newDocument = (records) => (dispatch) => {
 };
 
 export const loadDocuments = () => {
+  console.log("Loaddocuments was called api")
   return function (dispatch) {
     return appApi.getAllDocuments()
       .then((docs) => {
         dispatch(loadDocumentsSuccess(docs.data));
+      })
+      .catch((error) => { throw (error); });
+  };
+};
+
+export const loadMyDocuments = (token) => {
+  return function (dispatch) {
+    return appApi.getAllDocumentsByUser(token)
+      .then((docs) => {
+        dispatch(loadMyDocumentsSuccess(docs.userDocuments));
       })
       .catch((error) => { throw (error); });
   };

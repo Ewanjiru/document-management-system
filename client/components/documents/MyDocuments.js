@@ -8,18 +8,20 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
+import Header from '../common/Header';
 import './Document.scss';
 
-class View extends React.Component {
+class MyDocuments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       id: '',
+      token: sessionStorage.Token,
       openView: false,
       openEdit: false,
       searchText: '',
-      documents: props.documents,
       documentById: [],
       edit: {
         title: '',
@@ -35,7 +37,7 @@ class View extends React.Component {
   }
 
   componentWillMount() {
-    this.props.actions.loadDocuments();
+    this.props.actions.loadMyDocuments(this.state.token);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -87,7 +89,6 @@ class View extends React.Component {
   }
 
   render() {
-    console.log('my props', this.props.documents);
     const actions = [
       <FlatButton
         label="Edit"
@@ -115,7 +116,15 @@ class View extends React.Component {
     ];
     return (
       <div className="wrapper">
+         <Header />
+        <ul className="nav nav-pills">
+          <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
+          <li role="presentation" className="active"><a href="/edocx/documents/mydocuments">My Documents</a></li>
+          <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
+          <li role="presentation"><a href="/edocx/documents/search">Search</a></li>
+        </ul>
         <div>
+        <MuiThemeProvider>
           <Dialog
             title="Edit Document"
             actions={actions}
@@ -154,9 +163,11 @@ class View extends React.Component {
               </CardText>
             </Card>
           </Dialog>
+          </MuiThemeProvider>
         </div>
 
         <div>
+        <MuiThemeProvider>
           <Dialog
             actions={actions2}
             modal={false}
@@ -171,9 +182,11 @@ class View extends React.Component {
               </CardText>
             </Card>
           </Dialog>
+          </MuiThemeProvider>
         </div>
-        <Card>
 
+        <MuiThemeProvider>
+        <Card>
           <Table>
             <TableHeader>
               <TableRow >
@@ -204,17 +217,17 @@ class View extends React.Component {
             </TableBody>
           </Table>
         </Card>
+        </MuiThemeProvider>
       </div>
     );
   }
 }
-View.propTypes = {
-  documents: PropTypes.object.isRequired,
+MyDocuments.propTypes = {
+  documents: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
-  console.log('my docs', state.documents);
   return {
     documents: state.documents
   };
@@ -225,4 +238,4 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(DocumentActions, dispatch)
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(View);
+export default connect(mapStateToProps, mapDispatchToProps)(MyDocuments);

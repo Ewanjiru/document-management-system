@@ -2,13 +2,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import View from './ViewDocuments';
-import Content from './CreateForm';
-import SideBar from './SideBar';
 import Header from '../common/Header';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import './Documents';
-
 
 class Documents extends React.Component {
   constructor(props) {
@@ -21,36 +18,21 @@ class Documents extends React.Component {
         userId: sessionStorage.Token
       },
     };
-    this.create = this.create.bind(this);
-    this.onchange = this.onchange.bind(this);
-  }
-
-  onchange(event) {
-    const label = event.target.name;
-    this.state.documents[label] = event.target.value;
-    return this.setState({
-      documents: this.state.documents,
-    });
-  }
-
-  create(event) {
-    event.preventDefault();
-    this.props.actions.newDocument(this.state.documents);
   }
 
   render() {
     return (
       <div className="mainframe">
         <Header />
-        <MuiThemeProvider>
-          <SideBar />
-        </MuiThemeProvider>
+        <ul className="nav nav-pills">
+          <li role="presentation" className="active"><a href="/edocx/documents">All Documents</a></li>
+          <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
+          <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
+          <li role="presentation"><a href="/edocx/documents/search">Search</a></li>
+        </ul>
         <MuiThemeProvider>
           <View
             documents={this.state.documents}
-            onchange={this.onchange}
-            create={this.create}
-            logCancel={this.logCancel}
           />
         </MuiThemeProvider>
       </div>

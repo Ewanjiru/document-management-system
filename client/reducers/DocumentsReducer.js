@@ -8,6 +8,11 @@ function DocumentsReducer(state = initialState.documents, action) {
         all: action.docs,
         byId: state.byId
       };
+    case actionTypes.LOADMY_DOCUMENTS_SUCCESS:
+      return {
+        all: action.docs,
+        byId: state.byId
+      };
     case actionTypes.LOAD_DOCUMENTBYID_SUCCESS:
       return {
         all: state.all,

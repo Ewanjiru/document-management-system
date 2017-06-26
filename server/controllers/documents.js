@@ -2,7 +2,6 @@ const Document = require('../models').documents;
 
 module.exports = {
   create(req, res) {
-    console.log("called hereeeeee", req.decoded);
     return Document
       .create({
         title: req.body.title,

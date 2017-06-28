@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'react-proptypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Pagination from 'react-js-pagination';
+// import toastr from 'toastr';
 import { Card, CardHeader, CardTitle, CardText, CardMedia } from 'material-ui/Card';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
+import authenticate from '../../api/helper';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import './Document.scss';
 
@@ -16,11 +19,14 @@ class View extends React.Component {
     super(props);
     this.state = {
       id: '',
+      docOwner: '',
       openView: false,
       openEdit: false,
       searchText: '',
       documents: props.documents,
       documentById: [],
+      activePage: 1,
+      limit: 7,
       edit: {
         title: '',
         content: '',
@@ -32,6 +38,9 @@ class View extends React.Component {
     this.handleOpenView = this.handleOpenView.bind(this);
     this.onchange = this.onchange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
   componentWillMount() {
@@ -77,8 +86,8 @@ class View extends React.Component {
     this.setState({ openView: false, openEdit: false });
   }
 
-  handleOpenView(id) {
-    this.setState({ id, openView: true });
+  handleOpenView(id, owner) {
+    this.setState({ id, docOwner: owner, openView: true });
     this.props.actions.viewDocument(id);
   }
 
@@ -86,8 +95,31 @@ class View extends React.Component {
     this.props.actions.deleteDocument(this.state.id);
   }
 
+  handlePageChange(pageNumber) {
+    this.setState({ activePage: pageNumber });
+    this.props.actions.loadDocuments(this.state.limit, (this.state.limit * (pageNumber - 1)));
+  }
+
+  handleSearchChange(event) {
+    this.setState({
+      searchText: event.target.value,
+    });
+  }
+
+  handleSearch() {
+    console.log(this.state.searchText);
+    this.props.actions.searchDocument(this.state.searchText);
+  }
+
   render() {
-    console.log('my props', this.props.documents);
+    const { searchText } = this.state;
+    let filteredDocuments;
+    if (searchText === '') {
+      filteredDocuments = this.props.documents.all;
+    } else {
+      filteredDocuments = this.props.documents.all.filter(documents => documents.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1);
+    }
+    console.log('my filteredDocuments', filteredDocuments);
     const actions = [
       <FlatButton
         label="Edit"
@@ -137,10 +169,10 @@ class View extends React.Component {
               <CardHeader>
                 Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-              <option value="" />
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
+                  <option value="" />
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
               </CardHeader>
               <CardText>
                 <textarea
@@ -172,8 +204,9 @@ class View extends React.Component {
             </Card>
           </Dialog>
         </div>
-        <Card>
 
+        <Card>
+          <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} />
           <Table>
             <TableHeader>
               <TableRow >
@@ -183,7 +216,7 @@ class View extends React.Component {
             </TableHeader>
             <TableBody>
               {
-                this.props.documents.all.map(adocument =>
+                filteredDocuments.map(adocument =>
                   (<TableRow key={adocument.id}>
                     <TableRowColumn>{adocument.title}</TableRowColumn>
                     <TableRowColumn>{adocument.access}</TableRowColumn>
@@ -191,9 +224,7 @@ class View extends React.Component {
                       <RaisedButton
                         onClick={() => this.handleOpenView(adocument.id)}
                         primary
-                      >View</RaisedButton>
-                    </TableRowColumn>
-                    <TableRowColumn>
+                      >View</RaisedButton>  
                       <RaisedButton
                         onClick={() => this.handleOpen(adocument.id)}
                         primary
@@ -203,6 +234,15 @@ class View extends React.Component {
                 )}
             </TableBody>
           </Table>
+          <div className="pages">
+            <Pagination
+              activePage={this.state.activePage}
+              itemsCountPerPage={3}
+              totalItemsCount={20}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange}
+            />
+          </div>
         </Card>
       </div>
     );

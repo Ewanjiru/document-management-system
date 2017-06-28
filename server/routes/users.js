@@ -10,6 +10,7 @@ module.exports = (app) => {
   app.put('/users/:userId', middlewares.verifyToken, middlewares.verifyRole, userController.update);
   app.get('/users/:userId/documents', middlewares.verifyToken, userController.getUserDocuments);
   app.delete('/users/:userId', middlewares.verifyToken, middlewares.verifyRole, userController.delete);
+  app.post('/users/logout', userController.logout);
 
   app.all('/users/:documentId/items', (req, res) =>
     res.status(405).send({

@@ -19,7 +19,7 @@ module.exports = {
 
   verifyRole(req, res, next) {
     const roleId = req.decoded.roleId;
-    if (roleId !== 1) {
+    if (roleId !== 2) {
       return res.status(403).send({
         message: 'You do not have permission to access this'
       });

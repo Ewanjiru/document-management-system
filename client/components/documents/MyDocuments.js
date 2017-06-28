@@ -116,107 +116,106 @@ class MyDocuments extends React.Component {
     ];
     return (
       <div className="wrapper">
-         <Header />
+        <Header />
         <ul className="nav nav-pills">
           <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
           <li role="presentation" className="active"><a href="/edocx/documents/mydocuments">My Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
-          <li role="presentation"><a href="/edocx/documents/search">Search</a></li>
         </ul>
         <div>
-        <MuiThemeProvider>
-          <Dialog
-            title="Edit Document"
-            actions={actions}
-            modal={false}
-            open={this.state.openEdit}
-            onRequestClose={this.handleClose}
-            autoScrollBodyContent
-          >
-            <Card>
-              <CardTitle id="card">
-                <TextField
-                  name="title"
-                  id="edit"
-                  value={this.state.edit.title}
-                  onChange={this.onchange}
-                  fullWidth
-                />
-              </CardTitle>
-              <CardHeader>
-                Access Type:
+          <MuiThemeProvider>
+            <Dialog
+              title="Edit Document"
+              actions={actions}
+              modal={false}
+              open={this.state.openEdit}
+              onRequestClose={this.handleClose}
+              autoScrollBodyContent
+            >
+              <Card>
+                <CardTitle id="card">
+                  <TextField
+                    name="title"
+                    id="edit"
+                    value={this.state.edit.title}
+                    onChange={this.onchange}
+                    fullWidth
+                  />
+                </CardTitle>
+                <CardHeader>
+                  Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-              <option value="" />
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
-              </CardHeader>
-              <CardText>
-                <textarea
-                  name="content"
-                  id="textarea"
-                  rows="22"
-                  cols="120"
-                  value={this.state.edit.content}
-                  onChange={this.onchange}
-                />
-              </CardText>
-            </Card>
-          </Dialog>
+                    <option value="" />
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                  </select>
+                </CardHeader>
+                <CardText>
+                  <textarea
+                    name="content"
+                    id="textarea"
+                    rows="22"
+                    cols="120"
+                    value={this.state.edit.content}
+                    onChange={this.onchange}
+                  />
+                </CardText>
+              </Card>
+            </Dialog>
           </MuiThemeProvider>
         </div>
 
         <div>
-        <MuiThemeProvider>
-          <Dialog
-            actions={actions2}
-            modal={false}
-            open={this.state.openView}
-            onRequestClose={this.handleClose}
-            autoScrollBodyContent
-          >
-            <Card>
-              <CardTitle title={`${this.props.documents.byId.title} by ${this.props.documents.byId.userId}`} />
-              <CardText>
-                {this.props.documents.byId.content}
-              </CardText>
-            </Card>
-          </Dialog>
+          <MuiThemeProvider>
+            <Dialog
+              actions={actions2}
+              modal={false}
+              open={this.state.openView}
+              onRequestClose={this.handleClose}
+              autoScrollBodyContent
+            >
+              <Card>
+                <CardTitle title={`${this.props.documents.byId.title} by ${this.props.documents.byId.userId}`} />
+                <CardText>
+                  {this.props.documents.byId.content}
+                </CardText>
+              </Card>
+            </Dialog>
           </MuiThemeProvider>
         </div>
 
         <MuiThemeProvider>
-        <Card>
-          <Table>
-            <TableHeader>
-              <TableRow >
-                <TableHeaderColumn>Title</TableHeaderColumn>
-                <TableHeaderColumn>Access Type</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {
-                this.props.documents.all.map(adocument =>
-                  (<TableRow key={adocument.id}>
-                    <TableRowColumn>{adocument.title}</TableRowColumn>
-                    <TableRowColumn>{adocument.access}</TableRowColumn>
-                    <TableRowColumn>
-                      <RaisedButton
-                        onClick={() => this.handleOpenView(adocument.id)}
-                        primary
-                      >View</RaisedButton>
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <RaisedButton
-                        onClick={() => this.handleOpen(adocument.id)}
-                        primary
-                      >Edit</RaisedButton>
-                    </TableRowColumn>
-                  </TableRow>)
-                )}
-            </TableBody>
-          </Table>
-        </Card>
+          <Card>
+            <Table>
+              <TableHeader>
+                <TableRow >
+                  <TableHeaderColumn>Title</TableHeaderColumn>
+                  <TableHeaderColumn>Access Type</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {
+                  this.props.documents.all.map(adocument =>
+                    (<TableRow key={adocument.id}>
+                      <TableRowColumn>{adocument.title}</TableRowColumn>
+                      <TableRowColumn>{adocument.access}</TableRowColumn>
+                      <TableRowColumn>
+                        <RaisedButton
+                          onClick={() => this.handleOpenView(adocument.id)}
+                          primary
+                        >View</RaisedButton>
+                      </TableRowColumn>
+                      <TableRowColumn>
+                        <RaisedButton
+                          onClick={() => this.handleOpen(adocument.id)}
+                          primary
+                        >Edit</RaisedButton>
+                      </TableRowColumn>
+                    </TableRow>)
+                  )}
+              </TableBody>
+            </Table>
+          </Card>
         </MuiThemeProvider>
       </div>
     );

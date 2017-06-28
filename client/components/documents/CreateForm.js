@@ -39,7 +39,6 @@ class CreateForm extends React.Component {
   }
 
   render() {
-    console.log('Shiietttt mannnn', this.state);
     return (
       <div className="wrapper">
         <Header />
@@ -47,7 +46,6 @@ class CreateForm extends React.Component {
           <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
           <li role="presentation" className="active"><a href="/edocx/documents/newdocument">New Document</a></li>
-          <li role="presentation"><a href="/edocx/documents/search">Search</a></li>
         </ul>
         <MuiThemeProvider>
           <Card>
@@ -61,11 +59,11 @@ class CreateForm extends React.Component {
               />
             </CardTitle>
             <CardHeader>
-        Access Type:
+              Access Type:
           <select value={this.state.documents.access} name="access" onChange={this.onchange}>
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-          </select>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
             </CardHeader>
             <CardText>
               <textarea

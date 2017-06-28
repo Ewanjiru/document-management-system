@@ -28,7 +28,6 @@ class Documents extends React.Component {
           <li role="presentation" className="active"><a href="/edocx/documents">All Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
-          <li role="presentation"><a href="/edocx/documents/search">Search</a></li>
         </ul>
         <MuiThemeProvider>
           <View

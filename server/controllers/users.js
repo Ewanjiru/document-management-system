@@ -40,6 +40,12 @@ module.exports = {
     }
   },
 
+  logout(req, res) {
+    req.body = null;
+    const token = req.body;
+    return res.status(200).send(token);
+  },
+
   list(req, res) {
     if (req.query.limit || req.query.offset) {
       return User

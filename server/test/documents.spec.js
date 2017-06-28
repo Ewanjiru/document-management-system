@@ -1,13 +1,29 @@
+const middlewares = require('../helpers/middleware');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../../server');
+
 const should = chai.should();
-
+let Token = '';
 chai.use(chaiHttp);
-
 /*
  * Test the /POST route
  */
+const user = {
+  email: 'ex@gmail.com',
+  password: '123',
+};
+
+beforeEach((done) => {
+  chai.request(app)
+    .post('/users/login')
+    .send(user)
+    .end((err, res) => {
+      Token = res.body.Token;
+      done();
+    });
+});
+
 describe('/post endpoint', () => {
   it('it should create a new document', (done) => {
     const docs = {
@@ -18,6 +34,7 @@ describe('/post endpoint', () => {
     };
     chai.request(app)
       .post('/documents')
+      .set('x-access-token', Token)
       .send(docs)
       .end((err, res) => {
         res.should.have.status(201);
@@ -37,6 +54,7 @@ describe('/get endpoint', () => {
   it('it should retrieve all the documents', (done) => {
     chai.request(app)
       .get('/documents')
+      .set('x-access-token', Token)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('array');
@@ -53,6 +71,7 @@ describe('/get/documents/id endpoint', () => {
   it('Should retrieve document just created by the given the id', (done) => {
     chai.request(app)
       .get(`/documents/${id}`)
+      .set('x-access-token', Token)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
@@ -71,6 +90,7 @@ describe('/get by given offset and limit endpoint', () => {
   it('it should not retrieve any document as there is only one', (done) => {
     chai.request(app)
       .get(`/documents/?limit=${limit}&offset=${offset}`)
+      .set('x-access-token', Token)
       .end((err, res) => {
         res.should.have.status(404);
         res.body.should.have.property('message').eql('Documents not found');
@@ -83,6 +103,7 @@ describe('/get by given offset and limit endpoint', () => {
   it('it should  retrieve the only document there is', (done) => {
     chai.request(app)
       .get(`/documents/?limit=${limit1}&offset=${offset1}`)
+      .set('x-access-token', Token)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('doc');
@@ -98,6 +119,7 @@ describe('/put router', () => {
   it('it should retrieve the fist documents and update their title to Hello World', (done) => {
     chai.request(app)
       .put('/documents/1')
+      .set('x-access-token', Token)
       .send({ title: 'Hello World' })
       .end((err, res) => {
         res.should.have.status(200);
@@ -123,6 +145,7 @@ describe('/delete/documents/:id ', () => {
   it('it should create a test document', (done) => {
     chai.request(app)
       .post('/documents')
+      .set('x-access-token', Token)
       .send(doc)
       .end((err, res) => {
         id = res.body.id;
@@ -132,6 +155,7 @@ describe('/delete/documents/:id ', () => {
   it('it should delete  the test document by the given id', (done) => {
     chai.request(app)
       .delete(`/documents/${id}`)
+      .set('x-access-token', Token)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');

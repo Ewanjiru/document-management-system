@@ -9,6 +9,9 @@ export function createdUser(user) {
 export function loggedUser() {
   return { type: actionTypes.LOG_USER };
 }
+export function loggedOutUser() {
+  return { type: actionTypes.LOGOUT_USER };
+}
 
 export const SignUpAction = (user) => (dispatch) => {
   return appApi.createUser(user)
@@ -28,6 +31,16 @@ export const LoginAction = (user) => (dispatch) => {
       } else {
         console.log("error occured");
       }
+    })
+    .catch((error) => { throw (error); });
+};
+
+export const LogoutAction = (token) => (dispatch) => {
+  console.log("I was called");
+  return appApi.logoutUser(token)
+    .then((response) => {
+      sessionStorage.clear();
+      dispatch(loggedOutUser(response));
     })
     .catch((error) => { throw (error); });
 };

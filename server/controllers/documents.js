@@ -23,6 +23,9 @@ module.exports = {
           offset: req.query.offset,
           limit: req.query.limit,
           order: '"createdAt" ASC',
+          where: {
+            access: 'public'
+          }
         })
         .then((doc) => {
           if (!doc || doc.length < 1) {
@@ -30,15 +33,16 @@ module.exports = {
               message: 'Documents not found',
             });
           }
-          return res.status(200).send({
-            doc,
-            message: 'Request Successful'
-          });
+          return res.status(200).send(doc);
         })
         .catch(error => res.status(400).send(error));
     }
     return Document
-      .findAll()
+      .findAll({
+        where: {
+          access: 'public'
+        }
+      })
       .then((doc) => {
         if (doc.length < 1) {
           return res.status(404).send({

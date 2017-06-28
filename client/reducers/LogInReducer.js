@@ -8,8 +8,11 @@ function LogInReducer(state = initialState.session, action) {
         ...state,
         Object.assign({}, action.data)
       ];
-      
-      //return sessionStorage.Token;
+    case actionTypes.LOGOUT_USER:
+      return [
+        ...state,
+        Object.assign({}, action.data)
+      ];
     default:
       return state;
   }

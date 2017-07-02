@@ -18,12 +18,14 @@ class View extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      itemsCount: 0,
       id: '',
       docOwner: '',
       openView: false,
       openEdit: false,
       searchText: '',
       documents: props.documents,
+      errors: props.error,
       documentById: [],
       activePage: 1,
       limit: 7,
@@ -41,14 +43,24 @@ class View extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    console.log('lenth', this.state.itemCounts);
   }
 
   componentWillMount() {
+    this.props.actions.loadAllDocuments().then(
+      this.setState({
+        itemsCount: this.props.documents.all.length
+      })
+    );
+  }
+
+  componentDidMount() {
     this.props.actions.loadDocuments();
   }
 
   componentWillReceiveProps(nextProps) {
     const { byId } = nextProps.documents;
+    const { all } = nextProps.documents;
 
     if (byId) {
       this.setState({
@@ -59,6 +71,9 @@ class View extends React.Component {
         }
       });
     }
+    this.setState({
+      documents: all
+    });
   }
 
   onchange(event) {
@@ -112,6 +127,9 @@ class View extends React.Component {
   }
 
   render() {
+    console.log(this.state.itemsCount);
+    console.log('i will happen', this.props.documents.all.length);
+    const role = authenticate(sessionStorage.Token).roleId;
     const { searchText } = this.state;
     let filteredDocuments;
     if (searchText === '') {
@@ -119,13 +137,14 @@ class View extends React.Component {
     } else {
       filteredDocuments = this.props.documents.all.filter(documents => documents.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1);
     }
-    console.log('my filteredDocuments', filteredDocuments);
+    console.log('my filteredDocuments', this.props.documents.all);
     const actions = [
       <FlatButton
         label="Edit"
         primary
         keyboardFocused
         onTouchTap={this.handleEdit}
+        disabled={!this.state.edit.title || !this.state.edit.content || !this.state.edit.access}
       />,
       <FlatButton
         label="Cancel"
@@ -133,6 +152,7 @@ class View extends React.Component {
         onTouchTap={this.handleClose}
       />,
     ];
+
     const actions2 = [
       <FlatButton
         label="Cancel"
@@ -143,6 +163,7 @@ class View extends React.Component {
         label="Delete"
         primary
         onTouchTap={() => this.handleDelete(this.state.id)}
+        disabled={role != 1}
       />
     ];
     return (
@@ -221,14 +242,18 @@ class View extends React.Component {
                     <TableRowColumn>{adocument.title}</TableRowColumn>
                     <TableRowColumn>{adocument.access}</TableRowColumn>
                     <TableRowColumn>
+
                       <RaisedButton
                         onClick={() => this.handleOpenView(adocument.id)}
                         primary
-                      >View</RaisedButton>  
-                      <RaisedButton
-                        onClick={() => this.handleOpen(adocument.id)}
-                        primary
-                      >Edit</RaisedButton>
+                      >View</RaisedButton>
+
+                      {role === 1 &&
+                        <RaisedButton
+                          onClick={() => this.handleOpen(adocument.id)}
+                          primary
+                        >Edit</RaisedButton>
+                      }
                     </TableRowColumn>
                   </TableRow>)
                 )}
@@ -237,7 +262,7 @@ class View extends React.Component {
           <div className="pages">
             <Pagination
               activePage={this.state.activePage}
-              itemsCountPerPage={3}
+              itemsCountPerPage={7}
               totalItemsCount={20}
               pageRangeDisplayed={5}
               onChange={this.handlePageChange}
@@ -254,9 +279,10 @@ View.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log('my docs', state.documents);
+  console.log('state', state.documents);
   return {
-    documents: state.documents
+    documents: state.documents,
+    error: state.error
   };
 }
 

@@ -6,6 +6,20 @@ const should = chai.should();
 chai.use(chaiHttp);
 let Token = '';
 
+const user = {
+  email: 'ex@gmail.com',
+  password: '1Eunice@',
+};
+
+beforeEach((done) => {
+  chai.request(app)
+    .post('/users/login')
+    .send(user)
+    .end((err, res) => {
+      Token = res.body.Token;
+      done();
+    });
+});
 /*
  * Test the /POST route
  */
@@ -15,7 +29,7 @@ describe('/post endpoint', () => {
       firstName: 'Niccie',
       lastName: 'Sheero',
       email: 'ex@gmail.com',
-      password: '123',
+      password: '1Eunice@',
       roleId: 1
     };
     chai.request(app)
@@ -27,20 +41,19 @@ describe('/post endpoint', () => {
         res.body.should.have.property('message').eql('User Created Successfully');
         done();
       });
-  });
+  }).timeout(1000000);
 });
 
 describe('/post endpoint login', () => {
   it('it should log in a new user', (done) => {
     const user = {
       email: 'ex@gmail.com',
-      password: '123',
+      password: '1Eunice@',
     };
     chai.request(app)
       .post('/users/login')
       .send(user)
       .end((err, res) => {
-        Token = res.body.Token;
         done();
       });
   });
@@ -73,11 +86,9 @@ describe('/get/users/id endpoint', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
-        res.body.should.have.property('id');
         res.body.should.have.property('firstName');
         res.body.should.have.property('lastName');
         res.body.should.have.property('email');
-        res.body.should.have.property('roleId');
         done();
       });
   });

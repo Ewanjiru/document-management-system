@@ -16,20 +16,6 @@ class Home extends React.Component {
   }
 
   render() {
-    // if (this.state.isRegistering) {
-    //   return (
-    //     <div className="mainframe">
-    //       <div className="header">
-    //         <h2>Welcome To eDocz Document Management System</h2>
-    //       </div>
-    //       <div className="signups">
-    //         <div className="img">
-    //           <SignUp />
-    //         </div>
-    //       </div>
-    //     </div>
-    //   );
-    // }
     return (
       <div className="mainframe">
         <div className="header">

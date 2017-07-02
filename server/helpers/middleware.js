@@ -18,8 +18,9 @@ module.exports = {
   },
 
   verifyRole(req, res, next) {
-    const roleId = req.decoded.roleId;
-    if (roleId !== 2) {
+    const role = req.decoded.roleType;
+    console.log("Tumefika hapa", role);
+    if (role !== 'admin') {
       return res.status(403).send({
         message: 'You do not have permission to access this'
       });

@@ -1,4 +1,5 @@
 const roleController = require('../controllers').roles;
+const middlewares = require('../helpers/middleware');
 
 module.exports = (app) => {
   app.post('/roles', roleController.create);

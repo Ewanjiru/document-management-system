@@ -9,6 +9,11 @@ export function loadDocumentsSuccess(docs) {
   return { type: actionTypes.LOAD_DOCUMENTS_SUCCESS, docs };
 }
 
+export function loadAllDocumentsSuccess(docs) {
+  console.log('niko hapa', docs);
+  return { type: actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS, docs };
+}
+
 export function loadSearchedSuccess(docs) {
   return { type: actionTypes.LOAD_SEARCHDOCUMENTS_SUCCESS, docs };
 }
@@ -30,52 +35,67 @@ export function deletedById(response) {
 }
 
 export const newDocument = records => (dispatch) => appApi.createDocument(records)
-    .then((response) => {
-      dispatch(createdDocument(response));
-    })
-    .catch((error) => { throw (error); });
+  .then((response) => {
+    dispatch(createdDocument(response));
+  })
+  .catch((error) => { throw (error); });
 
 export const loadDocuments = (limit, offset) => function (dispatch) {
-    return appApi.getAllDocuments(limit, offset)
-      .then((docs) => {
-        dispatch(loadDocumentsSuccess(docs.data));
-      })
-      .catch((error) => { throw (error); });
-  };
+  return appApi.getAllDocuments(limit, offset)
+    .then((docs) => {
+      dispatch(loadDocumentsSuccess(docs.data.doc));
+    })
+    .catch((error) => { throw (error); });
+};
+
+export const loadAllDocuments = () => function (dispatch) {
+  return appApi.getAllDocs()
+    .then((docs) => {
+      dispatch(loadAllDocumentsSuccess(docs));
+    })
+    .catch((error) => { throw (error); });
+};
 
 export const loadMyDocuments = (token) => function (dispatch) {
-    return appApi.getAllDocumentsByUser(token)
-      .then((docs) => {
-        dispatch(loadMyDocumentsSuccess(docs.userDocuments));
-      })
-      .catch((error) => { throw (error); });
-  };
+  return appApi.getAllDocumentsByUser(token)
+    .then((docs) => {
+      dispatch(loadMyDocumentsSuccess(docs.userDocuments));
+    })
+    .catch((error) => { throw (error); });
+};
+
+export const loadRoleDocuments = (token) => function (dispatch) {
+  return appApi.getAllDocumentsRole(token)
+    .then((docs) => {
+      dispatch(loadMyDocumentsSuccess(docs));
+    })
+    .catch((error) => { throw (error); });
+};
 
 export const viewDocument = (id) => function (dispatch) {
-    return appApi.getDocumentById(id)
-      .then((doc) => {
-        dispatch(loadDocumentByIdSuccess(doc));
-      })
-      .catch((error) => { throw (error); });
-  };
+  return appApi.getDocumentById(id)
+    .then((doc) => {
+      dispatch(loadDocumentByIdSuccess(doc));
+    })
+    .catch((error) => { throw (error); });
+};
 
 export const searchDocument = (searchText) => function (dispatch) {
-    return appApi.getSearched(searchText)
-      .then((docs) => {
-        dispatch(loadSearchedSuccess(console.log('here', docs)));
-      })
-      .catch((error) => { throw (error); });
+  return appApi.getSearched(searchText)
+    .then((docs) => {
+      dispatch(loadSearchedSuccess(docs));
+    })
+    .catch((error) => { throw (error); });
 };
 
 export const editDocument = (id, record) => (dispatch) => appApi.updateDocument(id, record)
-    .then((response) => {
-      dispatch(updatedDocument(response));
-    })
-    .catch((error) => { throw (error); });
+  .then((response) => {
+    dispatch(updatedDocument(response));
+  })
+  .catch((error) => { throw (error); });
 
 export const deleteDocument = id => (dispatch) => appApi.deleteById(id)
-    .then((response) => {
-      dispatch(deletedById(response));
-    })
-    .catch((error) => { throw (error); });
-
+  .then((response) => {
+    dispatch(deletedById(response));
+  })
+  .catch((error) => { throw (error); });

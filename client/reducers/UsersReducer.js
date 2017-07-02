@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/ActionTypes';
 import initialState from './InitialState';
 
 function UsersReducer(state = initialState.users, action) {
+  console.log('reduce2', action);
   switch (action.type) {
     case actionTypes.LOAD_USERS_SUCCESS:
       console.log('ivi ndo iko', action.users);

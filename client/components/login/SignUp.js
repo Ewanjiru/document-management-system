@@ -4,20 +4,25 @@ import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import PropTypes from 'react-proptypes';
 import SignUpForm from './SignUpForm';
+import ReactNotify from 'react-notify';
 import * as SignUpActions from '../../actions/SignUpAction';
+import '../home/Home.scss';
 
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      roleId: 1
-    } };
+    this.state = {
+      user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        roleType: 'admin'
+      }
+    };
     this.userRegister = this.userRegister.bind(this);
     this.onchange = this.onchange.bind(this);
+    this.showNotification = this.showNotification.bind(this);
   }
 
   onchange(event) {
@@ -38,20 +43,39 @@ class SignUp extends React.Component {
 
   userRegister(event) {
     event.preventDefault();
-    this.props.actions.SignUpAction(this.state.user).then(() => {
-      browserHistory.push('/');
-    });
+    if (!this.state.user.firstName || !this.state.user.lastName || !this.state.user.email || !this.state.user.password) {
+      this.showNotification();
+    } else {
+      this.props.actions.SignUpAction(this.state.user).then(() => {
+        browserHistory.push('/');
+      });
+    }
+  }
+
+  showNotification() {
+    this.refs.notificator.error("Login failed", "Incorrect credentials", 4000);
+    // this.refs.notificator.success("Title.", "Msg - body.", 4000);
   }
 
   render() {
     return (
-      <div id="logWrapper">
-        <SignUpForm
-          user={this.state.user}
-          onchange={this.onchange}
-          userRegister={this.userRegister}
-          logCancel={this.logCancel}
-        />
+      <div className="mainframe">
+        <div className="header">
+          <h2>Welcome To eDocz Document Management System</h2>
+        </div>
+        <div className="signups">
+          <div id="logWrapper">
+            <div>
+              <ReactNotify ref='notificator' />
+            </div>
+            <SignUpForm
+              user={this.state.user}
+              onchange={this.onchange}
+              userRegister={this.userRegister}
+              logCancel={this.logCancel}
+            />
+          </div>
+        </div>
       </div>
     );
   }

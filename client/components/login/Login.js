@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'react-proptypes';
+import ReactNotify from 'react-notify';
 import LoginForm from './LoginForm';
 import * as SignUpActions from '../../actions/SignUpAction';
 import '../home/Home.scss';
@@ -11,12 +12,14 @@ class Login extends React.Component {
     super(props);
     this.state = {
       user: {
+        error: props.error,
         email: '',
         password: '',
       }
     };
     this.userLog = this.userLog.bind(this);
     this.onchange = this.onchange.bind(this);
+    this.showNotification = this.showNotification.bind(this);
   }
 
   onchange(event) {
@@ -29,16 +32,31 @@ class Login extends React.Component {
 
   logCancel() {
     return this.setState({
+      user: {
+        email: '',
+        password: '',
+      }
     });
   }
 
   userLog(event) {
     event.preventDefault();
+    this.showNotification()
     this.props.actions.LoginAction(this.state.user);
   }
+
+  showNotification() {
+    this.refs.notificator.error("Login failed", "Incorrect credentials", 4000);
+    // this.refs.notificator.success("Title.", "Msg - body.", 4000);
+  }
+
   render() {
+    console.log('there is an error', this.props.error);
     return (
       <div className="logWrapper">
+        <div>
+          <ReactNotify ref='notificator' />
+        </div>
         <LoginForm
           user={this.state.user}
           onchange={this.onchange}
@@ -51,7 +69,8 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
@@ -62,7 +81,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    state,
+    error: state.props,
   };
 }
 

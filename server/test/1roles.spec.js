@@ -22,7 +22,7 @@ describe('/post endpoint', () => {
         res.body.should.be.a('object');
         done();
       });
-  });
+  }).timeout(10000);
 
   it('it should retrieve all the roles', (done) => {
     chai.request(app)
@@ -33,7 +33,7 @@ describe('/post endpoint', () => {
         res.body.length.should.be.eql(1);
         done();
       });
-  });
+  }).timeout(10000);
 });
 
 describe('/delete/roles/:id ', () => {
@@ -41,7 +41,7 @@ describe('/delete/roles/:id ', () => {
     role: 'testRole'
   };
   let roleId = null;
-  it('it should a test role', (done) => {
+  it('it should add a test role', (done) => {
     chai.request(app)
       .post('/roles')
       .send(arole)

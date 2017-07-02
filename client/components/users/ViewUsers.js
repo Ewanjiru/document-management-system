@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
+import authenticate from '../../api/helper';
 import * as UserActions from '../../actions/UserAction';
 import '../documents/Document.scss';
 
@@ -53,7 +54,7 @@ class ViewUsers extends React.Component {
           firstName: byId.firstName,
           lastName: byId.lastName,
           email: byId.email,
-          roleId: byId.roleId
+          roleType: byId.roleType
         }
       });
     }
@@ -77,7 +78,7 @@ class ViewUsers extends React.Component {
   handleEdit(event) {
     event.preventDefault();
     this.props.actions.editUser(this.state.id, this.state.edit);
-    this.setState({ openView: false, openEdit: false, edit: { firstName: '', lastName: '', email: '', roleId: '' } });
+    this.setState({ openView: false, openEdit: false, edit: { firstName: '', lastName: '', email: '', roleType: '' } });
   }
 
   handleClose() {
@@ -110,6 +111,7 @@ class ViewUsers extends React.Component {
   }
 
   render() {
+    const role = authenticate(sessionStorage.Token).roleType;
     const { searchText } = this.state;
     let filteredUsers;
     if (searchText === '') {
@@ -154,14 +156,13 @@ class ViewUsers extends React.Component {
             onRequestClose={this.handleClose}
             autoScrollBodyContent
           >
-            <Card>
-              <CardTitle id="card">
+            <Card id="card2">
+              <CardTitle>
                 <TextField
                   name="firstName"
                   id="edit"
                   value={this.state.edit.firstName}
                   onChange={this.onchange}
-                  fullWidth
                 />
               </CardTitle>
               <CardHeader>
@@ -170,26 +171,21 @@ class ViewUsers extends React.Component {
                   id="edit"
                   value={this.state.edit.lastName}
                   onChange={this.onchange}
-                  fullWidth
                 />
               </CardHeader>
               <CardText>
-                <textarea
+                <TextField
                   name="email"
-                  id="textarea"
-                  rows="22"
-                  cols="120"
                   value={this.state.edit.email}
                   onChange={this.onchange}
                 />
               </CardText>
               <CardHeader>
                 <TextField
-                  name="roleId"
+                  name="roleType"
                   id="edit"
-                  value={this.state.edit.roleId}
+                  value={this.state.edit.roleType}
                   onChange={this.onchange}
-                  fullWidth
                 />
               </CardHeader>
             </Card>
@@ -209,7 +205,7 @@ class ViewUsers extends React.Component {
                 {`${this.props.users.byId.firstName}  
                 ${this.props.users.byId.lastName}`}
                 {this.props.users.byId.email}
-                {this.props.users.byId.roleId}
+                {this.props.users.byId.roleType}
               </CardText>
             </Card>
           </Dialog>
@@ -220,28 +216,37 @@ class ViewUsers extends React.Component {
           <Table>
             <TableHeader>
               <TableRow >
-                <TableHeaderColumn>Name</TableHeaderColumn>
-                <TableHeaderColumn>email</TableHeaderColumn>
+                <TableHeaderColumn>First Name</TableHeaderColumn>
+                <TableHeaderColumn>Last Name</TableHeaderColumn>
+                <TableHeaderColumn>Email</TableHeaderColumn>
+                <TableHeaderColumn>Date Added</TableHeaderColumn>
+                <TableHeaderColumn>Role</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody>
               {
                 filteredUsers.map(auser =>
-                  (<TableRow key={auser.firstName}>
+                  (<TableRow key={auser.id}>
+                    <TableRowColumn>{auser.firstName}</TableRowColumn>
                     <TableRowColumn>{auser.lastName}</TableRowColumn>
                     <TableRowColumn>{auser.email}</TableRowColumn>
-                    <TableRowColumn>{auser.roleId}</TableRowColumn>
+                    <TableRowColumn>{auser.createdAt}</TableRowColumn>
+                    <TableRowColumn>{auser.roleType}</TableRowColumn>
                     <TableRowColumn>
-                      <RaisedButton
-                        onClick={() => this.handleDelete(auser.id)}
-                        primary
-                      >Delete</RaisedButton>
+                      {role === 'admin' &&
+                        <RaisedButton
+                          onClick={() => this.handleDelete(auser.id)}
+                          primary
+                        >Delete</RaisedButton>
+                      }
                     </TableRowColumn>
                     <TableRowColumn>
-                      <RaisedButton
-                        onClick={() => this.handleOpen(auser.id)}
-                        primary
-                      >Edit</RaisedButton>
+                      {role === 'admin' &&
+                        <RaisedButton
+                          onClick={() => this.handleOpen(auser.id)}
+                          primary
+                        >Edit</RaisedButton>
+                      }
                     </TableRowColumn>
                   </TableRow>)
                 )}
@@ -252,8 +257,8 @@ class ViewUsers extends React.Component {
               // prevPageText="prev"
               // nextPageText="next"
               activePage={this.state.activePage}
-              itemsCountPerPage={3}
-              totalItemsCount={20}
+              itemsCountPerPage={7}
+              totalItemsCount={10}
               pageRangeDisplayed={5}
               onChange={this.handlePageChange}
             />

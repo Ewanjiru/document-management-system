@@ -6,11 +6,13 @@ import * as DocumentActions from '../../actions/DocumentsAction';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import ReactNotify from 'react-notify';
 import Header from '../common/Header';
 import TextField from 'material-ui/TextField';
+import authenticate from '../../api/helper';
 import './Document.scss';
 
-class CreateForm extends React.Component {
+export class CreateForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,11 +20,20 @@ class CreateForm extends React.Component {
         title: '',
         content: '',
         access: '',
-        userId: sessionStorage.Token
+        userId: sessionStorage.Token,
       },
+      role: '',
     };
     this.create = this.create.bind(this);
     this.onchange = this.onchange.bind(this);
+  }
+
+  componentDidMount() {
+    const userDetails = authenticate(sessionStorage.Token);
+    const role = userDetails.roleType;
+    console.log("The role is", role);
+    this.state.role = role;
+    console.log("The role is", this.state.role);
   }
 
   onchange(event) {
@@ -35,7 +46,18 @@ class CreateForm extends React.Component {
 
   create(event) {
     event.preventDefault();
-    this.props.actions.newDocument(this.state.documents);
+    this.props.actions.newDocument(this.state.documents).then(this.showNotification());
+    this.setState({
+      documents: {
+        title: '',
+        content: '',
+        access: '',
+      }
+    });
+  }
+
+  showNotification() {
+    this.refs.notificator.success("doc created.", "Successfully created", 4000);
   }
 
   render() {
@@ -45,10 +67,14 @@ class CreateForm extends React.Component {
         <ul className="nav nav-pills">
           <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
+          <li role="presentation"><a href="/edocx/documents/roledocuments">RoleBased Documents</a></li>
           <li role="presentation" className="active"><a href="/edocx/documents/newdocument">New Document</a></li>
         </ul>
         <MuiThemeProvider>
           <Card>
+            <div>
+              <ReactNotify ref='notificator' />
+            </div>
             <CardTitle id="card">
               <TextField
                 hintText="TITLE"
@@ -63,6 +89,7 @@ class CreateForm extends React.Component {
           <select value={this.state.documents.access} name="access" onChange={this.onchange}>
                 <option value="public">Public</option>
                 <option value="private">Private</option>
+                <option value={this.state.role}>Role Based</option>
               </select>
             </CardHeader>
             <CardText>
@@ -76,7 +103,7 @@ class CreateForm extends React.Component {
               >Enter content here...</textarea>
             </CardText>
             <CardActions>
-              <RaisedButton label="Create" secondary onClick={this.create} />
+              <RaisedButton disabled={!this.state.documents.title || !this.state.documents.content || !this.state.documents.access} id="submit" label="Create" secondary onClick={this.create} />
               <RaisedButton label="Discard" secondary />
             </CardActions>
           </Card>

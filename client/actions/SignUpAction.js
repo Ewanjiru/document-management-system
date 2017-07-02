@@ -9,6 +9,11 @@ export function createdUser(user) {
 export function loggedUser() {
   return { type: actionTypes.LOG_USER };
 }
+
+export function getError(error) {
+  return { type: actionTypes.ERROR_MESSAGE, error };
+}
+
 export function loggedOutUser() {
   return { type: actionTypes.LOGOUT_USER };
 }
@@ -30,6 +35,7 @@ export const LoginAction = (user) => (dispatch) => {
         dispatch(loggedUser(response));
       } else {
         console.log("error occured");
+        dispatch(getError("confirm your credentials and try again"));
       }
     })
     .catch((error) => { throw (error); });

@@ -5,8 +5,9 @@ import Home from './components/home/Home';
 import Documents from './components/documents/Documents';
 import Users from './components/users/Users';
 import SignUp from './components/login/SignUp';
-import About from './components/about/About';
+import Roles from './components/roles/Roles';
 import MyDocuments from './components/documents/MyDocuments';
+import RoleBased from './components/documents/RoleBased'
 import CreateForm from './components/documents/CreateForm';
 
 export default (
@@ -14,9 +15,10 @@ export default (
     <IndexRoute component={Home} />
     <Route path="/edocx/documents" component={Documents} />
     <Route path="/edocx/documents/mydocuments" component={MyDocuments} />
+    <Route path="/edocx/documents/roledocuments" component={RoleBased} />
     <Route path="/edocx/documents/newdocument" component={CreateForm} />
     <Route path="/edocx/users" component={Users} />
-    <Route path="/edocx/about" component={About} />
+    <Route path="/edocx/roles" component={Roles} />
     <Route path="/edocx/signup" component={SignUp} />
   </Route>
 );

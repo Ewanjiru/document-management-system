@@ -2,8 +2,14 @@ import * as actionTypes from '../actions/ActionTypes';
 import initialState from './InitialState';
 
 function DocumentsReducer(state = initialState.documents, action) {
+  console.log('reduce', action);
   switch (action.type) {
     case actionTypes.LOAD_DOCUMENTS_SUCCESS:
+      return {
+        all: action.docs,
+        byId: state.byId
+      };
+    case actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS:
       return {
         all: action.docs,
         byId: state.byId

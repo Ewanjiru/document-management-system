@@ -1,9 +1,9 @@
-import path from 'path';
-import express from 'express';
-import logger from 'morgan';
-import bodyParser from 'body-parser';
-import webpack from 'webpack';
-import config from './webpack.config';
+const path = require('path')
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const webpack = require('webpack');
+const config = require('./webpack.config');
 
 const app = express();
 app.use(logger('dev'));

@@ -6,6 +6,7 @@ module.exports = (app) => {
   app.get('/documents', middlewares.verifyToken, documentController.list);
   app.get('/documents/:documentId', middlewares.verifyToken, documentController.retrieve);
   app.get('/search/documents/', middlewares.verifyToken, documentController.searchDocument);
+  app.get('/role/documents/:role', middlewares.verifyToken, documentController.getUserRoleDocuments);
   app.put('/documents/:documentId', middlewares.verifyToken, documentController.update);
   app.delete('/documents/:documentId', middlewares.verifyToken, documentController.delete);
 

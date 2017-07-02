@@ -13,7 +13,7 @@ import * as DocumentActions from '../../actions/DocumentsAction';
 import Header from '../common/Header';
 import './Document.scss';
 
-class MyDocuments extends React.Component {
+class RoleBased extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +37,7 @@ class MyDocuments extends React.Component {
   }
 
   componentWillMount() {
-    this.props.actions.loadMyDocuments(this.state.token);
+    this.props.actions.loadRoleDocuments(this.state.token);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -119,8 +119,8 @@ class MyDocuments extends React.Component {
         <Header />
         <ul className="nav nav-pills">
           <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
-          <li role="presentation" className="active"><a href="/edocx/documents/mydocuments">My Documents</a></li>
-          <li role="presentation"><a href="/edocx/documents/roledocuments">RoleBased Documents</a></li>
+          <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
+          <li role="presentation" className="active"><a href="/edocx/documents/roledocuments">RoleBased Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
         </ul>
         <div>
@@ -155,8 +155,8 @@ class MyDocuments extends React.Component {
                   <textarea
                     name="content"
                     id="textarea"
-                    rows="10"
-                    cols="80"
+                    rows="22"
+                    cols="120"
                     value={this.state.edit.content}
                     onChange={this.onchange}
                   />
@@ -176,7 +176,7 @@ class MyDocuments extends React.Component {
               autoScrollBodyContent
             >
               <Card>
-                <CardTitle title={`${this.props.documents.byId.title}`} />
+                <CardTitle title={`${this.props.documents.byId.title} by ${this.props.documents.byId.userId}`} />
                 <CardText>
                   {this.props.documents.byId.content}
                 </CardText>
@@ -222,7 +222,7 @@ class MyDocuments extends React.Component {
     );
   }
 }
-MyDocuments.propTypes = {
+RoleBased.propTypes = {
   documents: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired
@@ -239,4 +239,4 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(DocumentActions, dispatch)
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(MyDocuments);
+export default connect(mapStateToProps, mapDispatchToProps)(RoleBased);

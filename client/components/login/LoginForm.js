@@ -45,7 +45,7 @@ const LoginForm = props => (
       </div>
       <div className="row">
         <div className="col-lg-4">
-          <b>Create account:<Link to='/signup'>SignUp</Link></b>
+          <b>Create account:<Link to='/edocx/signup'>SignUp</Link></b>
         </div>
       </div>
     </div>
@@ -54,7 +54,6 @@ const LoginForm = props => (
 
 LoginForm.propTypes = {
   user: PropTypes.object.isRequired,
-  toggleLog: PropTypes.object.isRequired,
   onchange: PropTypes.func.isRequired,
   userLog: PropTypes.func.isRequired,
   logCancel: PropTypes.func.isRequired

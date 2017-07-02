@@ -6,6 +6,19 @@ const Document = require('../models').documents;
 
 module.exports = {
   create(req, res) {
+    const emailRegex = /\S+@\S+\.\S+/;
+    const paswordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password ||
+      !req.body.roleType) {
+      return res.status(422).send({ message: 'Fill all fields' });
+    } else if (!(req.body.password).match(paswordRegex)) {
+      return res.status(409).send({
+        message: 'Password must contain:one digit from 0-9, one lowercase characters, one uppercase characters, one special symbols and at least 8 characters'
+      });
+    } else if (!emailRegex.test(req.body.email)) {
+      return res.status(406).send({ message: 'Email format is incorrect' });
+    }
+    console.log('this is the request', req.body);
     return User
       .create(req.body)
       .then(user => res.status(201).send({
@@ -26,8 +39,8 @@ module.exports = {
         .then((user) => {
           if (user) {
             if (User.isPassword(user.password, password)) {
-              const payload = { id: user.id, roleId: user.roleId };
-              const token = jwt.sign(payload, secret, { expiresIn: 1440 });
+              const payload = { id: user.id, roleType: user.roleType };
+              const token = jwt.sign(payload, secret, { expiresIn: 25740 });
               return res.status(200).send({ message: 'Loggin Successful.', email: user.email, Token: token });
             }
             return res.status(401).send({
@@ -74,21 +87,23 @@ module.exports = {
   },
 
   retrieveOne(req, res) {
-    return User
-      .findById(req.params.userId)
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send({
-            message: 'Sorry. User not found',
+    if (req.body) {
+      return User
+        .findById(req.params.userId)
+        .then((user) => {
+          if (!user) {
+            return res.status(404).send({
+              message: 'Sorry. User not found',
+            });
+          }
+          return res.status(200).send({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
           });
-        }
-        return res.status(200).send({
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-        });
-      })
-      .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
+    }
   },
 
   update(req, res) {

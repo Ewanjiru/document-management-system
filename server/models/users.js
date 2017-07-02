@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       classMethods: {
         associate: (models) => {
           users.belongsTo(models.roles, {
-            foreignKey: 'roleId',
+            foreignKey: 'roleType',
             OnDelete: 'CASCADE',
           });
           users.hasMany(models.documents, {

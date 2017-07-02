@@ -2,6 +2,9 @@ const Document = require('../models').documents;
 
 module.exports = {
   create(req, res) {
+    if (!req.body.title || !req.body.content || !req.body.access) {
+      return res.status(406).send({ message: 'Fill all fields' });
+    }
     return Document
       .create({
         title: req.body.title,
@@ -33,7 +36,7 @@ module.exports = {
               message: 'Documents not found',
             });
           }
-          return res.status(200).send(doc);
+          return res.status(200).send({ doc, message: 'Request Successful' });
         })
         .catch(error => res.status(400).send(error));
     }
@@ -69,25 +72,28 @@ module.exports = {
   },
 
   update(req, res) {
-    if (req.params) {
-      return Document
-        .findById(req.params.documentId)
-        .then((doc) => {
-          if (!doc) {
-            return res.status(404).send({
-              message: 'Document Not Found',
-            });
-          }
-          return doc
-            .update(req.body, { fields: Object.keys(req.body) })
-            .then(updatedDocument => res.status(200).send({
-              message: 'Document updated Successfully.',
-              updatedDocument
-            }))
-            .catch(error => res.status(400).send(error));
-        })
-        .catch(error => res.status(400).send(error));
+    if (!req.params) {
+      return res.status(404).send({
+        message: 'Document Not Found',
+      });
     }
+    return Document
+      .findById(req.params.documentId)
+      .then((doc) => {
+        if (!doc) {
+          return res.status(404).send({
+            message: 'Document Not Found',
+          });
+        }
+        return doc
+          .update(req.body, { fields: Object.keys(req.body) })
+          .then(updatedDocument => res.status(200).send({
+            message: 'Document updated Successfully.',
+            updatedDocument
+          }))
+          .catch(error => res.status(400).send(error));
+      })
+      .catch(error => res.status(400).send(error));
   },
 
   searchDocument(req, res) {
@@ -109,6 +115,25 @@ module.exports = {
         return res.status(200).send(doc);
       });
   },
+
+  getUserRoleDocuments(req, res) {
+    return Document
+      .findAll({
+        where: {
+          access: req.params.role
+        }
+      })
+      .then((docs) => {
+        if (!docs) {
+          return res.status(404).send({
+            message: 'That role has no documents',
+          });
+        }
+        return res.status(200).send({ docs });
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
 
   delete(req, res) {
     return Document

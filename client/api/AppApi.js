@@ -2,20 +2,36 @@ import axios from 'axios';
 import authenticate from './helper';
 
 export default {
-  getAllDocuments: (limit = 7, offset = 0) => axios
-    .get(`/documents/?limit=${limit}&offset=${offset}`, { headers: { 'x-access-token': sessionStorage.Token } })
-  // .then(response => response.data)
-  // .catch(error => console.log(error));
-  ,
-
-  getSearched: (searchtitle) => {
+  getAllDocuments: (limit = 7, offset = 0) => {
+    console.log('nko hapa');
     return axios
-      .get(`/search/documents/?q=${searchtitle}`, { headers: { 'x-access-token': sessionStorage.Token } })
+      .get(`/documents/?limit=${limit}&offset=${offset}`, { headers: { 'x-access-token': sessionStorage.Token } });
+    // .then(response => response.data)
+    // .catch(error => console.log(error));
+  },
+
+  getAllDocs: () => {
+    console.log('nko hapa');
+    return axios
+      .get('/documents/', { headers: { 'x-access-token': sessionStorage.Token } })
       .then(response => response.data)
       .catch(error => error);
   },
 
-  getDocumentById: id => axios
+  getDocsCount: () => {
+    console.log('nko hapa');
+    return axios
+      .get('/documents/', { headers: { 'x-access-token': sessionStorage.Token } });
+    // .then(response => response.data)
+    // .catch(error => console.log(error));
+  },
+
+  getSearched: (searchtitle) => axios
+    .get(`/search/documents/?q=${searchtitle}`, { headers: { 'x-access-token': sessionStorage.Token } })
+    .then(response => response.data)
+    .catch(error => error),
+
+  getDocumentById: (id) => axios
     .get(`/documents/${id}`, { headers: { 'x-access-token': sessionStorage.Token } })
     .then(response => response.data)
     .catch(error => error),
@@ -26,6 +42,15 @@ export default {
     return axios
       .get(`/users/${userid}/documents`, { headers: { 'x-access-token': token } })
       .then(response => response.data)
+      .catch(error => error);
+  },
+
+  getAllDocumentsRole: (token) => {
+    const userdetails = authenticate(token);
+    const role = userdetails.roleType;
+    return axios
+      .get(`/role/documents/${role}`, { headers: { 'x-access-token': token } })
+      .then(response => response.data.docs)
       .catch(error => error);
   },
 
@@ -68,6 +93,7 @@ export default {
   },
 
   createUser: (user) => {
+    console.log("nishafika", user);
     const request = axios({
       method: 'POST',
       data: user,
@@ -76,7 +102,7 @@ export default {
         'Content-Type': 'application/json'
       },
     });
-    return request.then(response => response.data).catch(error => error);
+    return request.then(response => console.log('this is the response', response.data)).catch(error => error);
   },
 
   logUser: (user) => {
@@ -99,12 +125,10 @@ export default {
       .catch(error => console.log(error));
   },
 
-  getSearchedUser: (searchtitle) => {
-    return axios
-      .get(`/search/users/?q=${searchtitle}`, { headers: { 'x-access-token': sessionStorage.Token } })
-      .then(response => response.data)
-      .catch(error => error);
-  },
+  getSearchedUser: (searchtitle) => axios
+    .get(`/search/users/?q=${searchtitle}`, { headers: { 'x-access-token': sessionStorage.Token } })
+    .then(response => response.data)
+    .catch(error => error),
 
   getUserById: id => axios
     .get(`/users/${id}`, { headers: { 'x-access-token': sessionStorage.Token } })
@@ -147,5 +171,35 @@ export default {
     });
     return request.then(response => console.log('token is ', response.data)).catch(error => error);
   },
-};
 
+  createRole: (role) => {
+    const request = axios({
+      method: 'POST',
+      data: role,
+      url: '/roles',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    return request.then(response => response.data).catch(error => error);
+  },
+
+  getAllRoles: () => {
+    console.log('api');
+    return axios
+      .get('/roles/')
+      .then(response => response.data)
+      .catch(error => error);
+  },
+
+  deleteRoleById: (id) => {
+    const request = axios({
+      method: 'DELETE',
+      url: `/roles/${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return request.then(response => response).catch(error => error);
+  },
+};

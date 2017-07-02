@@ -27,12 +27,11 @@ class Documents extends React.Component {
         <ul className="nav nav-pills">
           <li role="presentation" className="active"><a href="/edocx/documents">All Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
+          <li role="presentation"><a href="/edocx/documents/roledocuments">RoleBased Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
         </ul>
         <MuiThemeProvider>
-          <View
-            documents={this.state.documents}
-          />
+          <View />
         </MuiThemeProvider>
       </div>
     );
@@ -40,7 +39,7 @@ class Documents extends React.Component {
 }
 
 Documents.propTypes = {
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {

@@ -3,4 +3,6 @@ export default {
   user: [],
   users: { all: [], byId: {} },
   session: !!sessionStorage.token,
+  roles: [],
+  error: ''
 };

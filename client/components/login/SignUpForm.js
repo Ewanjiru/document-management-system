@@ -14,6 +14,7 @@ const SignUpForm = props => (
       <div className="row">
         <div className="col-lg-12">
           <TextField
+            Required
             hintText="your firstname"
             name="firstName"
             value={props.user.firstName}
@@ -24,6 +25,7 @@ const SignUpForm = props => (
       <div className="row">
         <div className="col-lg-12">
           <TextField
+            Required
             hintText="your lastname"
             name="lastName"
             value={props.user.lastName}

@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     queryInterface.createTable('documents', {
@@ -10,6 +9,7 @@ module.exports = {
       },
       title: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
       content: {
@@ -38,5 +38,5 @@ module.exports = {
       }
     });
   },
-  down: (queryInterface) => queryInterface.dropTable('documents')
+  down: queryInterface => queryInterface.dropTable('documents')
 };

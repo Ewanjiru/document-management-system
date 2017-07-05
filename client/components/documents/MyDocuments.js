@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'react-proptypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Pagination from 'react-js-pagination';
 import { Card, CardHeader, CardTitle, CardText, CardMedia } from 'material-ui/Card';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -17,6 +18,7 @@ class MyDocuments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      itemsCount: props.count,
       id: '',
       token: sessionStorage.Token,
       openView: false,
@@ -34,10 +36,12 @@ class MyDocuments extends React.Component {
     this.handleOpenView = this.handleOpenView.bind(this);
     this.onchange = this.onchange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillMount() {
-    this.props.actions.loadMyDocuments(this.state.token);
+    this.props.actions.countDocuments().then(
+      this.props.actions.loadMyDocuments(this.state.token));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,7 +92,14 @@ class MyDocuments extends React.Component {
     this.props.actions.deleteDocument(this.state.id);
   }
 
+  handlePageChange(pageNumber) {
+    this.setState({ activePage: pageNumber });
+    this.props.actions.loadMyDocuments(this.state.limit, (this.state.limit * (pageNumber - 1)));
+  }
+
   render() {
+    const items = this.props.count;
+    const itemsCount = Object.keys(items).map(key => items[key]);
     const actions = [
       <FlatButton
         label="Edit"
@@ -146,10 +157,10 @@ class MyDocuments extends React.Component {
                 <CardHeader>
                   Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-                    <option value="" />
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                  </select>
+              <option value="" />
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
                 </CardHeader>
                 <CardText>
                   <textarea
@@ -223,6 +234,7 @@ class MyDocuments extends React.Component {
   }
 }
 MyDocuments.propTypes = {
+  count: PropTypes.object.isRequired,
   documents: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   error: PropTypes.object.isRequired
@@ -231,6 +243,7 @@ MyDocuments.propTypes = {
 function mapStateToProps(state) {
   return {
     documents: state.documents,
+    count: state.count,
   };
 }
 

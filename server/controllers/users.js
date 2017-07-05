@@ -86,6 +86,20 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
+  count(req, res) {
+    return User
+      .findAndCountAll()
+      .then((user) => {
+        if (!user || user.length < 1) {
+          return res.status(404).send({
+            message: 'Users not found',
+          });
+        }
+        return res.status(200).send({ user });
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
   retrieveOne(req, res) {
     if (req.body) {
       return User
@@ -149,8 +163,11 @@ module.exports = {
   },
 
   getUserDocuments(req, res) {
-    return User
+    if (req.query.limit || req.query.offset) {
+      return User
       .findById(req.params.userId, {
+        limit: req.query.limit,
+        offset: req.query.offset,
         include: [{
           model: Document,
           as: 'userDocuments'
@@ -165,6 +182,7 @@ module.exports = {
         return res.status(200).send({ userDocuments: Users.userDocuments });
       })
       .catch(error => res.status(400).send(error));
+    }
   },
 
   delete(req, res) {

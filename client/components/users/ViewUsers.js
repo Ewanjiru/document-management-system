@@ -17,6 +17,7 @@ class ViewUsers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      itemsCount: props.count,
       id: '',
       openView: false,
       openEdit: false,
@@ -42,7 +43,7 @@ class ViewUsers extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.loadUsers();
+    this.props.actions.countUsers.then(this.props.actions.loadUsers());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -111,6 +112,8 @@ class ViewUsers extends React.Component {
   }
 
   render() {
+    const items = this.props.count;
+    const itemsCount = Object.keys(items).map(key => items[key]);
     const role = authenticate(sessionStorage.Token).roleType;
     const { searchText } = this.state;
     let filteredUsers;
@@ -212,7 +215,7 @@ class ViewUsers extends React.Component {
         </div>
 
         <Card>
-          <input type="text" name="search" className="searchField" placeholder="search user by firstName" onChange={this.handleSearchChange} />
+          <input type="text" name="search" className="searchField" placeholder="search user by firstName" onChange={this.handleSearchChange} /><RaisedButton Primary>search</RaisedButton>
           <Table>
             <TableHeader>
               <TableRow >
@@ -258,7 +261,7 @@ class ViewUsers extends React.Component {
               // nextPageText="next"
               activePage={this.state.activePage}
               itemsCountPerPage={7}
-              totalItemsCount={10}
+              totalItemsCount={itemsCount[0]}
               pageRangeDisplayed={5}
               onChange={this.handlePageChange}
             />
@@ -269,6 +272,7 @@ class ViewUsers extends React.Component {
   }
 }
 ViewUsers.propTypes = {
+  count: PropTypes.object.isRequired,
   users: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
@@ -276,7 +280,8 @@ ViewUsers.propTypes = {
 function mapStateToProps(state) {
   console.log('my users', state.users);
   return {
-    users: state.users
+    users: state.users,
+    count: state.count
   };
 }
 

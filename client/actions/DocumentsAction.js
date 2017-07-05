@@ -14,6 +14,16 @@ export function loadAllDocumentsSuccess(docs) {
   return { type: actionTypes.LOAD_ALL_DOCUMENTS_SUCCESS, docs };
 }
 
+export function getCountSuccess(count) {
+  console.log('niko hapa', count);
+  return { type: actionTypes.LOAD_COUNT_SUCCESS, count };
+}
+
+export function getSearchDocsSuccess(count) {
+  console.log('niko hapa', count);
+  return { type: actionTypes.LOAD_SEARCH_SUCCESS, count };
+}
+
 export function loadSearchedSuccess(docs) {
   return { type: actionTypes.LOAD_SEARCHDOCUMENTS_SUCCESS, docs };
 }
@@ -52,6 +62,22 @@ export const loadAllDocuments = () => function (dispatch) {
   return appApi.getAllDocs()
     .then((docs) => {
       dispatch(loadAllDocumentsSuccess(docs));
+    })
+    .catch((error) => { throw (error); });
+};
+
+export const countDocuments = () => function (dispatch) {
+  return appApi.getDocsCount()
+    .then((response) => {
+      dispatch(getCountSuccess(response.data.doc.count));
+    })
+    .catch((error) => { throw (error); });
+};
+
+export const getAllCountDocuments = () => function (dispatch) {
+  return appApi.getDocsCount()
+    .then((response) => {
+      dispatch(getSearchDocsSuccess(response.data.doc.rows));
     })
     .catch((error) => { throw (error); });
 };

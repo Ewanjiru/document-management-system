@@ -30,7 +30,7 @@ describe('/post endpoint', () => {
       lastName: 'Sheero',
       email: 'ex@gmail.com',
       password: '1Eunice@',
-      roleId: 1
+      roleType: 'admin'
     };
     chai.request(app)
       .post('/users')

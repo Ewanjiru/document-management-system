@@ -9,6 +9,11 @@ export function UserSearchedSuccess(users) {
   return { type: actionTypes.SEARCH_USERS_SUCCESS, users };
 }
 
+export function getCountSuccess(count) {
+  console.log('niko hapa', count);
+  return { type: actionTypes.LOAD_COUNT_SUCCESS, count };
+}
+
 export function loadUserByIdSuccess(user) {
   console.log("I was here");
   return { type: actionTypes.LOAD_USERBYID_SUCCESS, user };
@@ -52,6 +57,15 @@ export const viewUser = (id) => {
       .catch((error) => { throw (error); });
   };
 };
+
+export const countUsers = () => function (dispatch) {
+  return appApi.getUsersCount()
+    .then((response) => {
+      dispatch(getCountSuccess(response.data.user.count));
+    })
+    .catch((error) => { throw (error); });
+};
+
 
 export const editUser = (id, record) => (dispatch) => {
   return appApi.updateUser(id, record)

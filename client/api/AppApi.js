@@ -19,28 +19,34 @@ export default {
   },
 
   getDocsCount: () => {
-    console.log('nko hapa');
     return axios
-      .get('/documents/', { headers: { 'x-access-token': sessionStorage.Token } });
-    // .then(response => response.data)
-    // .catch(error => console.log(error));
+      .get('/count/documents', { headers: { 'x-access-token': sessionStorage.Token } });
   },
 
-  getSearched: (searchtitle) => axios
+  getMyDocsCount: (token) => {
+    const userdetails = authenticate(token);
+    const userid = userdetails.id;
+    return axios
+      .get(`/count/users/${userid}/documents/`, { headers: { 'x-access-token': sessionStorage.Token } });
+  },
+
+  getSearched: (searchtitle) => {
+    return axios
     .get(`/search/documents/?q=${searchtitle}`, { headers: { 'x-access-token': sessionStorage.Token } })
     .then(response => response.data)
-    .catch(error => error),
+    .catch(error => error)
+  },
 
   getDocumentById: (id) => axios
     .get(`/documents/${id}`, { headers: { 'x-access-token': sessionStorage.Token } })
     .then(response => response.data)
     .catch(error => error),
 
-  getAllDocumentsByUser: (token) => {
+  getAllDocumentsByUser: (token, limit = 7, offset = 0) => {
     const userdetails = authenticate(token);
     const userid = userdetails.id;
     return axios
-      .get(`/users/${userid}/documents`, { headers: { 'x-access-token': token } })
+      .get(`/users/${userid}/documents/?limit=${limit}&offset=${offset}`, { headers: { 'x-access-token': token } })
       .then(response => response.data)
       .catch(error => error);
   },
@@ -123,6 +129,11 @@ export default {
       .get(`/users/?limit=${limit}&offset=${offset}`, { headers: { 'x-access-token': sessionStorage.Token } })
       .then(response => response.data)
       .catch(error => console.log(error));
+  },
+
+  getUsersCount: () => {
+    return axios
+      .get('/count/users', { headers: { 'x-access-token': sessionStorage.Token } });
   },
 
   getSearchedUser: (searchtitle) => axios

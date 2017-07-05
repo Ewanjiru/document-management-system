@@ -4,5 +4,7 @@ export default {
   users: { all: [], byId: {} },
   session: !!sessionStorage.token,
   roles: [],
-  error: ''
+  error: '',
+  count: 0,
+  search: []
 };

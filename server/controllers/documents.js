@@ -57,6 +57,22 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
+  count(req, res) {
+    return Document
+      .findAndCountAll()
+      .then((doc) => {
+        if (!doc || doc.length < 1) {
+          return res.status(404).send({
+            message: 'Documents not found',
+          });
+        }
+        const count = doc.count;
+        console.log(count);
+        return res.status(200).send({ doc });
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
   retrieve(req, res) {
     return Document
       .findById(req.params.documentId)
@@ -102,7 +118,8 @@ module.exports = {
         where: {
           title: {
             $ilike: `%${req.query.q}%`,
-          }
+          },
+          access: 'public'
         },
         order: '"createdAt" DESC'
       })

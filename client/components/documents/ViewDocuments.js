@@ -3,7 +3,6 @@ import PropTypes from 'react-proptypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Pagination from 'react-js-pagination';
-// import toastr from 'toastr';
 import { Card, CardHeader, CardTitle, CardText, CardMedia } from 'material-ui/Card';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -18,14 +17,13 @@ class View extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemsCount: 0,
+      itemsCount: props.count,
       id: '',
       docOwner: '',
       openView: false,
       openEdit: false,
       searchText: '',
       documents: props.documents,
-      errors: props.error,
       documentById: [],
       activePage: 1,
       limit: 7,
@@ -43,19 +41,13 @@ class View extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
-    console.log('lenth', this.state.itemCounts);
   }
+
 
   componentWillMount() {
-    this.props.actions.loadAllDocuments().then(
-      this.setState({
-        itemsCount: this.props.documents.all.length
-      })
+    this.props.actions.countDocuments().then(
+    this.props.actions.loadDocuments()
     );
-  }
-
-  componentDidMount() {
-    this.props.actions.loadDocuments();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -122,22 +114,24 @@ class View extends React.Component {
   }
 
   handleSearch() {
-    console.log(this.state.searchText);
     this.props.actions.searchDocument(this.state.searchText);
   }
 
   render() {
-    console.log(this.state.itemsCount);
-    console.log('i will happen', this.props.documents.all.length);
-    const role = authenticate(sessionStorage.Token).roleId;
+    let items;
+    let itemsCount;
+    const role = authenticate(sessionStorage.Token).roleType;
     const { searchText } = this.state;
     let filteredDocuments;
     if (searchText === '') {
+      items = this.props.count;
+      itemsCount = Object.keys(items).map(key => items[key]);
       filteredDocuments = this.props.documents.all;
     } else {
-      filteredDocuments = this.props.documents.all.filter(documents => documents.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1);
+      items = this.props.documents.all.length;
+      itemsCount = [items];
+      filteredDocuments = this.props.documents.all;
     }
-    console.log('my filteredDocuments', this.props.documents.all);
     const actions = [
       <FlatButton
         label="Edit"
@@ -163,7 +157,7 @@ class View extends React.Component {
         label="Delete"
         primary
         onTouchTap={() => this.handleDelete(this.state.id)}
-        disabled={role != 1}
+        disabled={role !== 1}
       />
     ];
     return (
@@ -190,10 +184,10 @@ class View extends React.Component {
               <CardHeader>
                 Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-                  <option value="" />
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                </select>
+              <option value="" />
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
               </CardHeader>
               <CardText>
                 <textarea
@@ -227,7 +221,7 @@ class View extends React.Component {
         </div>
 
         <Card>
-          <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} />
+          <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} /><RaisedButton Primary onClick={this.handleSearch}>Search</RaisedButton>
           <Table>
             <TableHeader>
               <TableRow >
@@ -237,7 +231,7 @@ class View extends React.Component {
             </TableHeader>
             <TableBody>
               {
-                filteredDocuments.map(adocument =>
+               filteredDocuments.map(adocument =>
                   (<TableRow key={adocument.id}>
                     <TableRowColumn>{adocument.title}</TableRowColumn>
                     <TableRowColumn>{adocument.access}</TableRowColumn>
@@ -263,7 +257,7 @@ class View extends React.Component {
             <Pagination
               activePage={this.state.activePage}
               itemsCountPerPage={7}
-              totalItemsCount={20}
+              totalItemsCount={itemsCount[0]}
               pageRangeDisplayed={5}
               onChange={this.handlePageChange}
             />
@@ -274,15 +268,16 @@ class View extends React.Component {
   }
 }
 View.propTypes = {
+  count: PropTypes.object.isRequired,
   documents: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
-  console.log('state', state.documents);
+  console.log('state hapa hapa', state.documents, state.count, state.search);
   return {
     documents: state.documents,
-    error: state.error
+    count: state.count,
   };
 }
 

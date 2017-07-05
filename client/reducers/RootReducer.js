@@ -5,6 +5,8 @@ import users from './UsersReducer';
 import session from './LogInReducer';
 import error from './ErrorReducer';
 import roles from './RoleReducers';
+import count from './Count';
+import search from './Search';
 
 const RootReducer = combineReducers({
   documents,
@@ -12,7 +14,9 @@ const RootReducer = combineReducers({
   session,
   users,
   roles,
-  error
+  error,
+  count,
+  search,
 });
 
 export default RootReducer;

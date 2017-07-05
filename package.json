@@ -65,7 +65,6 @@
     "react-alert": "^2.1.2",
     "react-dom": "^15.5.4",
     "react-js-pagination": "^2.1.0",
-    "react-material-ui-form-validator": "^0.5.0",
     "react-notification-system": "^0.2.14",
     "react-notify": "^3.0.0",
     "react-proptypes": "^1.0.0",
@@ -77,7 +76,6 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "sequelize": "^3.30.4",
-    "toastr": "^2.1.2",
     "webpack": "^2.6.1",
     "webpack-dev-middleware": "^1.10.2",
     "webpack-hot-middleware": "^2.18.0"

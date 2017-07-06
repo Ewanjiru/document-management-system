@@ -63,9 +63,9 @@ describe('/get endpoint', () => {
       });
   });
 });
-// /*
-//  * Test the /GET by id route
-//  */
+/*
+* Test the /GET by id route
+*/
 describe('/get/documents/id endpoint', () => {
   const id = 1;
   it('Should retrieve document just created by the given the id', (done) => {
@@ -112,9 +112,9 @@ describe('/get by given offset and limit endpoint', () => {
       });
   });
 });
-// /*
-//  * Test the update
-//  */
+/*
+* Test the update
+*/
 describe('/put router', () => {
   it('it should retrieve the fist documents and update their title to Hello World', (done) => {
     chai.request(app)
@@ -131,15 +131,85 @@ describe('/put router', () => {
       });
   });
 });
-// /*
-//  * Test the /delete route
-//  */
+
+/*
+ * test document search
+ */
+describe('/search/documents/ endpoint', () => {
+  const search = 'est';
+  it('Should search documents', (done) => {
+    chai.request(app)
+      .get(`/search/documents/?q=${search}`)
+      .set('x-access-token', Token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('array');
+        res.body.length.should.be.eql(1);
+        done();
+      });
+  });
+});
+
+/*
+ * Test the /count route
+ */
+describe('/count/ endpoint', () => {
+  it('it should retrieve count of all the documents', (done) => {
+    chai.request(app)
+      .get('/count/documents')
+      .set('x-access-token', Token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('doc');
+        res.body.doc.should.have.property('count').eql(1);
+        done();
+      });
+  });
+});
+
+/*
+* Test the /delete route
+*/
 describe('/delete/documents/:id ', () => {
   const doc = {
     title: 'This Test Document',
     content: 'It is good habit to always spend some time making tests to assure a server as reliable as possible but unfortunately it is often underestimated.',
     access: 'admin',
-    userId: 2,
+    userId: 1,
+  };
+  let access = '';
+  it('it should create a test document', (done) => {
+    chai.request(app)
+      .post('/documents')
+      .set('x-access-token', Token)
+      .send(doc)
+      .end((err, res) => {
+        access = res.body.access;
+        done();
+      });
+  });
+  it('it should get  the test document by the given role', (done) => {
+    chai.request(app)
+      .get(`/role/documents/${access}`)
+      .set('x-access-token', Token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('docs');
+        done();
+      });
+  });
+});
+/*
+* Test the /delete route
+*/
+describe('/delete/documents/:id ', () => {
+  const doc = {
+    title: 'This Test Document',
+    content: 'It is good habit to always spend some time making tests to assure a server as reliable as possible but unfortunately it is often underestimated.',
+    access: 'public',
+    userId: 1,
   };
   let id = null;
   it('it should create a test document', (done) => {
@@ -154,7 +224,7 @@ describe('/delete/documents/:id ', () => {
   });
   it('it should delete  the test document by the given id', (done) => {
     chai.request(app)
-      .delete(`/documents/${id}`)
+      .delete('/documents/1')
       .set('x-access-token', Token)
       .end((err, res) => {
         res.should.have.status(200);

@@ -54,7 +54,7 @@ module.exports = {
   },
 
   logout(req, res) {
-    req.body = null;
+    req.body.Token = null;
     const token = req.body;
     return res.status(200).send(token);
   },

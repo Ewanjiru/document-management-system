@@ -44,6 +44,9 @@ describe('/post endpoint', () => {
   }).timeout(1000000);
 });
 
+/*
+ * Test the /login route
+ */
 describe('/post endpoint login', () => {
   it('it should log in a new user', (done) => {
     const user = {
@@ -58,6 +61,7 @@ describe('/post endpoint login', () => {
       });
   });
 });
+
 /*
  * Test the /GET route
  */
@@ -74,6 +78,7 @@ describe('/get endpoint', () => {
       });
   });
 });
+
 /*
  * Test the /GET by id route
  */
@@ -139,6 +144,61 @@ describe('/put router', () => {
       });
   });
 });
+
+/*
+ * test user documents
+ */
+describe('/users/:userId/documents endpoint', () => {
+  const id = 1;
+  it('Should retrieve user documents', (done) => {
+    chai.request(app)
+      .get(`/users/${id}/documents`)
+      .set('x-access-token', Token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('userDocuments');
+        res.body.userDocuments.should.have.property('title').eql('Hello World');
+        res.body.userDocuments.should.have.property('title').eql('This Test Document');
+        done();
+      });
+  }).timeout(1000);
+});
+
+/*
+ * test user search
+ */
+describe('/search/users/ endpoint', () => {
+  const search = 'an';
+  it('Should search user', (done) => {
+    chai.request(app)
+      .get(`/search/users/?q=${search}`)
+      .set('x-access-token', Token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('array');
+        res.body.length.should.be.eql(1);
+        done();
+      });
+  });
+});
+/*
+ * Test the /count route
+ */
+describe('/count/ endpoint', () => {
+  it('it should retrieve count of all the users', (done) => {
+    chai.request(app)
+      .get('/count/users')
+      .set('x-access-token', Token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('user');
+        res.body.user.should.have.property('count').eql(1);
+        done();
+      });
+  });
+});
 /*
  * Test the /delete user
  */
@@ -146,9 +206,9 @@ describe('/delete/users/:id ', () => {
   const user = {
     firstName: 'Niccie',
     lastName: 'Sheero',
-    email: 'exes.gmail.com',
-    password: '123',
-    roleId: 1
+    email: 'exes@gmail.com',
+    password: 'Qwerty@1234',
+    roleType: 'admin'
   };
   let id = null;
 
@@ -164,8 +224,8 @@ describe('/delete/users/:id ', () => {
 
   it('it should log in that user', (done) => {
     const testUser = {
-      email: 'exes.gmail.com',
-      password: '123',
+      email: 'exes@gmail.com',
+      password: 'Qwerty@1234',
     };
     chai.request(app)
       .post('/users/login')
@@ -183,6 +243,18 @@ describe('/delete/users/:id ', () => {
         res.should.have.status(200);
         res.body.should.be.a('object');
         res.body.should.have.property('message').eql('user Deleted Successfully');
+        done();
+      });
+  });
+});
+
+describe('/logout endpoint', () => {
+  it('it should logout the user', (done) => {
+    chai.request(app)
+      .post('/users/logout')
+      .send(Token)
+      .end((err, res) => {
+        res.should.have.status(200);
         done();
       });
   });

@@ -157,7 +157,7 @@ class View extends React.Component {
         label="Delete"
         primary
         onTouchTap={() => this.handleDelete(this.state.id)}
-        disabled={role !== 1}
+        disabled={role !== 'admin'}
       />
     ];
     return (
@@ -242,7 +242,7 @@ class View extends React.Component {
                         primary
                       >View</RaisedButton>
 
-                      {role === 1 &&
+                      {role === 'admin' &&
                         <RaisedButton
                           onClick={() => this.handleOpen(adocument.id)}
                           primary

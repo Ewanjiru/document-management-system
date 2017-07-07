@@ -8,6 +8,10 @@ function RoleReducer(state = initialState.roles, action) {
       return {
         roles: action.roles,
       };
+    case actionTypes.CREATED_ROLE_SUCCESS:
+      return {
+        roles: action.roles,
+      };
     case actionTypes.DELETED_ROLE_SUCCESS:
       return {
         roles: state,

@@ -7,8 +7,10 @@ import Users from './components/users/Users';
 import SignUp from './components/login/SignUp';
 import Roles from './components/roles/Roles';
 import MyDocuments from './components/documents/MyDocuments';
-import RoleBased from './components/documents/RoleBased'
+import RoleBased from './components/documents/RoleBased';
 import CreateForm from './components/documents/CreateForm';
+import CreateRole from './components/roles/CreateRole';
+
 
 export default (
   <Route path="/" component={App}>
@@ -19,6 +21,7 @@ export default (
     <Route path="/edocx/documents/newdocument" component={CreateForm} />
     <Route path="/edocx/users" component={Users} />
     <Route path="/edocx/roles" component={Roles} />
+    <Route path = "/edocx/new" component={CreateRole} />
     <Route path="/edocx/signup" component={SignUp} />
   </Route>
 );

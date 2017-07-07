@@ -17,7 +17,7 @@ class SignUp extends React.Component {
         lastName: '',
         email: '',
         password: '',
-        roleType: 'admin'
+        roleType: 'user'
       }
     };
     this.userRegister = this.userRegister.bind(this);

@@ -58,13 +58,13 @@ export const loadDocuments = (limit, offset) => function (dispatch) {
     .catch((error) => { throw (error); });
 };
 
-export const loadAllDocuments = () => function (dispatch) {
-  return appApi.getAllDocs()
-    .then((docs) => {
-      dispatch(loadAllDocumentsSuccess(docs));
-    })
-    .catch((error) => { throw (error); });
-};
+// export const loadAllDocuments = () => function (dispatch) {
+//   return appApi.getAllDocs()
+//     .then((docs) => {
+//       dispatch(loadAllDocumentsSuccess(docs));
+//     })
+//     .catch((error) => { throw (error); });
+// };
 
 export const countDocuments = () => function (dispatch) {
   return appApi.getDocsCount()
@@ -74,13 +74,13 @@ export const countDocuments = () => function (dispatch) {
     .catch((error) => { throw (error); });
 };
 
-export const getAllCountDocuments = () => function (dispatch) {
-  return appApi.getDocsCount()
-    .then((response) => {
-      dispatch(getSearchDocsSuccess(response.data.doc.rows));
-    })
-    .catch((error) => { throw (error); });
-};
+// export const getAllCountDocuments = () => function (dispatch) {
+//   return appApi.getDocsCount()
+//     .then((response) => {
+//       dispatch(getSearchDocsSuccess(response.data.doc.rows));
+//     })
+//     .catch((error) => { throw (error); });
+// };
 
 export const loadMyDocuments = (token) => function (dispatch) {
   return appApi.getAllDocumentsByUser(token)

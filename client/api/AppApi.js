@@ -128,7 +128,7 @@ export default {
     return axios
       .get(`/users/?limit=${limit}&offset=${offset}`, { headers: { 'x-access-token': sessionStorage.Token } })
       .then(response => response.data)
-      .catch(error => console.log(error));
+      .catch(error => error);
   },
 
   getUsersCount: () => {

@@ -32,7 +32,6 @@ export const loadUsers = (limit, offset) => {
   return function (dispatch) {
     return appApi.getAllUsers(limit, offset)
       .then((users) => {
-        console.log('users are ', users);
         dispatch(loadUsersSuccess(users));
       })
       .catch((error) => { throw (error); });
@@ -42,7 +41,7 @@ export const loadUsers = (limit, offset) => {
 export const searchUser = (searchText) => function (dispatch) {
   return appApi.getSearchedUser(searchText)
     .then((users) => {
-      dispatch(UserSearchedSuccess(console.log('here', users)));
+      dispatch(UserSearchedSuccess(users));
     })
     .catch((error) => { throw (error); });
 };

@@ -56,6 +56,12 @@ class ViewRoles extends React.Component {
                       <TableRow key={arole.id}>
                         <TableRowColumn>{arole.id}</TableRowColumn>
                         <TableRowColumn>{arole.role}</TableRowColumn>
+                        <TableRowColumn>
+                          <RaisedButton
+                            onClick={() => this.handleDelete(arole.id)}
+                            primary
+                          >Delete</RaisedButton>
+                        </TableRowColumn>
                       </TableRow>
                     </div>)
                 )}

@@ -23,7 +23,8 @@ class Roles extends React.Component {
       <div className="mainframe">
         <Header />
         <ul className="nav nav-pills">
-          <li role="presentation" className="active"><a href="/edocx/roles">Roles</a></li>
+          <li role="presentation" className="active"><a href="/edocx/roles">All Roles</a></li>
+          <li role="presentation"><a href="/edocx/new">Create Roles</a></li>
         </ul>
         <MuiThemeProvider>
           <ViewRoles />

@@ -22,23 +22,22 @@ export const SignUpAction = (user) => (dispatch) => {
   return appApi.createUser(user)
     .then((response) => {
       dispatch(createdUser(response));
+      dispatch(getError(response.message));
     })
-    .catch((error) => { throw (error); });
+    .catch((error) => { throw error; });
 };
 
-export const LoginAction = (user) => (dispatch) => {
+export const LoginAction = user => (dispatch) => {
   return appApi.logUser(user)
     .then((response) => {
       if (response.message === 'Loggin Successful.') {
         sessionStorage.setItem('Token', response.Token);
         browserHistory.push('/edocx/documents');
         dispatch(loggedUser(response));
-      } else {
-        console.log("error occured");
-        dispatch(getError("confirm your credentials and try again"));
+        dispatch(getError(response.message));
       }
     })
-    .catch((error) => { throw (error); });
+    .catch((error) => { throw error; });
 };
 
 export const LogoutAction = (token) => (dispatch) => {

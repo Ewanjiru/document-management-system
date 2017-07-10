@@ -31,9 +31,7 @@ export class CreateForm extends React.Component {
   componentDidMount() {
     const userDetails = authenticate(sessionStorage.Token);
     const role = userDetails.roleType;
-    console.log("The role is", role);
     this.state.role = role;
-    console.log("The role is", this.state.role);
   }
 
   onchange(event) {
@@ -87,6 +85,7 @@ export class CreateForm extends React.Component {
             <CardHeader>
               Access Type:
           <select value={this.state.documents.access} name="access" onChange={this.onchange}>
+                <option value="">choose...</option>
                 <option value="public">Public</option>
                 <option value="private">Private</option>
                 <option value={this.state.role}>Role Based</option>

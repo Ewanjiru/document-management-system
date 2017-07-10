@@ -10,24 +10,24 @@ module.exports = {
     const paswordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password ||
       !req.body.roleType) {
-      return res.status(422).send({ message: 'Fill all fields' });
+      return res.send({ message: 'Fill all fields' });
     } else if (!(req.body.password).match(paswordRegex)) {
-      return res.status(409).send({
+      return res.send({
         message: 'Password must contain:one digit from 0-9, one lowercase characters, one uppercase characters, one special symbols and at least 8 characters'
       });
     } else if (!emailRegex.test(req.body.email)) {
-      return res.status(406).send({ message: 'Email format is incorrect' });
+      return res.send({ message: 'Email format is incorrect' });
     }
-    console.log('this is the request', req.body);
     return User
       .create(req.body)
-      .then(user => res.status(201).send({
-        message: 'User Created Successfully',
-        firstName: user.firstName,
-        lastName: user.lastName,
-        id: user.id,
-      }))
-      .catch(error => res.status(400).send(error.errors));
+      .then(
+        user => res.status(201).send({
+          message: 'User Created Successfully',
+          firstName: user.firstName,
+          lastName: user.lastName,
+          id: user.id,
+        }))
+      .catch(error => res.status(400).send(error));
   },
 
   login(req, res) {

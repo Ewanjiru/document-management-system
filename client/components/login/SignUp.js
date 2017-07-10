@@ -17,8 +17,9 @@ class SignUp extends React.Component {
         lastName: '',
         email: '',
         password: '',
-        roleType: 'user'
-      }
+        roleType: 'support engineer'
+      },
+      error: props.error,
     };
     this.userRegister = this.userRegister.bind(this);
     this.onchange = this.onchange.bind(this);
@@ -43,17 +44,18 @@ class SignUp extends React.Component {
 
   userRegister(event) {
     event.preventDefault();
-    if (!this.state.user.firstName || !this.state.user.lastName || !this.state.user.email || !this.state.user.password) {
-      this.showNotification();
-    } else {
-      this.props.actions.SignUpAction(this.state.user).then(() => {
+    this.props.actions.SignUpAction(this.state.user).then(() => {
+      console.log('error', this.props.error.error);
+      if (this.props.error.error) {
+        this.showNotification(this.props.error.error);
+      } else {
         browserHistory.push('/');
-      });
-    }
+      }
+    });
   }
 
-  showNotification() {
-    this.refs.notificator.error("Login failed", "Incorrect credentials", 4000);
+  showNotification(error) {
+    this.refs.notificator.error('', error, 4000);
     // this.refs.notificator.success("Title.", "Msg - body.", 4000);
   }
 
@@ -66,7 +68,7 @@ class SignUp extends React.Component {
         <div className="signups">
           <div id="logWrapper">
             <div>
-              <ReactNotify ref='notificator' />
+              <ReactNotify ref="notificator" />
             </div>
             <SignUpForm
               user={this.state.user}
@@ -81,7 +83,8 @@ class SignUp extends React.Component {
   }
 }
 SignUp.propTypes = {
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  error: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {
@@ -90,8 +93,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 function mapStateToProps(state) {
+  console.log(state.error, 'ooooo');
   return {
     state,
+    error: state.error
   };
 }
 

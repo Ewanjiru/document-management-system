@@ -20,26 +20,26 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
   }, {
-      hooks: {
-        beforeCreate: (user) => {
-          const SALT_FACTOR = 5;
-          const salt = bcrypt.genSaltSync(SALT_FACTOR);
-          user.password = bcrypt.hashSync(user.password, salt);
-        },
+    hooks: {
+      beforeCreate: (user) => {
+        const SALT_FACTOR = 5;
+        const salt = bcrypt.genSaltSync(SALT_FACTOR);
+        user.password = bcrypt.hashSync(user.password, salt);
       },
-      classMethods: {
-        associate: (models) => {
-          users.belongsTo(models.roles, {
-            foreignKey: 'roleType',
-            OnDelete: 'CASCADE',
-          });
-          users.hasMany(models.documents, {
-            foreignKey: 'userId',
-            as: 'userDocuments'
-          });
-        },
-        isPassword: (encodedPassword, password) => bcrypt.compareSync(password, encodedPassword)
+    },
+    classMethods: {
+      associate: (models) => {
+        users.belongsTo(models.roles, {
+          foreignKey: 'roleType',
+          OnDelete: 'CASCADE',
+        });
+        users.hasMany(models.documents, {
+          foreignKey: 'userId',
+          as: 'userDocuments'
+        });
       },
-    });
+      isPassword: (encodedPassword, password) => bcrypt.compareSync(password, encodedPassword)
+    },
+  });
   return users;
 };

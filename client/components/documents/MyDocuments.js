@@ -11,6 +11,7 @@ import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
+import authenticate from '../../api/helper';
 import Header from '../common/Header';
 import './Document.scss';
 
@@ -98,6 +99,7 @@ class MyDocuments extends React.Component {
   }
 
   render() {
+    const role = authenticate(sessionStorage.Token).roleType;
     const items = this.props.count;
     const itemsCount = Object.keys(items).map(key => items[key]);
     const actions = [
@@ -157,9 +159,10 @@ class MyDocuments extends React.Component {
                 <CardHeader>
                   Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-              <option value="" />
+              <option value="">choose..</option>
               <option value="public">Public</option>
               <option value="private">Private</option>
+              <option value={role}>Role Based</option>
             </select>
                 </CardHeader>
                 <CardText>

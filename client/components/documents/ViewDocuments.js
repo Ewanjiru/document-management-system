@@ -31,7 +31,8 @@ class View extends React.Component {
         title: '',
         content: '',
         access: '',
-      }
+      },
+      role: '',
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -184,9 +185,10 @@ class View extends React.Component {
               <CardHeader>
                 Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-              <option value="" />
+              <option value="">choose..</option>
               <option value="public">Public</option>
               <option value="private">Private</option>
+              <option value={role}>Role Based</option>
             </select>
               </CardHeader>
               <CardText>

@@ -11,6 +11,7 @@ import Dialog from 'material-ui/Dialog';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import Header from '../common/Header';
+import authenticate from '../../api/helper';
 import './Document.scss';
 
 class RoleBased extends React.Component {
@@ -37,7 +38,10 @@ class RoleBased extends React.Component {
   }
 
   componentWillMount() {
-    this.props.actions.loadRoleDocuments(this.state.token);
+    const role = authenticate(sessionStorage.Token).roleType;
+    if (role !== 'admin') {
+      this.props.actions.loadRoleDocuments(this.state.token);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,6 +93,7 @@ class RoleBased extends React.Component {
   }
 
   render() {
+    const role = authenticate(sessionStorage.Token).roleType;
     const actions = [
       <FlatButton
         label="Edit"
@@ -146,10 +151,11 @@ class RoleBased extends React.Component {
                 <CardHeader>
                   Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-                    <option value="" />
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                  </select>
+              <option value="">choose..</option>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+              <option value={role}>Role Based</option>
+            </select>
                 </CardHeader>
                 <CardText>
                   <textarea

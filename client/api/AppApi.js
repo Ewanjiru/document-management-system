@@ -108,7 +108,7 @@ export default {
         'Content-Type': 'application/json'
       },
     });
-    return request.then(response => console.log('this is the response', response.data)).catch(error => error);
+    return request.then(response => response.data).catch(error => error);
   },
 
   logUser: (user) => {

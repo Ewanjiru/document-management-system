@@ -8,7 +8,7 @@
     "open:src": "nodemon ./bin/www --exec babel-node ",
     "lint": "node_modules/.bin/esw webpack.config.* client server server.*",
     "lint:watch": "npm run lint -- --watch",
-    "test": "export NODE_ENV=test && sequelize db:migrate:undo:all && sequelize db:migrate && babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -R spec ./server/test/*.spec.js",
+    "test": "export NODE_ENV=test && sequelize db:migrate:undo:all && sequelize db:migrate && babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha  -R spec ./server/test/*.spec.js",
     "coverage": "./node_modules/.bin/coveralls < coverage/lcov.info",
     "test:frontend": "jest ./server/test/frontTests/*.spec.js"
   },
@@ -28,7 +28,7 @@
     },
     "setupTestFrameworkScriptFile": "mock-local-storage",
     "collectCoverage": true,
-    "coverageDirectory": "<rootDir>/coverage",
+    "coverageDirectory": "<rootDir>/coverall",
     "verbose": true,
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/"

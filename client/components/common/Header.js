@@ -27,15 +27,12 @@ export class Header extends React.Component {
           </div>
           <ul className="nav navbar-nav">
             <li className="active"><Link to="/edocx/documents"> Documents </Link></li>
-            {role === 'admin' &&
             <li><Link to="/edocx/users" activeClassName="active"> Users </Link></li>
-						}
             {role === 'admin' &&
             <li><Link to="/edocx/roles" activeClassName="active"> Roles</Link></li>
 						}
           </ul>
           <ul className="nav navbar-nav navbar-right">
-            <li><Link to="/edocx/users" activeClassName="active"><span className="glyphicon glyphicon-user" /></Link></li>
             <li><a href="/"><span className="glyphicon glyphicon-log-in" onClick={this.logout} /> Logout</a></li>
           </ul>
         </div>

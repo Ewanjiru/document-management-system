@@ -34,14 +34,13 @@ export const LoginAction = user => (dispatch) => {
         sessionStorage.setItem('Token', response.Token);
         browserHistory.push('/edocx/documents');
         dispatch(loggedUser(response));
-        dispatch(getError(response.message));
       }
+      dispatch(getError(response.message));
     })
     .catch((error) => { throw error; });
 };
 
 export const LogoutAction = (token) => (dispatch) => {
-  console.log("I was called");
   return appApi.logoutUser(token)
     .then((response) => {
       sessionStorage.clear();

@@ -3,15 +3,11 @@ import authenticate from './helper';
 
 export default {
   getAllDocuments: (limit = 7, offset = 0) => {
-    console.log('nko hapa');
     return axios
       .get(`/documents/?limit=${limit}&offset=${offset}`, { headers: { 'x-access-token': sessionStorage.Token } });
-    // .then(response => response.data)
-    // .catch(error => console.log(error));
   },
 
   getAllDocs: () => {
-    console.log('nko hapa');
     return axios
       .get('/documents/', { headers: { 'x-access-token': sessionStorage.Token } })
       .then(response => response.data)
@@ -32,9 +28,9 @@ export default {
 
   getSearched: (searchtitle) => {
     return axios
-    .get(`/search/documents/?q=${searchtitle}`, { headers: { 'x-access-token': sessionStorage.Token } })
-    .then(response => response.data)
-    .catch(error => error)
+      .get(`/search/documents/?q=${searchtitle}`, { headers: { 'x-access-token': sessionStorage.Token } })
+      .then(response => response.data)
+      .catch(error => error)
   },
 
   getDocumentById: (id) => axios
@@ -99,7 +95,6 @@ export default {
   },
 
   createUser: (user) => {
-    console.log("nishafika", user);
     const request = axios({
       method: 'POST',
       data: user,
@@ -124,7 +119,6 @@ export default {
   },
 
   getAllUsers: (limit = 7, offset = 0) => {
-    console.log('api');
     return axios
       .get(`/users/?limit=${limit}&offset=${offset}`, { headers: { 'x-access-token': sessionStorage.Token } })
       .then(response => response.data)
@@ -158,7 +152,6 @@ export default {
     return request.then(response => response).catch(error => error);
   },
   updateUser: (id, record) => {
-    console.log('We will update with', id, record);
     const request = axios({
       method: 'PUT',
       data: record,
@@ -180,7 +173,7 @@ export default {
         'Content-Type': 'application/json',
       },
     });
-    return request.then(response => console.log('token is ', response.data)).catch(error => error);
+    return request.then(response => response.data).catch(error => error);
   },
 
   createRole: (role) => {
@@ -196,7 +189,6 @@ export default {
   },
 
   getAllRoles: () => {
-    console.log('api');
     return axios
       .get('/roles/')
       .then(response => response.data)

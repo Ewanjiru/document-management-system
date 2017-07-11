@@ -6,6 +6,7 @@ import Pagination from 'react-js-pagination';
 import { Card, CardHeader, CardTitle, CardText, CardMedia } from 'material-ui/Card';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
+import ReactNotify from 'react-notify';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
@@ -40,9 +41,13 @@ class MyDocuments extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.actions.countDocuments().then(
-      this.props.actions.loadMyDocuments(this.state.token));
+      this.props.actions.loadMyDocuments(this.state.token)).then(() => {
+        if (this.props.documents.all.length === 0) {
+          this.showNotification(this.props.error.error);
+        }
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,13 +94,26 @@ class MyDocuments extends React.Component {
     this.props.actions.viewDocument(id);
   }
 
-  handleDelete(id) {
-    this.props.actions.deleteDocument(this.state.id);
+  handleDelete() {
+    this.props.actions.deleteDocument(this.state.id).then(() => {
+      this.showNotification(this.props.error.error);
+      this.handleClose();
+      window.location.reload();
+    });
   }
 
   handlePageChange(pageNumber) {
     this.setState({ activePage: pageNumber });
     this.props.actions.loadMyDocuments(this.state.limit, (this.state.limit * (pageNumber - 1)));
+  }
+
+  showNotification(error) {
+    const array = error.split(' ');
+    if (array[0] === 'Error:') {
+      this.refs.notificator.error(' ', error, 40000);
+    } else {
+      this.refs.notificator.success(' ', error, 40000);
+    }
   }
 
   render() {
@@ -159,11 +177,11 @@ class MyDocuments extends React.Component {
                 <CardHeader>
                   Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-              <option value="">choose..</option>
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-              <option value={role}>Role Based</option>
-            </select>
+                    <option value="">choose..</option>
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                    <option value={role}>Role Based</option>
+                  </select>
                 </CardHeader>
                 <CardText>
                   <textarea
@@ -230,6 +248,9 @@ class MyDocuments extends React.Component {
                   )}
               </TableBody>
             </Table>
+            <div>
+              <ReactNotify ref="notificator" />
+            </div>
           </Card>
         </MuiThemeProvider>
       </div>
@@ -244,9 +265,11 @@ MyDocuments.propTypes = {
 };
 
 function mapStateToProps(state) {
+  console.log('this error state', state.error);
   return {
     documents: state.documents,
     count: state.count,
+    error: state.error
   };
 }
 

@@ -93,7 +93,7 @@ describe('/get by given offset and limit endpoint', () => {
       .set('x-access-token', Token)
       .end((err, res) => {
         res.should.have.status(404);
-        res.body.should.have.property('message').eql('Documents not found');
+        res.body.should.have.property('message').eql('Error: There are no existing documents');
         done();
       });
   });

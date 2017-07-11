@@ -3,7 +3,7 @@ const Document = require('../models').documents;
 module.exports = {
   create(req, res) {
     if (!req.body.title || !req.body.content || !req.body.access) {
-      return res.status(406).send({ message: 'Fill all fields' });
+      return res.send({ message: 'Error: Fill all fields' });
     }
     return Document
       .create({
@@ -16,6 +16,7 @@ module.exports = {
         doc,
         message: 'Document Created Successfully',
       }))
+      .catch(error => res.status(409).send({ error, message: 'Error: That title already exixts' }))
       .catch(error => res.status(400).send(error));
   },
 
@@ -33,12 +34,12 @@ module.exports = {
         .then((doc) => {
           if (!doc || doc.length < 1) {
             return res.status(404).send({
-              message: 'Documents not found',
+              message: 'Error: There are no existing documents',
             });
           }
           return res.status(200).send({ doc, message: 'Request Successful' });
         })
-        .catch(error => res.status(400).send(error));
+        .catch(error => res.status(404).send(error));
     }
     return Document
       .findAll({
@@ -49,17 +50,21 @@ module.exports = {
       .then((doc) => {
         if (doc.length < 1) {
           return res.status(404).send({
-            message: 'There are no documents created.',
+            message: 'Error: There are no existing documents.',
           });
         }
         return res.status(200).send(doc);
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(404).send(error));
   },
 
   count(req, res) {
     return Document
-      .findAndCountAll()
+      .findAndCountAll({
+        where: {
+          access: 'public'
+        }
+      })
       .then((doc) => {
         if (!doc || doc.length < 1) {
           return res.status(404).send({
@@ -79,7 +84,7 @@ module.exports = {
       .then((doc) => {
         if (!doc) {
           return res.status(404).send({
-            message: 'Document Not Found',
+            message: 'Error: Document Not Found',
           });
         }
         return res.status(200).send(doc);
@@ -90,7 +95,7 @@ module.exports = {
   update(req, res) {
     if (!req.params) {
       return res.status(404).send({
-        message: 'Document Not Found',
+        message: 'Error: Input parameters',
       });
     }
     return Document
@@ -98,15 +103,15 @@ module.exports = {
       .then((doc) => {
         if (!doc) {
           return res.status(404).send({
-            message: 'Document Not Found',
+            message: 'Error: Document Not Found',
           });
         }
         return doc
           .update(req.body, { fields: Object.keys(req.body) })
-          .then(updatedDocument => res.status(200).send({
+          .then(res.send({
             message: 'Document updated Successfully.',
-            updatedDocument
           }))
+          .catch(error => res.status(409).send({ error, message: 'Error: That title already exixts' }))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
@@ -126,11 +131,12 @@ module.exports = {
       .then((doc) => {
         if (doc.length < 1) {
           return res.status(404).send({
-            message: 'No Document found'
+            message: 'Error: No Document found'
           });
         }
         return res.status(200).send(doc);
-      });
+      })
+      .catch(error => res.status(404).send(error));
   },
 
   getUserRoleDocuments(req, res) {
@@ -141,16 +147,18 @@ module.exports = {
         }
       })
       .then((docs) => {
-        if (!docs) {
+        if (!docs || docs.length === 0) {
           return res.status(404).send({
-            message: 'That role has no documents',
+            message: 'Error: That role has no documents',
           });
         }
         return res.status(200).send({ docs });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send({
+        error,
+        message: 'Error: That role has no documents',
+      }));
   },
-
 
   delete(req, res) {
     return Document
@@ -160,19 +168,12 @@ module.exports = {
         },
       })
       .then((doc) => {
-        if (!doc) {
-          return res.status(404).send({
-            message: 'Document Not Found',
-          });
-        }
         return doc
           .destroy()
           .then(() => res.status(200).send({
             message: 'Document Deleted Successfully'
           }))
           .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
+      });
   },
-
 };

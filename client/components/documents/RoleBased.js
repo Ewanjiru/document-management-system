@@ -8,6 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
+import ReactNotify from 'react-notify';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import Header from '../common/Header';
@@ -28,7 +29,8 @@ class RoleBased extends React.Component {
         title: '',
         content: '',
         access: '',
-      }
+      },
+      error: this.props.error
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -37,11 +39,12 @@ class RoleBased extends React.Component {
     this.handleEdit = this.handleEdit.bind(this);
   }
 
-  componentWillMount() {
-    const role = authenticate(sessionStorage.Token).roleType;
-    if (role !== 'admin') {
-      this.props.actions.loadRoleDocuments(this.state.token);
-    }
+  componentDidMount() {
+    this.props.actions.loadRoleDocuments(this.state.token).then(() => {
+      if (this.props.documents.all.length === 0) {
+        this.showNotification('Error: That role has no documents');
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,8 +91,21 @@ class RoleBased extends React.Component {
     this.props.actions.viewDocument(id);
   }
 
-  handleDelete(id) {
-    this.props.actions.deleteDocument(this.state.id);
+  handleDelete() {
+    this.props.actions.deleteDocument(this.state.id).then(() => {
+      this.showNotification(this.props.error.error);
+      this.handleClose();
+      window.location.reload();
+    });
+  }
+
+  showNotification(error) {
+    const array = error.split(' ');
+    if (array[0] === 'Error:') {
+      this.refs.notificator.error(' ', error, 4000);
+    } else {
+      this.refs.notificator.success(' ', error, 4000);
+    }
   }
 
   render() {
@@ -151,11 +167,11 @@ class RoleBased extends React.Component {
                 <CardHeader>
                   Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-              <option value="">choose..</option>
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-              <option value={role}>Role Based</option>
-            </select>
+                    <option value="">choose..</option>
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                    <option value={role}>Role Based</option>
+                  </select>
                 </CardHeader>
                 <CardText>
                   <textarea
@@ -222,6 +238,9 @@ class RoleBased extends React.Component {
                   )}
               </TableBody>
             </Table>
+            <div>
+              <ReactNotify ref="notificator" />
+            </div>
           </Card>
         </MuiThemeProvider>
       </div>
@@ -231,12 +250,14 @@ class RoleBased extends React.Component {
 RoleBased.propTypes = {
   documents: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  error: PropTypes.object.isRequired
+  error: PropTypes.string
 };
 
 function mapStateToProps(state) {
+  console.log('the state', state.error);
   return {
     documents: state.documents,
+    error: state.error
   };
 }
 

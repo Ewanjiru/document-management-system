@@ -41,21 +41,24 @@ class Login extends React.Component {
 
   userLog(event) {
     event.preventDefault();
-    this.showNotification()
-    this.props.actions.LoginAction(this.state.user);
+    this.props.actions.LoginAction(this.state.user).then(() => {
+      const message = this.props.error.error;
+      const array = message.split(' ');
+      if (array[0] === 'Error:') {
+        this.showNotification(this.props.error.error);
+      }
+    });
   }
 
-  showNotification() {
-    this.refs.notificator.error("Login failed", "Incorrect credentials", 4000);
-    // this.refs.notificator.success("Title.", "Msg - body.", 4000);
+  showNotification(error) {
+    this.refs.notificator.error(' ', error, 4000);
   }
 
   render() {
-    console.log('there is an error', this.props.error);
     return (
       <div className="logWrapper">
         <div>
-          <ReactNotify ref='notificator' />
+          <ReactNotify ref="notificator" />
         </div>
         <LoginForm
           user={this.state.user}
@@ -70,7 +73,7 @@ class Login extends React.Component {
 
 Login.propTypes = {
   actions: PropTypes.object.isRequired,
-  error: PropTypes.object.isRequired
+  error: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {
@@ -81,7 +84,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    error: state.props,
+    error: state.error,
   };
 }
 

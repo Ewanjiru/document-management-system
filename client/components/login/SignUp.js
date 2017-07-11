@@ -45,18 +45,16 @@ class SignUp extends React.Component {
   userRegister(event) {
     event.preventDefault();
     this.props.actions.SignUpAction(this.state.user).then(() => {
-      console.log('error', this.props.error.error);
-      if (this.props.error.error) {
+      const message = this.props.error.error;
+      const array = message.split(' ');
+      if (array[0] === 'Error:') {
         this.showNotification(this.props.error.error);
-      } else {
-        browserHistory.push('/');
       }
     });
   }
 
   showNotification(error) {
     this.refs.notificator.error('', error, 4000);
-    // this.refs.notificator.success("Title.", "Msg - body.", 4000);
   }
 
   render() {
@@ -93,7 +91,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 function mapStateToProps(state) {
-  console.log(state.error, 'ooooo');
   return {
     state,
     error: state.error

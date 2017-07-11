@@ -10,23 +10,23 @@ module.exports = {
     const paswordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password ||
       !req.body.roleType) {
-      return res.send({ message: 'Fill all fields' });
+      return res.send({ message: 'Error: Fill all fields' });
     } else if (!(req.body.password).match(paswordRegex)) {
       return res.send({
-        message: 'Password must contain:one digit from 0-9, one lowercase characters, one uppercase characters, one special symbols and at least 8 characters'
+        message: 'Error: Password must contain:one digit from 0-9, one lowercase characters, one uppercase characters, one special symbols and at least 8 characters'
       });
     } else if (!emailRegex.test(req.body.email)) {
-      return res.send({ message: 'Email format is incorrect' });
+      return res.send({ message: 'Error: Email format is incorrect' });
     }
     return User
       .create(req.body)
       .then(
-        user => res.status(201).send({
-          message: 'User Created Successfully',
-          firstName: user.firstName,
-          lastName: user.lastName,
-          id: user.id,
-        }))
+      user => res.status(201).send({
+        message: 'User Created Successfully',
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user.id,
+      }))
       .catch(error => res.status(400).send(error));
   },
 
@@ -43,11 +43,11 @@ module.exports = {
               const token = jwt.sign(payload, secret, { expiresIn: 25740 });
               return res.status(200).send({ message: 'Loggin Successful.', email: user.email, Token: token });
             }
-            return res.status(401).send({
-              message: 'Reconfirm Your password.',
+            return res.send({
+              message: 'Error: Reconfirm Your password.',
             });
           }
-          return res.status(404).send({ message: 'That user email does not exist' });
+          return res.send({ message: 'Error: That user email does not exist' });
         })
         .catch(error => res.status(400).send(error));
     }
@@ -77,7 +77,7 @@ module.exports = {
         })
         .catch(error => res.status(400).send({
           error,
-          message: 'There was a problem with the query params check if they are all numbers',
+          message: 'Error: There was a problem with the query params check if they are all numbers',
         }));
     }
     User
@@ -92,7 +92,7 @@ module.exports = {
       .then((user) => {
         if (!user || user.length < 1) {
           return res.status(404).send({
-            message: 'Users not found',
+            message: 'Error: Users not found',
           });
         }
         return res.status(200).send({ user });
@@ -107,7 +107,7 @@ module.exports = {
         .then((user) => {
           if (!user) {
             return res.status(404).send({
-              message: 'Sorry. User not found',
+              message: 'Error: User not found',
             });
           }
           return res.status(200).send({
@@ -127,7 +127,7 @@ module.exports = {
         .then((user) => {
           if (!user || user.length < 1) {
             return res.status(404).send({
-              message: 'Sorry. User Not Found',
+              message: 'Error: User Not Found',
             });
           }
           return user
@@ -155,7 +155,7 @@ module.exports = {
       .then((doc) => {
         if (doc.length < 1) {
           return res.status(404).send({
-            message: 'No User found'
+            message: 'Error: No User found'
           });
         }
         return res.status(200).send(doc);
@@ -165,23 +165,23 @@ module.exports = {
   getUserDocuments(req, res) {
     if (req.query.limit || req.query.offset) {
       return User
-      .findById(req.params.userId, {
-        limit: req.query.limit,
-        offset: req.query.offset,
-        include: [{
-          model: Document,
-          as: 'userDocuments'
-        }],
-      })
-      .then((Users) => {
-        if (!Users) {
-          return res.status(404).send({
-            message: 'That user  does not exist',
-          });
-        }
-        return res.status(200).send({ userDocuments: Users.userDocuments });
-      })
-      .catch(error => res.status(400).send(error));
+        .findById(req.params.userId, {
+          limit: req.query.limit,
+          offset: req.query.offset,
+          include: [{
+            model: Document,
+            as: 'userDocuments'
+          }],
+        })
+        .then((Users) => {
+          if (!Users) {
+            return res.status(404).send({
+              message: 'Error: That user  does not exist',
+            });
+          }
+          return res.status(200).send({ userDocuments: Users.userDocuments });
+        })
+        .catch(error => res.status(400).send(error));
     }
   },
 
@@ -195,7 +195,7 @@ module.exports = {
       .then((user) => {
         if (!user) {
           return res.status(404).send({
-            message: 'Sorry.User Not Found',
+            message: 'Error: User Not Found',
           });
         }
         return user

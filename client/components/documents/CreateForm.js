@@ -23,6 +23,7 @@ export class CreateForm extends React.Component {
         userId: sessionStorage.Token,
       },
       role: '',
+      error: this.props.error
     };
     this.create = this.create.bind(this);
     this.onchange = this.onchange.bind(this);
@@ -44,7 +45,9 @@ export class CreateForm extends React.Component {
 
   create(event) {
     event.preventDefault();
-    this.props.actions.newDocument(this.state.documents).then(this.showNotification());
+    this.props.actions.newDocument(this.state.documents).then(() => {
+      this.showNotification(this.props.error.error);
+    });
     this.setState({
       documents: {
         title: '',
@@ -54,8 +57,13 @@ export class CreateForm extends React.Component {
     });
   }
 
-  showNotification() {
-    this.refs.notificator.success("doc created.", "Successfully created", 4000);
+  showNotification(error) {
+    const array = error.split(' ');
+    if (array[0] === 'Error:') {
+      this.refs.notificator.error(' ', error, 4000);
+    } else {
+      this.refs.notificator.success(' ', error, 4000);
+    }
   }
 
   render() {
@@ -71,7 +79,7 @@ export class CreateForm extends React.Component {
         <MuiThemeProvider>
           <Card>
             <div>
-              <ReactNotify ref='notificator' />
+              <ReactNotify ref="notificator" />
             </div>
             <CardTitle id="card">
               <TextField
@@ -113,12 +121,15 @@ export class CreateForm extends React.Component {
 }
 
 CreateForm.propTypes = {
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  error: PropTypes.object
 };
 
 function mapStateToProps(state) {
+  console.log(state.error, 'hapa niko');
   return {
-    documents: state.documents
+    documents: state.documents,
+    error: state.error
   };
 }
 

@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'react-proptypes';
+import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Pagination from 'react-js-pagination';
+import ReactNotify from 'react-notify';
 import { Card, CardHeader, CardTitle, CardText, CardMedia } from 'material-ui/Card';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -23,7 +25,7 @@ class View extends React.Component {
       openView: false,
       openEdit: false,
       searchText: '',
-      documents: props.documents,
+      documents: Object.assign([], props.documents.all),
       documentById: [],
       activePage: 1,
       limit: 7,
@@ -33,6 +35,7 @@ class View extends React.Component {
         access: '',
       },
       role: '',
+      error: this.props.error
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -42,12 +45,15 @@ class View extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.update = this.update.bind(this);
   }
 
 
   componentWillMount() {
     this.props.actions.countDocuments().then(
-    this.props.actions.loadDocuments()
+      this.props.actions.loadDocuments().then(() => {
+        this.showNotification(this.props.error.error.response.data.message);
+      })
     );
   }
 
@@ -69,6 +75,14 @@ class View extends React.Component {
     });
   }
 
+  update() {
+    this.props.actions.countDocuments().then(
+      this.props.actions.loadDocuments().then(() => {
+        this.showNotification(this.props.error.error.response.data.message);
+      })
+    );
+  }
+
   onchange(event) {
     const label = event.target.name;
     const edit = this.state.edit;
@@ -86,7 +100,10 @@ class View extends React.Component {
 
   handleEdit(event) {
     event.preventDefault();
-    this.props.actions.editDocument(this.state.id, this.state.edit);
+    this.props.actions.editDocument(this.state.id, this.state.edit).then(() => {
+      this.showNotification(this.props.error.error);
+    });
+    window.location.reload();
     this.setState({ openView: false, openEdit: false, edit: { title: '', content: '', access: '' } });
   }
 
@@ -99,8 +116,12 @@ class View extends React.Component {
     this.props.actions.viewDocument(id);
   }
 
-  handleDelete(id) {
-    this.props.actions.deleteDocument(this.state.id);
+  handleDelete() {
+    this.props.actions.deleteDocument(this.state.id).then(() => {
+      this.showNotification(this.props.error.error);
+      this.handleClose();
+      window.location.reload();
+    });
   }
 
   handlePageChange(pageNumber) {
@@ -115,7 +136,18 @@ class View extends React.Component {
   }
 
   handleSearch() {
-    this.props.actions.searchDocument(this.state.searchText);
+    this.props.actions.searchDocument(this.state.searchText).then(() => {
+      this.showNotification(this.props.error.error);
+    });
+  }
+
+  showNotification(error) {
+    const array = error.split(' ');
+    if (array[0] === 'Error:') {
+      this.refs.notificator.error(' ', error, 4000);
+    } else {
+      this.refs.notificator.success(' ', error, 4000);
+    }
   }
 
   render() {
@@ -127,11 +159,11 @@ class View extends React.Component {
     if (searchText === '') {
       items = this.props.count;
       itemsCount = Object.keys(items).map(key => items[key]);
-      filteredDocuments = this.props.documents.all;
+      filteredDocuments = this.state.documents;
     } else {
       items = this.props.documents.all.length;
       itemsCount = [items];
-      filteredDocuments = this.props.documents.all;
+      filteredDocuments = this.state.documents;
     }
     const actions = [
       <FlatButton
@@ -185,11 +217,11 @@ class View extends React.Component {
               <CardHeader>
                 Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-              <option value="">choose..</option>
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-              <option value={role}>Role Based</option>
-            </select>
+                  <option value="">choose..</option>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                  <option value={role}>Role Based</option>
+                </select>
               </CardHeader>
               <CardText>
                 <textarea
@@ -233,7 +265,7 @@ class View extends React.Component {
             </TableHeader>
             <TableBody>
               {
-               filteredDocuments.map(adocument =>
+                filteredDocuments.map(adocument =>
                   (<TableRow key={adocument.id}>
                     <TableRowColumn>{adocument.title}</TableRowColumn>
                     <TableRowColumn>{adocument.access}</TableRowColumn>
@@ -264,6 +296,9 @@ class View extends React.Component {
               onChange={this.handlePageChange}
             />
           </div>
+          <div>
+            <ReactNotify ref="notificator" />
+          </div>
         </Card>
       </div>
     );
@@ -272,14 +307,16 @@ class View extends React.Component {
 View.propTypes = {
   count: PropTypes.object.isRequired,
   documents: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  error: PropTypes.object
 };
 
 function mapStateToProps(state) {
-  console.log('state hapa hapa', state.documents, state.count, state.search);
+  console.log('the errororoororo', state.error);
   return {
     documents: state.documents,
     count: state.count,
+    error: state.error
   };
 }
 

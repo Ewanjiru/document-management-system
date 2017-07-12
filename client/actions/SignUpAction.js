@@ -21,7 +21,10 @@ export function loggedOutUser() {
 export const SignUpAction = (user) => (dispatch) => {
   return appApi.createUser(user)
     .then((response) => {
-      dispatch(createdUser(response));
+      if (response.message === 'User Created Successfully') {
+        browserHistory.push('/');
+        dispatch(createdUser(response));
+      }
       dispatch(getError(response.message));
     })
     .catch((error) => { throw error; });

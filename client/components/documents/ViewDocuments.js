@@ -14,6 +14,7 @@ import Dialog from 'material-ui/Dialog';
 import authenticate from '../../api/helper';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import './Document.scss';
+import '../common/notification.scss';
 
 class View extends React.Component {
   constructor(props) {
@@ -118,8 +119,8 @@ class View extends React.Component {
 
   handleDelete() {
     this.props.actions.deleteDocument(this.state.id).then(() => {
-      this.showNotification(this.props.error.error);
       this.handleClose();
+      this.showNotification(this.props.error.error);
       window.location.reload();
     });
   }
@@ -144,9 +145,9 @@ class View extends React.Component {
   showNotification(error) {
     const array = error.split(' ');
     if (array[0] === 'Error:') {
-      this.refs.notificator.error(' ', error, 4000);
+      this.refs.notificator.error(' ', error, 3000);
     } else {
-      this.refs.notificator.success(' ', error, 4000);
+      this.refs.notificator.success(' ', error, 3000);
     }
   }
 
@@ -161,7 +162,8 @@ class View extends React.Component {
       itemsCount = Object.keys(items).map(key => items[key]);
       filteredDocuments = this.state.documents;
     } else {
-      items = this.props.documents.all.length;
+      console.log('debugging docs', this.state.documents);
+      items = this.state.documents.length;
       itemsCount = [items];
       filteredDocuments = this.state.documents;
     }
@@ -257,13 +259,11 @@ class View extends React.Component {
         <Card>
           <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} /><RaisedButton Primary onClick={this.handleSearch}>Search</RaisedButton>
           <Table>
-            <TableHeader>
+            <TableBody displayRowCheckbox={false}>
               <TableRow >
                 <TableHeaderColumn>Title</TableHeaderColumn>
                 <TableHeaderColumn>Access Type</TableHeaderColumn>
               </TableRow>
-            </TableHeader>
-            <TableBody>
               {
                 filteredDocuments.map(adocument =>
                   (<TableRow key={adocument.id}>

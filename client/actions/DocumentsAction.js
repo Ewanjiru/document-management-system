@@ -87,16 +87,20 @@ export const viewDocument = (id) => function (dispatch) {
 export const searchDocument = (searchText) => function (dispatch) {
   return appApi.getSearched(searchText)
     .then((docs) => {
-      dispatch(loadSearchedSuccess(docs));
-      dispatch(getError(docs.response.data.message));
+      if (docs.length > 0) {
+        dispatch(loadSearchedSuccess(docs));
+      } else {
+        dispatch(getError(docs.response.data.message));
+      }
     })
     .catch((error) => { dispatch(getError(error)); });
 };
 
 export const editDocument = (id, record) => (dispatch) => appApi.updateDocument(id, record)
   .then((response) => {
-    dispatch(updatedDocument(response));
-    dispatch(getError(response.message));
+    dispatch(updatedDocument(response)).then(() => {
+      dispatch(getError(response.message));
+    });
   })
   .catch((error) => { throw (error); });
 

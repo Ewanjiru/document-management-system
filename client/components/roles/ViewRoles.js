@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Card } from 'material-ui/Card';
+import ReactNotify from 'react-notify';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import * as RoleActions from '../../actions/RoleActions';
@@ -14,41 +15,56 @@ class ViewRoles extends React.Component {
     this.state = {
       id: '',
       role: this.props.roles,
-
+      error: this.props.error
     };
-    console.log('state', this.state.role);
     this.handleDelete = this.handleDelete.bind(this);
+    this.showNotification = this.showNotification.bind(this);
   }
 
   componentWillMount() {
-    console.log('I was called');
     this.props.actions.loadRoles();
-    console.log("props after loading ", this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     const { roles } = nextProps;
+    const { error } = nextProps;
     if (roles) {
       this.setState({ role: roles.role });
+    } else {
+      this.setState({ error: error.error });
     }
   }
 
   handleDelete(id) {
-    console.log("delete user id number ", id);
-    this.props.actions.deleteRole(id);
+    this.props.actions.deleteRole(id).then(() => {
+      console.log('hahhahahha', this.props.error.error);
+      this.showNotification(this.props.error.error);
+      window.location.reload();
+    });
+  }
+
+  showNotification(error) {
+    const array = error.split(' ');
+    if (array[0] === 'Error:') {
+      this.refs.notificator.error(' ', error, 10000);
+    } else {
+      this.refs.notificator.success(' ', error, 10000);
+    }
   }
 
   render() {
-    console.log("Roles are: ", this.props.roles);
     return (
       <div className="wrapper">
         <Card>
+          <div>
+          <ReactNotify ref="notificator" />
+        </div>
           <Table>
-            <TableHeader>
+            <TableBody displayRowCheckbox={false}>
               <TableRow >
+                <TableHeaderColumn>Role Id</TableHeaderColumn>
+                <TableHeaderColumn>Role Name</TableHeaderColumn>
               </TableRow>
-            </TableHeader>
-            <TableBody>
               {
                 this.props.roles.map(arole =>
                   (
@@ -74,15 +90,17 @@ class ViewRoles extends React.Component {
 }
 ViewRoles.propTypes = {
   roles: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  error: PropTypes.String
 };
 ViewRoles.defaultProps = {
   roles: []
 };
 function mapStateToProps(state) {
-  console.log('my users', state.roles.roles);
+  console.log('these roles', state.error);
   return {
-    roles: state.roles.roles
+    roles: state.roles,
+    error: state.error
   };
 }
 

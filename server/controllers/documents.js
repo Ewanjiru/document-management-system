@@ -16,7 +16,7 @@ module.exports = {
         doc,
         message: 'Document Created Successfully',
       }))
-      .catch(error => res.status(409).send({ error, message: 'Error: That title already exixts' }))
+      .catch(error => res.send({ error, message: 'Error: That title already exixts' }))
       .catch(error => res.status(400).send(error));
   },
 
@@ -111,10 +111,9 @@ module.exports = {
           .then(res.send({
             message: 'Document updated Successfully.',
           }))
-          .catch(error => res.status(409).send({ error, message: 'Error: That title already exixts' }))
+          .catch(error => res.send({ error, message: 'Error: That title already exixts' }))
           .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
+      });
   },
 
   searchDocument(req, res) {

@@ -15,6 +15,11 @@ function UsersReducer(state = initialState.users, action) {
         all: state.all,
         byId: action.user
       };
+    case actionTypes.SEARCH_USERS_SUCCESS:
+      return {
+        all: action.users,
+        byId: state.byId
+      };
     case actionTypes.UPDATED_USER_SUCCESS:
       return {
         all: state.all,

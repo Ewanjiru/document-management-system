@@ -81,7 +81,11 @@ class MyDocuments extends React.Component {
 
   handleEdit(event) {
     event.preventDefault();
-    this.props.actions.editDocument(this.state.id, this.state.edit);
+    this.props.actions.editDocument(this.state.id, this.state.edit).then(() => {
+      this.showNotification(this.props.error.error);
+      this.handleClose();
+    });
+    window.location.reload();
     this.setState({ openView: false, openEdit: false, edit: { title: '', content: '', access: '' } });
   }
 
@@ -95,10 +99,10 @@ class MyDocuments extends React.Component {
   }
 
   handleDelete() {
-    this.props.actions.deleteDocument(this.state.id).then(() => {
+    this.props.actions.deleteDocument(this.state.id);
+    this.handleClose();
+    window.location.reload().then(() => {
       this.showNotification(this.props.error.error);
-      this.handleClose();
-      window.location.reload();
     });
   }
 
@@ -110,9 +114,9 @@ class MyDocuments extends React.Component {
   showNotification(error) {
     const array = error.split(' ');
     if (array[0] === 'Error:') {
-      this.refs.notificator.error(' ', error, 40000);
+      this.refs.notificator.error(' ', error, 4000);
     } else {
-      this.refs.notificator.success(' ', error, 40000);
+      this.refs.notificator.success(' ', error, 4000);
     }
   }
 
@@ -219,14 +223,15 @@ class MyDocuments extends React.Component {
 
         <MuiThemeProvider>
           <Card>
+            <div>
+              <ReactNotify ref="notificator" />
+            </div>
             <Table>
-              <TableHeader>
+              <TableBody displayRowCheckbox={false}>
                 <TableRow >
                   <TableHeaderColumn>Title</TableHeaderColumn>
                   <TableHeaderColumn>Access Type</TableHeaderColumn>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
                 {
                   this.props.documents.all.map(adocument =>
                     (<TableRow key={adocument.id}>
@@ -248,9 +253,6 @@ class MyDocuments extends React.Component {
                   )}
               </TableBody>
             </Table>
-            <div>
-              <ReactNotify ref="notificator" />
-            </div>
           </Card>
         </MuiThemeProvider>
       </div>

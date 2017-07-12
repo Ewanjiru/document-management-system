@@ -70,7 +70,7 @@ module.exports = {
         .then((user) => {
           if (!user || user.length < 1) {
             return res.status(404).send({
-              message: 'user not found',
+              message: 'Error: user not found',
             });
           }
           return res.status(200).send(user);
@@ -78,11 +78,19 @@ module.exports = {
         .catch(error => res.status(400).send({
           error,
           message: 'Error: There was a problem with the query params check if they are all numbers',
+        }))
+        .catch(error => res.status(404).send({
+          error,
+          message: 'Error: user not found'
         }));
     }
     User
       .findAll()
       .then(user => res.status(200).send(user))
+      .catch(error => res.status(404).send({
+        error,
+        message: 'Error: user not found'
+      }))
       .catch(error => res.status(400).send(error));
   },
 
@@ -134,7 +142,7 @@ module.exports = {
             .update(req.body, { fields: Object.keys(req.body) })
             .then(updatedUser => res.status(200).send({
               message: 'user updated Successfully.',
-              firstName: req.body.firstName
+              updatedUser
             }))
             .catch(error => res.status(400).send(error));
         })
@@ -152,14 +160,19 @@ module.exports = {
         },
         order: '"createdAt" DESC'
       })
-      .then((doc) => {
-        if (doc.length < 1) {
+      .then((user) => {
+        if (user.length < 1) {
           return res.status(404).send({
             message: 'Error: No User found'
           });
         }
-        return res.status(200).send(doc);
-      });
+        return res.status(200).send(user);
+      })
+      .catch(error => res.status(404).send({
+        error,
+        message: 'Error: No User found'
+      }))
+      .catch(error => res.status(400).send(error));
   },
 
   getUserDocuments(req, res) {

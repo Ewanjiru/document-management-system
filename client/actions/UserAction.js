@@ -10,12 +10,10 @@ export function UserSearchedSuccess(users) {
 }
 
 export function getCountSuccess(count) {
-  console.log('niko hapa', count);
   return { type: actionTypes.LOAD_COUNT_SUCCESS, count };
 }
 
 export function loadUserByIdSuccess(user) {
-  console.log("I was here");
   return { type: actionTypes.LOAD_USERBYID_SUCCESS, user };
 }
 
@@ -24,15 +22,22 @@ export function updatedUser(response) {
 }
 
 export function deletedUserById(response) {
-  console.log("We are almost", response);
   return { type: actionTypes.DELETED_USER_SUCCESS, response };
+}
+
+export function getError(error) {
+  return { type: actionTypes.ERROR_MESSAGE, error };
 }
 
 export const loadUsers = (limit, offset) => {
   return function (dispatch) {
     return appApi.getAllUsers(limit, offset)
       .then((users) => {
-        dispatch(loadUsersSuccess(users));
+        if (users.length > 0) {
+          dispatch(loadUsersSuccess(users));
+        } else {
+          dispatch(getError(users.response.data.message));
+        }
       })
       .catch((error) => { throw (error); });
   };
@@ -41,7 +46,11 @@ export const loadUsers = (limit, offset) => {
 export const searchUser = (searchText) => function (dispatch) {
   return appApi.getSearchedUser(searchText)
     .then((users) => {
-      dispatch(UserSearchedSuccess(users));
+      if (users.length > 0) {
+        dispatch(UserSearchedSuccess(users));
+      } else {
+        dispatch(getError(users.response.data.message));
+      }
     })
     .catch((error) => { throw (error); });
 };
@@ -50,7 +59,6 @@ export const viewUser = (id) => {
   return function (dispatch) {
     return appApi.getUserById(id)
       .then((user) => {
-        console.log("I was called with", user);
         dispatch(loadUserByIdSuccess(user));
       })
       .catch((error) => { throw (error); });
@@ -69,16 +77,16 @@ export const countUsers = () => function (dispatch) {
 export const editUser = (id, record) => (dispatch) => {
   return appApi.updateUser(id, record)
     .then((response) => {
-      dispatch(updatedUser(response));
+      //dispatch(updatedUser(response));
+      dispatch(getError(response.message));
     })
     .catch((error) => { throw (error); });
 };
 
 export const deleteUser = (id) => (dispatch) => {
-  console.log('niko hapa', id);
   return appApi.deleteUserById(id)
     .then((response) => {
-      dispatch(deletedUserById(response));
+      dispatch(getError(response.data.message));
     })
     .catch((error) => { throw (error); });
 };

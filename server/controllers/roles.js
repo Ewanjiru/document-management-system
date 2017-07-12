@@ -6,11 +6,15 @@ module.exports = {
       .create({
         role: req.body.role,
       })
-      .then(arole => res.status(201).send(arole))
-      .catch(error => res.status(400).send({
+      .then(arole => res.status(201).send({
+        arole,
+        message: 'Created Successfully'
+      }))
+      .catch(error => res.send({
         error,
-        message: 'Sorry an error occured.Confirm your input is correct else contact admin'
-      }));
+        message: 'Error: That role already exists'
+      }))
+      .catch(error => res.status(400).send(error));
   },
   list(req, res) {
     return Role

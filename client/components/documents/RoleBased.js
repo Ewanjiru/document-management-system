@@ -78,7 +78,11 @@ class RoleBased extends React.Component {
 
   handleEdit(event) {
     event.preventDefault();
-    this.props.actions.editDocument(this.state.id, this.state.edit);
+    this.props.actions.editDocument(this.state.id, this.state.edit).then(() => {
+      this.showNotification(this.props.error.error);
+      this.handleClose();
+    });
+    window.location.reload();
     this.setState({ openView: false, openEdit: false, edit: { title: '', content: '', access: '' } });
   }
 
@@ -211,12 +215,12 @@ class RoleBased extends React.Component {
           <Card>
             <Table>
               <TableHeader>
-                <TableRow >
-                  <TableHeaderColumn>Title</TableHeaderColumn>
-                  <TableHeaderColumn>Access Type</TableHeaderColumn>
-                </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody displayRowCheckbox={false}>
+                <TableRow >
+                  <TableHeaderColumn>Document title</TableHeaderColumn>
+                  <TableHeaderColumn>Document access</TableHeaderColumn>
+                </TableRow>
                 {
                   this.props.documents.all.map(adocument =>
                     (<TableRow key={adocument.id}>

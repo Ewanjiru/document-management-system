@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Pagination from 'react-js-pagination';
+import ReactNotify from 'react-notify';
 import { Card, CardHeader, CardTitle, CardText } from 'material-ui/Card';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,6 +12,7 @@ import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import authenticate from '../../api/helper';
 import * as UserActions from '../../actions/UserAction';
+import * as RoleActions from '../../actions/RoleActions';
 import '../documents/Document.scss';
 
 class ViewUsers extends React.Component {
@@ -30,7 +32,10 @@ class ViewUsers extends React.Component {
         firstName: '',
         lastName: '',
         email: '',
-      }
+        roleType: ''
+      },
+      roles: [],
+      error: this.props.error
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -40,14 +45,23 @@ class ViewUsers extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.showNotification = this.showNotification.bind(this);
   }
 
-  componentDidMount() {
-    this.props.actions.countUsers.then(this.props.actions.loadUsers());
+  componentWillMount() {
+    this.props.actions.userActions.countUsers().then(() => {
+      this.props.actions.userActions.loadUsers();
+      this.showNotification(this.props.error);
+    });
+    this.props.actions.roleActions.loadRoles();
+    this.setState({
+      roles: this.props.roles
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     const { byId } = nextProps.users;
+    const { all } = nextProps.users;
 
     if (byId) {
       this.setState({
@@ -59,6 +73,9 @@ class ViewUsers extends React.Component {
         }
       });
     }
+    this.setState({
+      users: all
+    });
   }
 
   onchange(event) {
@@ -73,12 +90,14 @@ class ViewUsers extends React.Component {
 
   handleOpen(id) {
     this.setState({ id, openEdit: true });
-    this.props.actions.viewUser(id);
+    this.props.actions.userActions.viewUser(id);
   }
 
   handleEdit(event) {
     event.preventDefault();
-    this.props.actions.editUser(this.state.id, this.state.edit);
+    this.props.actions.userActions.editUser(this.state.id, this.state.edit);
+    //window.location.reload();
+    this.showNotification(this.props.error.error);
     this.setState({ openView: false, openEdit: false, edit: { firstName: '', lastName: '', email: '', roleType: '' } });
   }
 
@@ -88,16 +107,20 @@ class ViewUsers extends React.Component {
 
   handleOpenView(id) {
     this.setState({ id, openView: true });
-    this.props.actions.viewUser(id);
+    this.props.actions.userActions.viewUser(id);
   }
 
   handleDelete(id) {
-    this.props.actions.deleteUser(id);
+    this.props.actions.userActions.deleteUser(id).then(() => {
+      window.location.reload();
+      this.showNotification(this.props.error.error);
+    });
   }
 
   handlePageChange(pageNumber) {
     this.setState({ activePage: pageNumber });
-    this.props.actions.loadUsers(this.state.limit, (this.state.limit * (pageNumber - 1)));
+    this.props.actions.userActions.loadUsers(
+      this.state.limit, (this.state.limit * (pageNumber - 1)));
   }
 
   handleSearchChange(event) {
@@ -107,22 +130,35 @@ class ViewUsers extends React.Component {
   }
 
   handleSearch() {
-    console.log(this.state.searchText);
-    this.props.actions.searchUser(this.state.searchText);
+    this.props.actions.userActions.searchUser(this.state.searchText).then(() => {
+      this.showNotification(this.props.error.error);
+    });
+  }
+
+  showNotification(error) {
+    const array = error.split(' ');
+    if (array[0] === 'Error:') {
+      this.refs.notificator.error(' ', error, 3000);
+    } else {
+      this.refs.notificator.success(' ', error, 3000);
+    }
   }
 
   render() {
-    const items = this.props.count;
-    const itemsCount = Object.keys(items).map(key => items[key]);
+    let items;
+    let itemsCount;
     const role = authenticate(sessionStorage.Token).roleType;
     const { searchText } = this.state;
     let filteredUsers;
     if (searchText === '') {
+      items = this.props.count;
+      itemsCount = Object.keys(items).map(key => items[key]);
       filteredUsers = this.props.users.all;
     } else {
-      filteredUsers = this.props.users.all.filter(users => users.firstName.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1);
+      items = this.state.users.length;
+      itemsCount = [items];
+      filteredUsers = this.state.users;
     }
-    console.log('my filteredDocuments', filteredUsers);
     const actions = [
       <FlatButton
         label="Edit"
@@ -148,6 +184,14 @@ class ViewUsers extends React.Component {
         onTouchTap={() => this.handleDelete(this.state.id)}
       />
     ];
+
+    const styles = {
+      TableRowColumn: {
+        width: 35,
+        margin: '20px auto 0',
+      }
+    };
+
     return (
       <div className="wrapper">
         <div>
@@ -160,37 +204,52 @@ class ViewUsers extends React.Component {
             autoScrollBodyContent
           >
             <Card id="card2">
-              <CardTitle>
-                <TextField
-                  name="firstName"
-                  id="edit"
-                  value={this.state.edit.firstName}
-                  onChange={this.onchange}
-                />
-              </CardTitle>
-              <CardHeader>
-                <TextField
-                  name="lastName"
-                  id="edit"
-                  value={this.state.edit.lastName}
-                  onChange={this.onchange}
-                />
-              </CardHeader>
-              <CardText>
-                <TextField
-                  name="email"
-                  value={this.state.edit.email}
-                  onChange={this.onchange}
-                />
-              </CardText>
-              <CardHeader>
-                <TextField
-                  name="roleType"
-                  id="edit"
-                  value={this.state.edit.roleType}
-                  onChange={this.onchange}
-                />
-              </CardHeader>
+              <form name='editform'>
+                <CardText>
+                  <label>FirstName </label>
+                </CardText>
+                <CardText>
+                  <TextField
+                    name="firstName"
+                    id="edit"
+                    value={this.state.edit.firstName}
+                    onChange={this.onchange}
+                  />
+                </CardText>
+                <CardText>
+                  <label>LastName </label>
+                </CardText>
+                <CardText>
+                  <TextField
+                    name="lastName"
+                    id="edit"
+                    value={this.state.edit.lastName}
+                    onChange={this.onchange}
+                  />
+                </CardText>
+                <CardText>
+                  <label>Email </label>
+                </CardText>
+                <CardText>
+                  <TextField
+                    name="email"
+                    value={this.state.edit.email}
+                    onChange={this.onchange}
+                  />
+                </CardText>
+                <CardText>
+                  <label>Role </label>
+                </CardText>
+                <CardText>
+                  <select value={this.state.edit.roleType} name="roleType" onChange={this.onchange}>
+                    {
+                      this.props.roles.map(arole => (
+                        <option key={arole.id} value={arole.role}>{arole.role}</option>
+                      ))
+                    };
+                  </select>
+                </CardText>
+              </form>
             </Card>
           </Dialog>
         </div>
@@ -215,9 +274,9 @@ class ViewUsers extends React.Component {
         </div>
 
         <Card>
-          <input type="text" name="search" className="searchField" placeholder="search user by firstName" onChange={this.handleSearchChange} /><RaisedButton Primary>search</RaisedButton>
+          <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} /><RaisedButton Primary onClick={this.handleSearch}>Search</RaisedButton>
           <Table>
-            <TableHeader>
+            <TableBody displayRowCheckbox={false}>
               <TableRow >
                 <TableHeaderColumn>First Name</TableHeaderColumn>
                 <TableHeaderColumn>Last Name</TableHeaderColumn>
@@ -225,14 +284,12 @@ class ViewUsers extends React.Component {
                 <TableHeaderColumn>Date Added</TableHeaderColumn>
                 <TableHeaderColumn>Role</TableHeaderColumn>
               </TableRow>
-            </TableHeader>
-            <TableBody>
               {
                 filteredUsers.map(auser =>
                   (<TableRow key={auser.id}>
                     <TableRowColumn>{auser.firstName}</TableRowColumn>
                     <TableRowColumn>{auser.lastName}</TableRowColumn>
-                    <TableRowColumn>{auser.email}</TableRowColumn>
+                    <TableRowColumn style={styles.TableRowColumn}>{auser.email}</TableRowColumn>
                     <TableRowColumn>{auser.createdAt}</TableRowColumn>
                     <TableRowColumn>{auser.roleType}</TableRowColumn>
                     <TableRowColumn>
@@ -257,8 +314,6 @@ class ViewUsers extends React.Component {
           </Table>
           <div className="pages">
             <Pagination
-              // prevPageText="prev"
-              // nextPageText="next"
               activePage={this.state.activePage}
               itemsCountPerPage={7}
               totalItemsCount={itemsCount[0]}
@@ -266,28 +321,39 @@ class ViewUsers extends React.Component {
               onChange={this.handlePageChange}
             />
           </div>
+          <div>
+            <ReactNotify ref="notificator" />
+          </div>
         </Card>
       </div>
     );
   }
 }
+
 ViewUsers.propTypes = {
   count: PropTypes.object.isRequired,
   users: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  roles: PropTypes.array.isRequired,
+  error: PropTypes.array,
+  actions: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
-  console.log('my users', state.users);
+  console.log('this error', state.error);
   return {
     users: state.users,
-    count: state.count
+    count: state.count,
+    roles: state.roles,
+    error: state.error
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(UserActions, dispatch)
+    actions: {
+      userActions: bindActionCreators(UserActions, dispatch),
+      roleActions: bindActionCreators(RoleActions, dispatch)
+    }
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ViewUsers);

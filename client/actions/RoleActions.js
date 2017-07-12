@@ -14,9 +14,14 @@ export function deletedRoleById(response) {
   return { type: actionTypes.DELETED_ROLE_SUCCESS, response };
 }
 
+export function getError(error) {
+  return { type: actionTypes.ERROR_MESSAGE, error };
+}
+
 export const newRole = records => (dispatch) => appApi.createRole(records)
   .then((response) => {
     dispatch(createdRole(response));
+    dispatch(getError(response.message));
   })
   .catch((error) => { throw (error); });
 
@@ -33,7 +38,8 @@ export const loadRoles = () => {
 export const deleteRole = (id) => (dispatch) => {
   return appApi.deleteRoleById(id)
     .then((response) => {
-      dispatch(deletedRoleById(response));
+      //dispatch(deletedRoleById(response));
+      dispatch(getError(response.data.message));
     })
     .catch((error) => { throw (error); });
 };

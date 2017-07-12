@@ -17,7 +17,8 @@ export class CreateRole extends React.Component {
     this.state = {
       roles: {
         role: ''
-      }
+      },
+      error: this.props.error,
     };
     this.create = this.create.bind(this);
     this.onchange = this.onchange.bind(this);
@@ -33,7 +34,9 @@ export class CreateRole extends React.Component {
 
   create(event) {
     event.preventDefault();
-    this.props.actions.newRole(this.state.roles).then(this.showNotification());
+    this.props.actions.newRole(this.state.roles).then(() => {
+      this.showNotification(this.props.error.error);
+    });
     this.setState({
       roles: {
         role: ''
@@ -41,8 +44,13 @@ export class CreateRole extends React.Component {
     });
   }
 
-  showNotification() {
-    this.refs.notificator.success('doc created.', 'Successfully created', 4000);
+  showNotification(error) {
+    const array = error.split(' ');
+    if (array[0] === 'Error:') {
+      this.refs.notificator.error(' ', error, 3000);
+    } else {
+      this.refs.notificator.success(' ', error, 3000);
+    }
   }
 
   render() {
@@ -84,11 +92,13 @@ export class CreateRole extends React.Component {
 
 CreateRole.propTypes = {
   actions: PropTypes.object.isRequired,
+  error: PropTypes.String
 };
 
 function mapStateToProps(state) {
   return {
-    roles: state.roles
+    roles: state.roles,
+    error: state.error
   };
 }
 

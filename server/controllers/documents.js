@@ -16,7 +16,7 @@ module.exports = {
         doc,
         message: 'Document Created Successfully',
       }))
-      .catch(error => res.send({ error, message: 'Error: That title already exixts' }))
+      .catch(error => res.send({ error, message: 'Error: That title already exists' }))
       .catch(error => res.status(400).send(error));
   },
 
@@ -94,7 +94,7 @@ module.exports = {
 
   update(req, res) {
     if (!req.params) {
-      return res.status(404).send({
+      return res.status(400).send({
         message: 'Error: Input parameters',
       });
     }
@@ -112,7 +112,6 @@ module.exports = {
             message: 'Document updated Successfully.',
           }))
           .catch(error => res.send({ error, message: 'Error: That title already exixts' }))
-          .catch(error => res.status(400).send(error));
       });
   },
 
@@ -153,7 +152,7 @@ module.exports = {
         }
         return res.status(200).send({ docs });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(404).send({
         error,
         message: 'Error: That role has no documents',
       }));

@@ -9,7 +9,8 @@ chai.use(chaiHttp);
 /*
  * Test the /POST route
  */
-describe('/post endpoint', () => {
+
+describe('POST /roles', () => {
   it('it should create a new role', (done) => {
     const arole = {
       role: 'admin'
@@ -22,18 +23,7 @@ describe('/post endpoint', () => {
         res.body.should.be.a('object');
         done();
       });
-  }).timeout(10000);
-
-  it('it should retrieve all the roles', (done) => {
-    chai.request(app)
-      .get('/roles')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('array');
-        res.body.length.should.be.eql(1);
-        done();
-      });
-  }).timeout(10000);
+  });
 });
 
 describe('/delete/roles/:id ', () => {
@@ -46,7 +36,7 @@ describe('/delete/roles/:id ', () => {
       .post('/roles')
       .send(arole)
       .end((err, res) => {
-        roleId = res.body.id;
+        roleId = res.body.arole.id;
         done();
       });
   });
@@ -59,5 +49,19 @@ describe('/delete/roles/:id ', () => {
         res.body.should.have.property('message').eql('Role Deleted Successfully');
         done();
       });
-  });
+  }).timeout(10000);
+});
+
+describe('/delete/roles/:id ', () => {
+  const roleId = 60;
+  it('it should delete a role by the given id', (done) => {
+    chai.request(app)
+      .delete(`/roles/${roleId}`)
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('message').eql('Role Not Found');
+        done();
+      });
+  }).timeout(10000);
 });

@@ -18,19 +18,19 @@ export class Header extends React.Component {
   }
 
   render() {
-    const role = authenticate(sessionStorage.Token).roleType;
+    // const role = authenticate(sessionStorage.Token).roleType;
     return (
       <nav className="navbar navbar-inverse">
         <div className="container-fluid">
           <div className="navbar-header">
-                        WebSiteName
+            WebSiteName
           </div>
           <ul className="nav navbar-nav">
             <li className="active"><Link to="/edocx/documents"> Documents </Link></li>
             <li><Link to="/edocx/users" activeClassName="active"> Users </Link></li>
-            {role === 'admin' &&
-            <li><Link to="/edocx/roles" activeClassName="active"> Roles</Link></li>
-						}
+            {//role === 'admin' &&
+              <li><Link to="/edocx/roles" activeClassName="active"> Roles</Link></li>
+            }
           </ul>
           <ul className="nav navbar-nav navbar-right">
             <li><a href="/"><span className="glyphicon glyphicon-log-in" onClick={this.logout} /> Logout</a></li>

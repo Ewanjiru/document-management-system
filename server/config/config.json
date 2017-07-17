@@ -20,6 +20,7 @@
     "database": "d8tc7tscdsc8fp",
     "host": "ec2-184-73-249-56.compute-1.amazonaws.com",
     "dialect": "postgres",
-    "logging": false
+    "logging": false,
+    "seederStorage": "sequelize"
   }
 }

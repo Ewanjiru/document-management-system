@@ -36,6 +36,7 @@ const LoginForm = props => (
       <div className="row">
         <div className="col-lg-6">
           <RaisedButton
+            name="login"
             label="Login"
             primary={style}
             onClick={props.userLog}
@@ -45,7 +46,7 @@ const LoginForm = props => (
       </div>
       <div className="row">
         <div className="col-lg-4">
-          <b>Create account:<Link to='/edocx/signup'>SignUp</Link></b>
+          <b>Create account:<Link to='/edocx/signup' name="signup">SignUp</Link></b>
         </div>
       </div>
     </div>

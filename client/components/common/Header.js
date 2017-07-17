@@ -32,7 +32,7 @@ export class Header extends React.Component {
             }
           </ul>
           <ul className="nav navbar-nav navbar-right">
-            <li><a href="/"><span className="glyphicon glyphicon-log-in" onClick={this.logout} /> Logout</a></li>
+            <li><a href="/" name="logout"><span className="glyphicon glyphicon-log-in" onClick={this.logout} /> Logout</a></li>
           </ul>
         </div>
       </nav>

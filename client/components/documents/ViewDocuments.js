@@ -257,7 +257,7 @@ class View extends React.Component {
         </div>
 
         <Card>
-          <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} /><RaisedButton Primary onClick={this.handleSearch}>Search</RaisedButton>
+          <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} /><RaisedButton Primary name="search" onClick={this.handleSearch}>Search</RaisedButton>
           <Table>
             <TableBody displayRowCheckbox={false}>
               <TableRow >

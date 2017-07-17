@@ -71,7 +71,7 @@ export class CreateForm extends React.Component {
       <div className="wrapper">
         <Header />
         <ul className="nav nav-pills">
-          <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
+          <li role="presentation"><a href="/edocx/documents" name="view">All Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/roledocuments">RoleBased Documents</a></li>
           <li role="presentation" className="active"><a href="/edocx/documents/newdocument">New Document</a></li>

@@ -144,6 +144,7 @@ class MyDocuments extends React.Component {
         onTouchTap={this.handleClose}
       />,
       <FlatButton
+        name="deletedoc"
         label="Delete"
         primary
         onTouchTap={() => this.handleDelete(this.state.id)}
@@ -239,6 +240,7 @@ class MyDocuments extends React.Component {
                       <TableRowColumn>{adocument.access}</TableRowColumn>
                       <TableRowColumn>
                         <RaisedButton
+                          name="viewdoc"
                           onClick={() => this.handleOpenView(adocument.id)}
                           primary
                         >View</RaisedButton>

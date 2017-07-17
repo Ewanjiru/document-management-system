@@ -56,6 +56,7 @@ const SignUpForm = props => (
       <div className="row">
         <div className="col-lg-6">
           <RaisedButton
+            name="sign"
             label="Register"
             primary
             style={style}

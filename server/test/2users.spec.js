@@ -246,7 +246,6 @@ describe('Users Tests:', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('message').eql('user updated Successfully.');
-          //res.body.should.have.property('firstName').eql('Nancy');
           done();
         });
     });

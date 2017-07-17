@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
-import * as actions from '../../../client/actions/UserAction';
-import * as types from '../../../client/actions/ActionTypes';
+import * as actions from '../actions/UserAction';
+import * as types from '../actions/ActionTypes';
 
 const expect = require('chai').expect;
 
@@ -54,15 +54,15 @@ describe('dispatch actions', () => {
 describe('async load  users action', () => {
   it('invokes LOAD_USERS_SUCCESS when creating new user ', (done) => {
     nock('http://localhost.com')
-            .post('/users')
-            .reply(200, {
-              body: {
-                users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
-              }
-            });
+      .post('/users')
+      .reply(200, {
+        body: {
+          users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
+        }
+      });
 
     const expectedActions = [
-            { type: types.LOAD_USERS_SUCCESS, response: { users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }] } }
+      { type: types.LOAD_USERS_SUCCESS, response: { users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }] } }
     ];
     const store = mockStore({ users: [] }, done());
     store.dispatch(actions.loadUsers()).then(() => {
@@ -75,15 +75,15 @@ describe('async load  users action', () => {
 describe('async search  users action', () => {
   it('invokes SEARCH_USERS_SUCCESS when searching new user ', (done) => {
     nock('http://localhost.com')
-            .post('/search/users/?q=nice')
-            .reply(200, {
-              body: {
-                users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
-              }
-            });
+      .post('/search/users/?q=nice')
+      .reply(200, {
+        body: {
+          users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
+        }
+      });
 
     const expectedActions = [
-            { type: types.SEARCH_USERS_SUCCESS, response: { users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }] } }
+      { type: types.SEARCH_USERS_SUCCESS, response: { users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }] } }
     ];
     const store = mockStore({ users: [] }, done());
     store.dispatch(actions.searchUser('nice')).then(() => {
@@ -96,15 +96,15 @@ describe('async search  users action', () => {
 describe('async view  user action', () => {
   it('invokes LOAD_USERBYID_SUCCESS when searching new user ', (done) => {
     nock('http://localhost.com')
-            .post('/users/1')
-            .reply(200, {
-              body: {
-                users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
-              }
-            });
+      .post('/users/1')
+      .reply(200, {
+        body: {
+          users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
+        }
+      });
 
     const expectedActions = [
-            { type: types.LOAD_USERBYID_SUCCESS, response: { users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }] } }
+      { type: types.LOAD_USERBYID_SUCCESS, response: { users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }] } }
     ];
     const store = mockStore({ users: [] }, done());
     store.dispatch(actions.viewUser(1)).then(() => {
@@ -117,15 +117,15 @@ describe('async view  user action', () => {
 describe('async count  user action', () => {
   it('invokes LOAD_COUNT_SUCCESS when searching new user ', (done) => {
     nock('http://localhost.com')
-            .get('/count/users')
-            .reply(200, {
-              body: {
-                users: { count: 1 }
-              }
-            });
+      .get('/count/users')
+      .reply(200, {
+        body: {
+          users: { count: 1 }
+        }
+      });
 
     const expectedActions = [
-            { type: types.LOAD_COUNT_SUCCESS, response: { users: { count: 1 } } }
+      { type: types.LOAD_COUNT_SUCCESS, response: { users: { count: 1 } } }
     ];
     const store = mockStore({ users: [] }, done());
     store.dispatch(actions.countUsers()).then(() => {
@@ -138,15 +138,15 @@ describe('async count  user action', () => {
 describe('async edit  user action', () => {
   it('invokes UPDATED_USER_SUCCESS when searching new user ', (done) => {
     nock('http://localhost.com')
-            .put('/users/1')
-            .reply(200, {
-              body: {
-                users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
-              }
-            });
+      .put('/users/1')
+      .reply(200, {
+        body: {
+          users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
+        }
+      });
 
     const expectedActions = [
-            { type: types.UPDATED_USER_SUCCESS, response: { users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }] } }
+      { type: types.UPDATED_USER_SUCCESS, response: { users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }] } }
     ];
     const store = mockStore({ users: [] }, done());
     store.dispatch(actions.editUser()).then(() => {
@@ -159,15 +159,15 @@ describe('async edit  user action', () => {
 describe('async delete  user action', () => {
   it('invokes DELETED_USER_SUCCESS when deleting  user ', (done) => {
     nock('http://localhost.com')
-            .delete('/users/1')
-            .reply(200, {
-              body: {
-                users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
-              }
-            });
+      .delete('/users/1')
+      .reply(200, {
+        body: {
+          users: [{ firstName: 'Eunice', lastName: 'Jeester', email: 'j@gmail.com', password: 'Public@1234', roleType: 'admin' }]
+        }
+      });
 
     const expectedActions = [
-            { type: types.DELETED_USER_SUCCESS, response: { message: 'user Deleted Successfully' } }
+      { type: types.DELETED_USER_SUCCESS, response: { message: 'user Deleted Successfully' } }
     ];
     const store = mockStore({ users: [] }, done());
     store.dispatch(actions.deleteUser()).then(() => {

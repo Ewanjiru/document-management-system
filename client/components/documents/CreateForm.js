@@ -128,7 +128,6 @@ CreateForm.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(state.error, 'hapa niko');
   return {
     documents: state.documents,
     error: state.error

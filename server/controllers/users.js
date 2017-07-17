@@ -1,7 +1,7 @@
 const User = require('../models').users;
 const jwt = require('jsonwebtoken');
 
-const secret = 'docmanagementsystem';
+const secret = process.env.secret;
 const Document = require('../models').documents;
 
 module.exports = {

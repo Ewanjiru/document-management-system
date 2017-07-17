@@ -2,16 +2,16 @@ import * as actionTypes from './ActionTypes';
 import appApi from '../api/AppApi';
 
 
-export function createdRole(records) {
-  return { type: actionTypes.CREATED_ROLE_SUCCESS, records };
+export function createdRole(roles) {
+  return { type: actionTypes.CREATED_ROLE_SUCCESS, roles };
 }
 
 export function loadRolesSuccess(roles) {
   return { type: actionTypes.LOAD_ROLES_SUCCESS, roles };
 }
 
-export function deletedRoleById(response) {
-  return { type: actionTypes.DELETED_ROLE_SUCCESS, response };
+export function deletedRoleById(roles) {
+  return { type: actionTypes.DELETED_ROLE_SUCCESS, roles };
 }
 
 export function getError(error) {

@@ -6,5 +6,4 @@ export default {
   roles: [],
   error: null,
   count: 0,
-  search: []
 };

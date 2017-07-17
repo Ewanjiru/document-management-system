@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
-import * as actions from '../../../client/actions/RoleActions';
-import * as types from '../../../client/actions/ActionTypes';
+import * as actions from '../actions/RoleActions';
+import * as types from '../actions/ActionTypes';
 
 const expect = require('chai').expect;
 
@@ -19,8 +19,8 @@ describe('dispatch actions', () => {
       expect(actions.createdRole().type).to.eql('CREATED_ROLE_SUCCESS');
     });
     it('should create new role', () => {
-      const records = { role: 'admin' };
-      expect(actions.createdRole(records).records).to.eql(records);
+      const roles = { role: 'admin' };
+      expect(actions.createdRole(roles).roles).to.eql(roles);
     });
   });
 
@@ -38,15 +38,15 @@ describe('dispatch actions', () => {
 describe('async create  role action', () => {
   it('invokes CREATED_ROLE_SUCCESS when creating role ', (done) => {
     nock('http://localhost.com')
-            .post('/roles')
-            .reply(201, {
-              body: {
-                roles: { role: 'admin' }
-              }
-            });
+      .post('/roles')
+      .reply(201, {
+        body: {
+          roles: { role: 'admin' }
+        }
+      });
 
     const expectedActions = [
-            { type: types.CREATED_ROLE_SUCCESS, response: { role: 'admin' } }
+      { type: types.CREATED_ROLE_SUCCESS, response: { role: 'admin' } }
     ];
     const store = mockStore({ roles: [] }, done());
     store.dispatch(actions.newRole()).then(() => {
@@ -59,15 +59,15 @@ describe('async create  role action', () => {
 describe('async load roles action', () => {
   it('invokes LOAD_ROLES_SUCCESS when loading roles ', (done) => {
     nock('http://localhost.com')
-            .get('/roles')
-            .reply(200, {
-              body: {
-                roles: { role: 'admin' }
-              }
-            });
+      .get('/roles')
+      .reply(200, {
+        body: {
+          roles: { role: 'admin' }
+        }
+      });
 
     const expectedActions = [
-            { type: types.LOAD_ROLES_SUCCESS, response: { role: 'admin' } }
+      { type: types.LOAD_ROLES_SUCCESS, response: { role: 'admin' } }
     ];
     const store = mockStore({ roles: [] }, done());
     store.dispatch(actions.loadRoles()).then(() => {
@@ -80,15 +80,15 @@ describe('async load roles action', () => {
 describe('async delete roles action', () => {
   it('invokes DELETED_ROLE_SUCCESS when deleting roles ', (done) => {
     nock('http://localhost.com')
-            .delete('/roles/1')
-            .reply(200, {
-              body: {
-                roles: { role: 'admin' }
-              }
-            });
+      .delete('/roles/1')
+      .reply(200, {
+        body: {
+          roles: { role: 'admin' }
+        }
+      });
 
     const expectedActions = [
-            { type: types.DELETED_ROLE_SUCCESS, response: { message: 'Role Deleted Successfully' } }
+      { type: types.DELETED_ROLE_SUCCESS, response: { message: 'Role Deleted Successfully' } }
     ];
     const store = mockStore({ roles: [] }, done());
     store.dispatch(actions.deleteRole()).then(() => {

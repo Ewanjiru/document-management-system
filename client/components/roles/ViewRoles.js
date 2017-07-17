@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import * as RoleActions from '../../actions/RoleActions';
 import '../documents/Document.scss';
 
-class ViewRoles extends React.Component {
+export class ViewRoles extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +37,6 @@ class ViewRoles extends React.Component {
 
   handleDelete(id) {
     this.props.actions.deleteRole(id).then(() => {
-      console.log('hahhahahha', this.props.error.error);
       this.showNotification(this.props.error.error);
       window.location.reload();
     });
@@ -57,8 +56,8 @@ class ViewRoles extends React.Component {
       <div className="wrapper">
         <Card>
           <div>
-          <ReactNotify ref="notificator" />
-        </div>
+            <ReactNotify ref="notificator" />
+          </div>
           <Table>
             <TableBody displayRowCheckbox={false}>
               <TableRow >
@@ -97,7 +96,6 @@ ViewRoles.defaultProps = {
   roles: []
 };
 function mapStateToProps(state) {
-  console.log('these roles', state.error);
   return {
     roles: state.roles,
     error: state.error

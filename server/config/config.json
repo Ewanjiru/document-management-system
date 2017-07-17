@@ -13,5 +13,13 @@
     "database": "dms-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
+  },
+  "staging": {
+    "username": "jhavlhmdtpffzd",
+    "password": "371c741abaa3164b8cfe7b526f41eeb1e3c48e908a1489799fd11e8e92bec3a7",
+    "database": "d8tc7tscdsc8fp",
+    "host": "ec2-184-73-249-56.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "logging": false
   }
 }

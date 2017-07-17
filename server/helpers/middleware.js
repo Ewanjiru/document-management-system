@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const secret = 'docmanagementsystem';
-const Document = require('../models').documents;
+
+const secret = process.env.secret;
 
 module.exports = {
   verifyToken(req, res, next) {
@@ -19,7 +19,6 @@ module.exports = {
 
   verifyRole(req, res, next) {
     const role = req.decoded.roleType;
-    console.log("Tumefika hapa", role);
     if (role !== 'admin') {
       return res.status(403).send({
         message: 'You do not have permission to access this'

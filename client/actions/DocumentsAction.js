@@ -55,6 +55,7 @@ export const loadDocuments = (limit, offset) => function (dispatch) {
 export const countDocuments = () => function (dispatch) {
   return appApi.getDocsCount()
     .then((response) => {
+      console.log('this is the response', response);
       dispatch(getCountSuccess(response.data.doc.count));
     })
     .catch((error) => { throw (error); });

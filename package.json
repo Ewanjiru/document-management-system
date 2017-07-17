@@ -4,10 +4,11 @@
   "description": "a document managemt system",
   "main": "index.js",
   "scripts": {
-    "start": "npm-run-all --parallel open:src && npm run test",
+    "start": "npm-run-all --parallel open:src && npm run migrate && npm run test",
     "open:src": "nodemon ./bin/www --exec babel-node ",
     "lint": "node_modules/.bin/esw webpack.config.* client server server.*",
     "lint:watch": "npm run lint -- --watch",
+    "migrate": "export NODE_ENV=staging && sequelize db:migrate:undo:all && sequelize db:migrate",
     "test": "export NODE_ENV=test && sequelize db:migrate:undo:all && sequelize db:migrate && babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha  -R spec ./server/test/*.spec.js",
     "coverage": "./node_modules/.bin/coveralls < coverage/lcov.info",
     "test:frontend": "jest ./client/test/*.spec.js"

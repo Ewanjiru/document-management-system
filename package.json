@@ -4,9 +4,9 @@
   "description": "a document managemt system",
   "main": "index.js",
   "scripts": {
-    "start": "npm-run-all --parallel open:src && npm run migrate && npm run test",
+    "start": "npm-run-all --parallel open:src",
     "open:src": "nodemon ./bin/www --exec babel-node ",
-    "postinstall": "",
+    "postinstall": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "lint": "node_modules/.bin/esw webpack.config.* client server server.*",
     "lint:watch": "npm run lint -- --watch",
     "migrate": "export NODE_ENV=staging && sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",

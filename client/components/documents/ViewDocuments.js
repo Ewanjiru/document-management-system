@@ -197,110 +197,117 @@ class View extends React.Component {
     ];
     return (
       <div className="wrapper">
-        <div>
-          <Dialog
-            title="Edit Document"
-            actions={actions}
-            modal={false}
-            open={this.state.openEdit}
-            onRequestClose={this.handleClose}
-            autoScrollBodyContent
-          >
-            <Card>
-              <CardTitle id="card">
-                <TextField
-                  name="title"
-                  id="edit"
-                  value={this.state.edit.title}
-                  onChange={this.onchange}
-                  fullWidth
-                />
-              </CardTitle>
-              <CardHeader>
-                Access Type:
-            <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-                  <option value="">choose..</option>
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                  <option value={role}>Role Based</option>
-                </select>
-              </CardHeader>
-              <CardText>
-                <textarea
-                  name="content"
-                  id="textarea"
-                  rows="22"
-                  cols="120"
-                  value={this.state.edit.content}
-                  onChange={this.onchange}
-                />
-              </CardText>
-            </Card>
-          </Dialog>
-        </div>
-
-        <div>
-          <Dialog
-            actions={actions2}
-            modal={false}
-            open={this.state.openView}
-            onRequestClose={this.handleClose}
-            autoScrollBodyContent
-          >
-            <Card>
-              <CardTitle title={`${this.props.documents.byId.title} by ${this.props.documents.byId.userId}`} />
-              <CardText>
-                {this.props.documents.byId.content}
-              </CardText>
-            </Card>
-          </Dialog>
-        </div>
-
-        <Card>
-          <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} /><RaisedButton Primary name="search" onClick={this.handleSearch}>Search</RaisedButton>
-          <Table>
-            <TableBody displayRowCheckbox={false}>
-              <TableRow >
-                <TableHeaderColumn>Title</TableHeaderColumn>
-                <TableHeaderColumn>Access Type</TableHeaderColumn>
-              </TableRow>
-              {
-                filteredDocuments.map(adocument =>
-                  (<TableRow key={adocument.id}>
-                    <TableRowColumn>{adocument.title}</TableRowColumn>
-                    <TableRowColumn>{adocument.access}</TableRowColumn>
-                    <TableRowColumn>
-
-                      <RaisedButton
-                        onClick={() => this.handleOpenView(adocument.id)}
-                        primary
-                      >View</RaisedButton>
-
-                      {role === 'admin' &&
-                        <RaisedButton
-                          onClick={() => this.handleOpen(adocument.id)}
-                          primary
-                        >Edit</RaisedButton>
-                      }
-                    </TableRowColumn>
-                  </TableRow>)
-                )}
-            </TableBody>
-          </Table>
-          <div className="pages">
-            <Pagination
-              activePage={this.state.activePage}
-              itemsCountPerPage={7}
-              totalItemsCount={itemsCount[0]}
-              pageRangeDisplayed={5}
-              onChange={this.handlePageChange}
-            />
-          </div>
-          <div>
-            <ReactNotify ref="notificator" />
-          </div>
-        </Card>
+        <Dialog
+          title="Edit Document"
+          actions={actions}
+          modal={false}
+          open={this.state.openEdit}
+          onRequestClose={this.handleClose}
+          autoScrollBodyContent
+        >
+          <Card>
+            <form id="viewDocs">
+              <div className="row">
+                <label>Document Title</label>
+                <CardTitle id="card">
+                  <TextField
+                    name="title"
+                    id="edit"
+                    value={this.state.edit.title}
+                    onChange={this.onchange}
+                    fullWidth
+                  />
+                </CardTitle>
+              </div>
+              <div className="row">
+                <label>Access Type:</label>
+                <CardTitle>
+                  <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
+                    <option value="">choose..</option>
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                    <option value={role}>Role Based</option>
+                  </select>
+                </CardTitle>
+              </div>
+              <div className="row">
+                <label>Content</label>
+                <CardTitle>
+                  <textarea
+                    name="content"
+                    id="textarea"
+                    rows="22"
+                    value={this.state.edit.content}
+                    onChange={this.onchange}
+                  />
+                </CardTitle>
+              </div>
+            </form>
+          </Card>
+        </Dialog>
       </div>
+
+      <div>
+        <Dialog
+          actions={actions2}
+          modal={false}
+          open={this.state.openView}
+          onRequestClose={this.handleClose}
+          autoScrollBodyContent
+        >
+          <Card>
+            <CardTitle title={`${this.props.documents.byId.title} by ${this.props.documents.byId.userId}`} />
+            <CardText>
+              {this.props.documents.byId.content}
+            </CardText>
+          </Card>
+        </Dialog>
+      </div>
+
+      <Card>
+        <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} /><RaisedButton Primary name="search" onClick={this.handleSearch}>Search</RaisedButton>
+        <Table>
+          <TableBody displayRowCheckbox={false}>
+            <TableRow >
+              <TableHeaderColumn>Title</TableHeaderColumn>
+              <TableHeaderColumn>Access Type</TableHeaderColumn>
+            </TableRow>
+            {
+              filteredDocuments.map(adocument =>
+                (<TableRow key={adocument.id}>
+                  <TableRowColumn>{adocument.title}</TableRowColumn>
+                  <TableRowColumn>{adocument.access}</TableRowColumn>
+                  <TableRowColumn>
+
+                    <RaisedButton
+                      onClick={() => this.handleOpenView(adocument.id)}
+                      primary
+                    >View</RaisedButton>
+
+                    {role === 'admin' &&
+                      <RaisedButton
+                        onClick={() => this.handleOpen(adocument.id)}
+                        primary
+                      >Edit</RaisedButton>
+                    }
+                  </TableRowColumn>
+                </TableRow>)
+              )}
+          </TableBody>
+        </Table>
+        <div className="pages">
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={7}
+            totalItemsCount={itemsCount[0]}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
+          />
+        </div>
+        <div>
+          <ReactNotify ref="notificator" />
+        </div>
+      </Card>
     );
   }
 }

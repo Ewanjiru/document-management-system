@@ -82,38 +82,47 @@ export class CreateForm extends React.Component {
               <ReactNotify ref="notificator" />
             </div>
             <form>
-              <label>Document Title</label>
-              <CardTitle>
-                <TextField
-                  name="title"
-                  value={this.state.documents.title}
-                  onChange={this.onchange}
-                />
-              </CardTitle>
-              <label>Access Type:</label>
-              <CardTitle>
-                <select value={this.state.documents.access} name="access" onChange={this.onchange}>
-                  <option value="">choose...</option>
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                  <option value={this.state.role}>Role Based</option>
-                </select>
-              </CardTitle>
-              <label>Content</label>
-              <CardTitle>
-                <textarea
-                  id="textarea"
-                  rows="10"
-                  cols="75"
-                  name="content"
-                  value={this.state.documents.content}
-                  onChange={this.onchange}
-                >Enter content here...</textarea>
-              </CardTitle>
-              <CardActions>
-                <RaisedButton disabled={!this.state.documents.title || !this.state.documents.content || !this.state.documents.access} id="submit" label="Create" primary={true} onClick={this.create} />
-                <RaisedButton label="Discard" secondary />
-              </CardActions>
+              <div className="row">
+                <label>Document Title</label>
+                <CardTitle>
+                  <TextField
+                    name="title"
+                    value={this.state.documents.title}
+                    onChange={this.onchange}
+                    fullWidth
+                  />
+                </CardTitle>
+              </div>
+              <div className="row">
+                <label>Access Type:</label>
+                <CardTitle>
+                  <select id="access" value={this.state.documents.access} name="access" onChange={this.onchange}>
+                    <option value="">choose...</option>
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                    <option value={this.state.role}>Role Based</option>
+                  </select>
+                </CardTitle>
+              </div>
+              <div className="row">
+                <label>Content</label>
+                <CardTitle>
+                  <textarea
+                    id="textarea"
+                    rows="10"
+                    name="content"
+                    value={this.state.documents.content}
+                    onChange={this.onchange}
+                    fullWidth
+                  >Enter content here...</textarea>
+                </CardTitle>
+              </div>
+              <div className="row">
+                <CardActions>
+                  <RaisedButton disabled={!this.state.documents.title || !this.state.documents.content || !this.state.documents.access} id="submit" label="Create" primary={true} onClick={this.create} />
+                  <RaisedButton label="Discard" secondary />
+                </CardActions>
+              </div>
             </form>
           </Card>
         </MuiThemeProvider>

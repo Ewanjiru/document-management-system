@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import PropTypes from 'react-proptypes';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Card } from 'material-ui/Card';
 import SignUpForm from './SignUpForm';
 import ReactNotify from 'react-notify';
 import * as SignUpActions from '../../actions/SignUpAction';
@@ -64,17 +66,19 @@ class SignUp extends React.Component {
           <h2>Welcome To eDocz Document Management System</h2>
         </div>
         <div className="signups">
-          <div id="logWrapper">
-            <div>
-              <ReactNotify ref="notificator" />
-            </div>
-            <SignUpForm
-              user={this.state.user}
-              onchange={this.onchange}
-              userRegister={this.userRegister}
-              logCancel={this.logCancel}
-            />
+          <div>
+            <ReactNotify ref="notificator" />
           </div>
+          <MuiThemeProvider>
+            <Card id="logWrapper">
+              <SignUpForm
+                user={this.state.user}
+                onchange={this.onchange}
+                userRegister={this.userRegister}
+                logCancel={this.logCancel}
+              />
+            </Card>
+          </MuiThemeProvider>
         </div>
       </div>
     );

@@ -1,5 +1,5 @@
 .mainframe{
-  background-color:darkgrey;
+  background-color:#E8E8E8;
   height: 100vh;
   width: 100%;
   margin-top: 0px;
@@ -14,12 +14,20 @@
   .signups{
     border: 4px;
     border-color: black;
-    padding: 5%;
     margin-top: 2%;
     margin-left: 15%;
     margin-right: 20%;
     #lograpper{
       height: 100vh;
+    }
+  }
+  form{
+    align-self: center;
+    box-shadow: 10px 10px 5px #888888;
+    .row{
+      margin-left:20%;
+      margin-right:20%;
+      margin-top: 3%;
     }
   }
 }

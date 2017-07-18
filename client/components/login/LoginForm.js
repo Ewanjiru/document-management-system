@@ -12,44 +12,38 @@ const style = {
 
 const LoginForm = props => (
   <MuiThemeProvider id="logWrapper">
-    <div className="container">
+    <form>
       <div className="row">
-        <div className="col-lg-12">
-          <TextField
-            hintText="your email"
-            name="email"
-            value={props.user.email}
-            onChange={props.onchange}
-          />
-        </div>
+        <TextField
+          hintText="your email"
+          name="email"
+          value={props.user.email}
+          onChange={props.onchange}
+          fullWidth
+        />
       </div>
       <div className="row">
-        <div className="col-lg-12">
-          <PasswordField
-            hintText="your password"
-            name="password"
-            value={props.user.password}
-            onChange={props.onchange}
-          />
-        </div>
+        <PasswordField
+          hintText="your password"
+          name="password"
+          value={props.user.password}
+          onChange={props.onchange}
+          fullWidth
+        />
       </div>
       <div className="row">
-        <div className="col-lg-6">
-          <RaisedButton
-            name="login"
-            label="Login"
-            primary={style}
-            onClick={props.userLog}
-          />
-          <RaisedButton label="Cancel" secondary={style} />
-        </div>
+        <RaisedButton
+          name="login"
+          label="Login"
+          primary={style}
+          onClick={props.userLog}
+        />
+        <RaisedButton label="Cancel" secondary={style} />
       </div>
       <div className="row">
-        <div className="col-lg-4">
-          <b>Create account:<Link to='/edocx/signup' name="signup">SignUp</Link></b>
-        </div>
+        <b>Create account:<Link to='/edocx/signup' name="signup">SignUp</Link></b>
       </div>
-    </div>
+    </form>
   </MuiThemeProvider>
 );
 

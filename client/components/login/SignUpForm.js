@@ -10,70 +10,61 @@ const style = {
 };
 const SignUpForm = props => (
   <MuiThemeProvider>
-    <div className="container">
+    <form>
       <div className="row">
-        <div className="col-lg-12">
-          <TextField
-            Required
-            hintText="your firstname"
-            name="firstName"
-            value={props.user.firstName}
-            onChange={props.onchange}
-          />
-        </div>
+        <TextField
+          Required
+          hintText="your firstname"
+          name="firstName"
+          value={props.user.firstName}
+          onChange={props.onchange}
+          fullWidth
+        />
       </div>
       <div className="row">
-        <div className="col-lg-12">
-          <TextField
-            Required
-            hintText="your lastname"
-            name="lastName"
-            value={props.user.lastName}
-            onChange={props.onchange}
-          />
-        </div>
+        <TextField
+          Required
+          hintText="your lastname"
+          name="lastName"
+          value={props.user.lastName}
+          onChange={props.onchange}
+          fullWidth
+        />
       </div>
       <div className="row">
-        <div className="col-lg-12">
-          <TextField
-            hintText="your email"
-            name="email"
-            value={props.user.email}
-            onChange={props.onchange}
-          />
-        </div>
+        <TextField
+          hintText="your email"
+          name="email"
+          value={props.user.email}
+          onChange={props.onchange}
+          fullWidth
+        />
       </div>
       <div className="row">
-        <div className="col-lg-12">
-          <PasswordField
-            floatingLabelText="your password"
-            name="password"
-            value={props.user.password}
-            onChange={props.onchange}
-          />
-        </div>
+        <PasswordField
+          floatingLabelText="your password"
+          name="password"
+          value={props.user.password}
+          onChange={props.onchange}
+          fullWidth
+        />
       </div>
       <div className="row">
-        <div className="col-lg-6">
-          <RaisedButton
-            name="sign"
-            label="Register"
-            primary
-            style={style}
-            onClick={props.userRegister}
-          />
-          <RaisedButton
-            label="Cancel"
-            secondary
-            style={style}
-            onClick={props.logCancel}
-          />
-        </div>
+        <RaisedButton
+          name="sign"
+          label="Register"
+          primary
+          style={style}
+          onClick={props.userRegister}
+        />
+        <RaisedButton
+          label="Cancel"
+          secondary
+          style={style}
+          onClick={props.logCancel}
+        />
       </div>
-      <div className="row">
-        <div className="col-lg-12" />
-      </div>
-    </div>
+    </form>
   </MuiThemeProvider>
 );
 

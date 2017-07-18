@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'react-proptypes';
 import ReactNotify from 'react-notify';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Card } from 'material-ui/Card';
 import LoginForm from './LoginForm';
 import * as SignUpActions from '../../actions/SignUpAction';
 import '../home/Home.scss';
@@ -56,16 +58,20 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="logWrapper">
+      <div className="signups">
         <div>
           <ReactNotify ref="notificator" />
         </div>
-        <LoginForm
-          user={this.state.user}
-          onchange={this.onchange}
-          userLog={this.userLog}
-          logCancel={this.logCancel}
-        />
+        <MuiThemeProvider>
+          <Card id="logWrapper">
+            <LoginForm
+              user={this.state.user}
+              onchange={this.onchange}
+              userLog={this.userLog}
+              logCancel={this.logCancel}
+            />
+          </Card>
+        </MuiThemeProvider>
       </div>
     );
   }

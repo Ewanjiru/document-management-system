@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'react-proptypes';
 import Login from '../login/Login';
-import SignUp from '../login/SignUp';
 import './Home.scss';
 
 class Home extends React.Component {
@@ -21,11 +19,7 @@ class Home extends React.Component {
         <div className="header">
           <h2>Welcome To eDocz Document Management System</h2>
         </div>
-        <div className="signups">
-          <Login
-            renderToggle={this.renderToggle}
-          />
-        </div>
+        <Login />
       </div>
     );
   }

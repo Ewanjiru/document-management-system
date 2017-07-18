@@ -21,6 +21,5 @@
     "host": "ec2-184-73-249-56.compute-1.amazonaws.com",
     "dialect": "postgres",
     "logging": false,
-    "seederStorage": "sequelize"
   }
 }

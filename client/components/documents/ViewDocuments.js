@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Pagination from 'react-js-pagination';
 import ReactNotify from 'react-notify';
-import { Card, CardHeader, CardTitle, CardText, CardMedia } from 'material-ui/Card';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
+import { Table, TableBody, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -162,7 +162,6 @@ class View extends React.Component {
       itemsCount = Object.keys(items).map(key => items[key]);
       filteredDocuments = this.state.documents;
     } else {
-      console.log('debugging docs', this.state.documents);
       items = this.state.documents.length;
       itemsCount = [items];
       filteredDocuments = this.state.documents;

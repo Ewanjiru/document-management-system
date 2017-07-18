@@ -111,10 +111,14 @@ class ViewUsers extends React.Component {
   }
 
   handleDelete(id) {
-    this.props.actions.userActions.deleteUser(id).then(() => {
-      window.location.reload();
-      this.showNotification(this.props.error.error);
-    });
+    if (id === 1) {
+      this.showNotification('Admin cannot be deleted');
+    } else {
+      this.props.actions.userActions.deleteUser(id).then(() => {
+        window.location.reload();
+        this.showNotification(this.props.error.error);
+      });
+    }
   }
 
   handlePageChange(pageNumber) {

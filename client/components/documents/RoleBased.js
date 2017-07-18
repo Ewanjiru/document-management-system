@@ -160,34 +160,42 @@ class RoleBased extends React.Component {
                 autoScrollBodyContent
               >
                 <Card>
-                  <CardTitle id="card">
-                    <TextField
-                      name="title"
-                      id="edit"
-                      value={this.state.edit.title}
-                      onChange={this.onchange}
-                      fullWidth
-                    />
-                  </CardTitle>
-                  <CardHeader>
-                    Access Type:
-            <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-                      <option value="">choose..</option>
-                      <option value="public">Public</option>
-                      <option value="private">Private</option>
-                      <option value={role}>Role Based</option>
-                    </select>
-                  </CardHeader>
-                  <CardText>
-                    <textarea
-                      name="content"
-                      id="textarea"
-                      rows="22"
-                      cols="120"
-                      value={this.state.edit.content}
-                      onChange={this.onchange}
-                    />
-                  </CardText>
+                  <div className="row">
+                    <label>Document Title</label>
+                    <CardTitle id="card">
+                      <TextField
+                        name="title"
+                        id="edit"
+                        value={this.state.edit.title}
+                        onChange={this.onchange}
+                        fullWidth
+                      />
+                    </CardTitle>
+                  </div>
+                  <div className="row">
+                    <label>Access Type:</label>
+                    <CardTitle>
+                      <select name="access" id="acces" style={{ width: '100%' }} value={this.state.edit.access} onChange={this.onchange}>
+                        <option value="">choose..</option>
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                        <option value={role}>Role Based</option>
+                      </select>
+                    </CardTitle>
+                  </div>
+                  <div className="row">
+                    <label>Content</label>
+                    <CardTitle>
+                      <textarea
+                        name="content"
+                        id="textarea"
+                        rows="10"
+                        style={{ width: '100%' }}
+                        value={this.state.edit.content}
+                        onChange={this.onchange}
+                      />
+                    </CardTitle>
+                  </div>
                 </Card>
               </Dialog>
             </MuiThemeProvider>

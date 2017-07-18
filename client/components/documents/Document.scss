@@ -16,21 +16,7 @@
   margin-left: 5%;
   margin-right: 5%;
   box-shadow: 10px 10px 5px #888888;
-  #card{
-    background-color: #E8E8E8;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    width: 50%;
-    height: 50%;
-  }
-  #card2{
-    background-color: #E8E8E8;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    width: 30%;
-    height: 30%;
-  }
-  #textarea{
-    margin: auto;
-  }
+  
  input[type="text"] {
     width: 80%;
     height: 40px;
@@ -47,5 +33,4 @@ form{
       width: 100%;
     }
 }
-
 }

@@ -204,8 +204,8 @@ class View extends React.Component {
           onRequestClose={this.handleClose}
           autoScrollBodyContent
         >
-          <Card>
-            <form id="viewDocs">
+          <Card Style={{}}>
+            <form>
               <div className="row">
                 <label>Document Title</label>
                 <CardTitle id="card">
@@ -221,7 +221,7 @@ class View extends React.Component {
               <div className="row">
                 <label>Access Type:</label>
                 <CardTitle>
-                  <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
+                  <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange} style={{ width: '100%' }}>
                     <option value="">choose..</option>
                     <option value="public">Public</option>
                     <option value="private">Private</option>
@@ -235,7 +235,8 @@ class View extends React.Component {
                   <textarea
                     name="content"
                     id="textarea"
-                    rows="22"
+                    rows="10"
+                    style={{ width: '100%' }}
                     value={this.state.edit.content}
                     onChange={this.onchange}
                   />

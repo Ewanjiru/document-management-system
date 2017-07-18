@@ -6,11 +6,14 @@
   .header{
     height: 20%;
     background: black;
-    h2{
+  }
+   h2{
+      font-size: 2.5em;
       text-align: center;
       color: white;
+      padding: 4%;
+      font-family: 'Georgia';
     }
-  }
   .signups{
     border: 4px;
     border-color: black;

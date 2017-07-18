@@ -80,7 +80,7 @@ export class CreateRole extends React.Component {
                 <RaisedButton
                   id="submit"
                   label="Create"
-                  secondary
+                  primary={true}
                   onClick={this.create}
                 />
               </CardActions>

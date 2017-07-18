@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'react-proptypes';
-import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Pagination from 'react-js-pagination';
@@ -76,14 +75,6 @@ class View extends React.Component {
     });
   }
 
-  update() {
-    this.props.actions.countDocuments().then(
-      this.props.actions.loadDocuments().then(() => {
-        this.showNotification(this.props.error.error.response.data.message);
-      })
-    );
-  }
-
   onchange(event) {
     const label = event.target.name;
     const edit = this.state.edit;
@@ -92,6 +83,14 @@ class View extends React.Component {
     this.setState({
       edit: Object.assign({}, this.state.edit, edit)
     });
+  }
+
+  update() {
+    this.props.actions.countDocuments().then(
+      this.props.actions.loadDocuments().then(() => {
+        this.showNotification(this.props.error.error.response.data.message);
+      })
+    );
   }
 
   handleOpen(id) {
@@ -318,7 +317,6 @@ View.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log('the errororoororo', state.error);
   return {
     documents: state.documents,
     count: state.count,

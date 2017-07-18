@@ -5,6 +5,8 @@ import View from './ViewDocuments';
 import Header from '../common/Header';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
+import authenticate from '../../api/helper';
+
 import './Documents';
 
 class Documents extends React.Component {
@@ -21,13 +23,14 @@ class Documents extends React.Component {
   }
 
   render() {
+    const role = authenticate(sessionStorage.Token).roleType;
     return (
       <div className="mainframe">
         <Header />
-        <ul className="nav nav-pills">
+        <ul className="nav nav-pills" >
           <li role="presentation" className="active"><a href="/edocx/documents">All Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/mydocuments" name="mine">My Documents</a></li>
-          <li role="presentation"><a href="/edocx/documents/roledocuments">RoleBased Documents</a></li>
+          <li role="presentation"><a href="/edocx/documents/roledocuments">{role} Documents</a></li>
           <li role="presentation"><a href="/edocx/documents/newdocument" name="new">New Document</a></li>
         </ul>
         <MuiThemeProvider>

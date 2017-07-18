@@ -140,113 +140,115 @@ class RoleBased extends React.Component {
       />
     ];
     return (
-      <div className="wrapper">
+      <div>
         <Header />
-        <ul className="nav nav-pills">
-          <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
-          <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
-          <li role="presentation" className="active"><a href="/edocx/documents/roledocuments">RoleBased Documents</a></li>
-          <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
-        </ul>
-        <div>
-          <MuiThemeProvider>
-            <Dialog
-              title="Edit Document"
-              actions={actions}
-              modal={false}
-              open={this.state.openEdit}
-              onRequestClose={this.handleClose}
-              autoScrollBodyContent
-            >
-              <Card>
-                <CardTitle id="card">
-                  <TextField
-                    name="title"
-                    id="edit"
-                    value={this.state.edit.title}
-                    onChange={this.onchange}
-                    fullWidth
-                  />
-                </CardTitle>
-                <CardHeader>
-                  Access Type:
+        <div className="wrapper">
+          <ul className="nav nav-pills">
+            <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
+            <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
+            <li role="presentation" className="active"><a href="/edocx/documents/roledocuments">{role} Documents</a></li>
+            <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
+          </ul>
+          <div>
+            <MuiThemeProvider>
+              <Dialog
+                title="Edit Document"
+                actions={actions}
+                modal={false}
+                open={this.state.openEdit}
+                onRequestClose={this.handleClose}
+                autoScrollBodyContent
+              >
+                <Card>
+                  <CardTitle id="card">
+                    <TextField
+                      name="title"
+                      id="edit"
+                      value={this.state.edit.title}
+                      onChange={this.onchange}
+                      fullWidth
+                    />
+                  </CardTitle>
+                  <CardHeader>
+                    Access Type:
             <select name="access" id="acces" value={this.state.edit.access} onChange={this.onchange}>
-                    <option value="">choose..</option>
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                    <option value={role}>Role Based</option>
-                  </select>
-                </CardHeader>
-                <CardText>
-                  <textarea
-                    name="content"
-                    id="textarea"
-                    rows="22"
-                    cols="120"
-                    value={this.state.edit.content}
-                    onChange={this.onchange}
-                  />
-                </CardText>
-              </Card>
-            </Dialog>
-          </MuiThemeProvider>
-        </div>
+                      <option value="">choose..</option>
+                      <option value="public">Public</option>
+                      <option value="private">Private</option>
+                      <option value={role}>Role Based</option>
+                    </select>
+                  </CardHeader>
+                  <CardText>
+                    <textarea
+                      name="content"
+                      id="textarea"
+                      rows="22"
+                      cols="120"
+                      value={this.state.edit.content}
+                      onChange={this.onchange}
+                    />
+                  </CardText>
+                </Card>
+              </Dialog>
+            </MuiThemeProvider>
+          </div>
 
-        <div>
+          <div>
+            <MuiThemeProvider>
+              <Dialog
+                actions={actions2}
+                modal={false}
+                open={this.state.openView}
+                onRequestClose={this.handleClose}
+                autoScrollBodyContent
+              >
+                <Card>
+                  <CardTitle title={`${this.props.documents.byId.title} by ${this.props.documents.byId.userId}`} />
+                  <CardText>
+                    {this.props.documents.byId.content}
+                  </CardText>
+                </Card>
+              </Dialog>
+            </MuiThemeProvider>
+          </div>
+
           <MuiThemeProvider>
-            <Dialog
-              actions={actions2}
-              modal={false}
-              open={this.state.openView}
-              onRequestClose={this.handleClose}
-              autoScrollBodyContent
-            >
-              <Card>
-                <CardTitle title={`${this.props.documents.byId.title} by ${this.props.documents.byId.userId}`} />
-                <CardText>
-                  {this.props.documents.byId.content}
-                </CardText>
-              </Card>
-            </Dialog>
+            <Card>
+              <Table>
+                <TableHeader>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false}>
+                  <TableRow >
+                    <TableHeaderColumn>Document title</TableHeaderColumn>
+                    <TableHeaderColumn>Document access</TableHeaderColumn>
+                  </TableRow>
+                  {
+                    this.props.documents.all.map(adocument =>
+                      (<TableRow key={adocument.id}>
+                        <TableRowColumn>{adocument.title}</TableRowColumn>
+                        <TableRowColumn>{adocument.access}</TableRowColumn>
+                        <TableRowColumn>
+                          <RaisedButton
+                            onClick={() => this.handleOpenView(adocument.id)}
+                            primary
+                          >View</RaisedButton>
+                        </TableRowColumn>
+                        <TableRowColumn>
+                          <RaisedButton
+                            onClick={() => this.handleOpen(adocument.id)}
+                            primary
+                          >Edit</RaisedButton>
+                        </TableRowColumn>
+                      </TableRow>)
+                    )}
+                </TableBody>
+              </Table>
+              <div>
+                <ReactNotify ref="notificator" />
+              </div>
+            </Card>
           </MuiThemeProvider>
         </div>
-
-        <MuiThemeProvider>
-          <Card>
-            <Table>
-              <TableHeader>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false}>
-                <TableRow >
-                  <TableHeaderColumn>Document title</TableHeaderColumn>
-                  <TableHeaderColumn>Document access</TableHeaderColumn>
-                </TableRow>
-                {
-                  this.props.documents.all.map(adocument =>
-                    (<TableRow key={adocument.id}>
-                      <TableRowColumn>{adocument.title}</TableRowColumn>
-                      <TableRowColumn>{adocument.access}</TableRowColumn>
-                      <TableRowColumn>
-                        <RaisedButton
-                          onClick={() => this.handleOpenView(adocument.id)}
-                          primary
-                        >View</RaisedButton>
-                      </TableRowColumn>
-                      <TableRowColumn>
-                        <RaisedButton
-                          onClick={() => this.handleOpen(adocument.id)}
-                          primary
-                        >Edit</RaisedButton>
-                      </TableRowColumn>
-                    </TableRow>)
-                  )}
-              </TableBody>
-            </Table>
-            <div>
-              <ReactNotify ref="notificator" />
-            </div>
-          </Card>
-        </MuiThemeProvider>
       </div>
     );
   }
@@ -258,7 +260,6 @@ RoleBased.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log('the state', state.error);
   return {
     documents: state.documents,
     error: state.error

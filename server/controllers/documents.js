@@ -71,8 +71,6 @@ module.exports = {
             message: 'Documents not found',
           });
         }
-        const count = doc.count;
-        console.log(count);
         return res.status(200).send({ doc });
       })
       .catch(error => res.status(400).send(error));

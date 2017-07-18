@@ -1,6 +1,21 @@
+.mainframe{
+  width: 100%
+}
+.nav{
+  padding-bottom: 2%;
+  a{
+    font-family:'Georgia', Times, serif;
+    font-size: medium;
+  }
+}
+.nav-pills{
+  width: 90%;
+  margin-left: 5%;
+}
 .wrapper{
   margin-left: 5%;
   margin-right: 5%;
+  box-shadow: 10px 10px 5px #888888;
   #card{
     background-color: #E8E8E8;
     font-family: Georgia, 'Times New Roman', Times, serif;

@@ -38,10 +38,10 @@ const LoginForm = props => (
           primary={style}
           onClick={props.userLog}
         />
-        <RaisedButton label="Cancel" secondary={style} />
+        <RaisedButton label="Cancel" secondary={style} onClick={props.logCancel} />
       </div>
       <div className="row">
-        <b>Create account:<Link to='/edocx/signup' name="signup">SignUp</Link></b>
+        <b>Create account:<Link to="/edocx/signup" name="signup">SignUp</Link></b>
       </div>
     </form>
   </MuiThemeProvider>

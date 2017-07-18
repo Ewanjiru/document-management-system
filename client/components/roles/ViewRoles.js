@@ -67,18 +67,19 @@ export class ViewRoles extends React.Component {
               {
                 this.props.roles.map(arole =>
                   (
-                    <div>
-                      <TableRow key={arole.id}>
-                        <TableRowColumn>{arole.id}</TableRowColumn>
-                        <TableRowColumn>{arole.role}</TableRowColumn>
-                        <TableRowColumn>
+                    <TableRow key={arole.id}>
+                      <TableRowColumn>{arole.id}</TableRowColumn>
+                      <TableRowColumn>{arole.role}</TableRowColumn>
+                      <TableRowColumn>
+                        {arole.role !== 'admin' &&
                           <RaisedButton
                             onClick={() => this.handleDelete(arole.id)}
                             primary
                           >Delete</RaisedButton>
-                        </TableRowColumn>
-                      </TableRow>
-                    </div>)
+                        }
+                      </TableRowColumn>
+                    </TableRow>
+                  )
                 )}
             </TableBody>
           </Table>

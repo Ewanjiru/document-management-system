@@ -17,7 +17,7 @@ class Home extends React.Component {
     return (
       <div className="mainframe">
         <div className="header">
-          <h2>Welcome To eDocz Document Management System</h2>
+          <h2>eDocz Document Management System</h2>
         </div>
         <Login />
       </div>

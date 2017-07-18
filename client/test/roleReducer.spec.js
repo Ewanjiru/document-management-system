@@ -35,12 +35,11 @@ describe('roles reducer', () => {
   });
 
   it('Should handle DELETED_ROLE_SUCCESS', () => {
-    //const initialState = [{ role: 'admin' }];
-    const roles = [];
+    const initialState = [];
+    const roles = [{ role: 'admin' }];
     const action = RoleActions.deletedRoleById(roles);
-    const newState = RoleReducers([], action);
-    console.log('therese ', newState);
+    const newState = RoleReducers(initialState, action);
     expect(newState)
-      .toEqual([]);
+      .toEqual({ roles: [] });
   });
 });

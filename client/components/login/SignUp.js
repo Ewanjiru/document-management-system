@@ -26,6 +26,7 @@ class SignUp extends React.Component {
     this.userRegister = this.userRegister.bind(this);
     this.onchange = this.onchange.bind(this);
     this.showNotification = this.showNotification.bind(this);
+    this.logCancel = this.logCancel.bind(this);
   }
 
   onchange(event) {
@@ -38,9 +39,14 @@ class SignUp extends React.Component {
 
   logCancel(event) {
     event.preventDefault();
-    const label = event.target.name;
-    this.state.user[label] = event.target.value;
     return this.setState({
+      user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        roleType: 'support engineer'
+      },
     });
   }
 

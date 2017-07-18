@@ -2,7 +2,6 @@ import * as actionTypes from '../actions/ActionTypes';
 import initialState from './InitialState';
 
 function Count(state = initialState.count, action) {
-  console.log('reduce', action);
   switch (action.type) {
     case actionTypes.LOAD_COUNT_SUCCESS:
       return {

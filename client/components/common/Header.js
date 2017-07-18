@@ -25,7 +25,7 @@ export class Header extends React.Component {
             WebSiteName
           </div>
           <ul className="nav navbar-nav">
-            <li className="active"><Link to="/edocx/documents"> Documents </Link></li>
+            <li><Link to="/edocx/documents"> Documents </Link></li>
             <li><Link to="/edocx/users" activeClassName="active"> Users </Link></li>
             {role === 'admin' &&
               <li><Link to="/edocx/roles" activeClassName="active"> Roles</Link></li>

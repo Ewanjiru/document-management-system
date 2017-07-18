@@ -191,8 +191,7 @@ class ViewUsers extends React.Component {
 
     const styles = {
       TableRowColumn: {
-        width: 35,
-        margin: '20px auto 0',
+        colSpan: 2
       }
     };
 
@@ -284,20 +283,20 @@ class ViewUsers extends React.Component {
               <TableRow >
                 <TableHeaderColumn>First Name</TableHeaderColumn>
                 <TableHeaderColumn>Last Name</TableHeaderColumn>
-                <TableHeaderColumn>Email</TableHeaderColumn>
+                <TableHeaderColumn colSpan="2">Email</TableHeaderColumn>
                 <TableHeaderColumn>Date Added</TableHeaderColumn>
-                <TableHeaderColumn>Role</TableHeaderColumn>
+                <TableHeaderColumn colSpan="2">Role</TableHeaderColumn>
               </TableRow>
               {
                 filteredUsers.map(auser =>
                   (<TableRow key={auser.id}>
                     <TableRowColumn>{auser.firstName}</TableRowColumn>
                     <TableRowColumn>{auser.lastName}</TableRowColumn>
-                    <TableRowColumn style={styles.TableRowColumn}>{auser.email}</TableRowColumn>
-                    <TableRowColumn>{auser.createdAt}</TableRowColumn>
-                    <TableRowColumn>{auser.roleType}</TableRowColumn>
+                    <TableRowColumn colSpan="2">{auser.email}</TableRowColumn>
+                    <TableRowColumn>{[new Date(auser.createdAt).getDate(), new Date(auser.createdAt).getMonth(), new Date(auser.createdAt).getFullYear()].join('/')}</TableRowColumn>
+                    <TableRowColumn colSpan="2">{auser.roleType}</TableRowColumn>
                     <TableRowColumn>
-                      {role === 'admin' &&
+                      {role === 'admin' && auser.roleType !== 'admin' &&
                         <RaisedButton
                           onClick={() => this.handleDelete(auser.id)}
                           primary
@@ -343,7 +342,6 @@ ViewUsers.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log('this error', state.error);
   return {
     users: state.users,
     count: state.count,

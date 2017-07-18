@@ -22,6 +22,7 @@ class Login extends React.Component {
     this.userLog = this.userLog.bind(this);
     this.onchange = this.onchange.bind(this);
     this.showNotification = this.showNotification.bind(this);
+    this.logCancel = this.logCancel.bind(this);
   }
 
   onchange(event) {

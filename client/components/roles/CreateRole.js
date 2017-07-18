@@ -55,36 +55,38 @@ export class CreateRole extends React.Component {
 
   render() {
     return (
-      <div className="wrapper">
+      <div>
         <Header />
-        <ul className="nav nav-pills">
-          <li role="presentation"><a href="/edocx/roles">All Roles</a></li>
-          <li role="presentation" className="active"><a href="/edocx/new">Create Roles</a></li>
-        </ul>
-        <MuiThemeProvider>
-          <Card>
-            <div>
-              <ReactNotify ref="notificator" />
-            </div>
-            <CardText>
-              <TextField
-                hintText="role type"
-                name="role"
-                value={this.state.roles.role}
-                onChange={this.onchange}
-                fullWidth
-              />
-            </CardText>
-            <CardActions>
-              <RaisedButton
-                id="submit"
-                label="Create"
-                secondary
-                onClick={this.create}
-              />
-            </CardActions>
-          </Card>
-        </MuiThemeProvider>
+        <div className="wrapper">
+          <ul className="nav nav-pills">
+            <li role="presentation"><a href="/edocx/roles">All Roles</a></li>
+            <li role="presentation" className="active"><a href="/edocx/new">Create Roles</a></li>
+          </ul>
+          <MuiThemeProvider>
+            <Card>
+              <div>
+                <ReactNotify ref="notificator" />
+              </div>
+              <CardText>
+                <TextField
+                  hintText="role type"
+                  name="role"
+                  value={this.state.roles.role}
+                  onChange={this.onchange}
+                  fullWidth
+                />
+              </CardText>
+              <CardActions>
+                <RaisedButton
+                  id="submit"
+                  label="Create"
+                  secondary
+                  onClick={this.create}
+                />
+              </CardActions>
+            </Card>
+          </MuiThemeProvider>
+        </div>
       </div>
     );
   }

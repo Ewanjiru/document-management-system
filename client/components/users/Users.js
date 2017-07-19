@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 import Header from '../common/Header';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ViewUsers from './ViewUsers';
@@ -26,7 +27,7 @@ class Users extends React.Component {
       <div className="mainframe">
         <Header />
         <ul className="nav nav-pills">
-          <li role="presentation" className="active"><a href="/edocx/users">View Users</a></li>
+          <li role="presentation" className="active"><Link to="/edocx/users">View Users</Link></li>
         </ul>
         <MuiThemeProvider>
           <ViewUsers />

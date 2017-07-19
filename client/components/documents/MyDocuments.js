@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'react-proptypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Pagination from 'react-js-pagination';
-import { Card, CardHeader, CardTitle, CardText, CardMedia } from 'material-ui/Card';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import { Link } from 'react-router';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
+import { Table, TableBody, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReactNotify from 'react-notify';
 import FlatButton from 'material-ui/FlatButton';
@@ -14,7 +14,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import authenticate from '../../api/helper';
 import Header from '../common/Header';
-import SubHeader from '../common/SubHeader';
 import './Document.scss';
 
 class MyDocuments extends React.Component {
@@ -123,8 +122,6 @@ class MyDocuments extends React.Component {
 
   render() {
     const role = authenticate(sessionStorage.Token).roleType;
-    // const items = this.props.count;
-    // const itemsCount = Object.keys(items).map(key => items[key]);
     const actions = [
       <FlatButton
         label="Edit"
@@ -154,7 +151,12 @@ class MyDocuments extends React.Component {
     return (
       <div>
         <Header />
-        <SubHeader role={role} />
+        <ul className="nav nav-pills" >
+          <li role="presentation"><Link to="/edocx/documents">All Documents</Link></li>
+          <li role="presentation" className="active"><Link to="/edocx/documents/mydocuments" name="mine">My Documents</Link></li>
+          <li role="presentation"><Link to="/edocx/documents/roledocuments">{role} Documents</Link></li>
+          <li role="presentation"><Link to="/edocx/documents/newdocument" name="new">New Document</Link></li>
+        </ul>
         <div className="wrapper">
           <div>
             <MuiThemeProvider>

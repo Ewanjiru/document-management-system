@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'react-proptypes';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Card, CardActions, CardText } from 'material-ui/Card';
@@ -59,8 +60,8 @@ export class CreateRole extends React.Component {
         <Header />
         <div className="wrapper">
           <ul className="nav nav-pills">
-            <li role="presentation"><a href="/edocx/roles">All Roles</a></li>
-            <li role="presentation" className="active"><a href="/edocx/new">Create Roles</a></li>
+            <li role="presentation"><Link to="/edocx/roles">All Roles</Link></li>
+            <li role="presentation" className="active"><Link to="/edocx/new">Create Roles</Link></li>
           </ul>
           <MuiThemeProvider>
             <Card>

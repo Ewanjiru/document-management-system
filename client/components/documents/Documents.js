@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 import View from './ViewDocuments';
 import Header from '../common/Header';
-import SubHeader from '../common/SubHeader';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import authenticate from '../../api/helper';
@@ -28,7 +28,12 @@ class Documents extends React.Component {
     return (
       <div className="mainframe">
         <Header />
-        <SubHeader role={role} />
+        <ul className="nav nav-pills" >
+          <li role="presentation" className="active"><Link to="/edocx/documents">All Documents</Link></li>
+          <li role="presentation"><Link to="/edocx/documents/mydocuments" name="mine">My Documents</Link></li>
+          <li role="presentation"><Link to="/edocx/documents/roledocuments">{role} Documents</Link></li>
+          <li role="presentation"><Link to="/edocx/documents/newdocument" name="new">New Document</Link></li>
+        </ul>
         <MuiThemeProvider>
           <View />
         </MuiThemeProvider>

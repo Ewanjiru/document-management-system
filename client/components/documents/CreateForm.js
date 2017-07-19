@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'react-proptypes';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Card, CardActions, CardTitle } from 'material-ui/Card';
@@ -9,7 +10,6 @@ import ReactNotify from 'react-notify';
 import TextField from 'material-ui/TextField';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import Header from '../common/Header';
-import SubHeader from '../common/SubHeader';
 import authenticate from '../../api/helper';
 import './Document.scss';
 
@@ -84,7 +84,12 @@ export class CreateForm extends React.Component {
     return (
       <div>
         <Header />
-        <SubHeader role={role} />
+        <ul className="nav nav-pills" >
+          <li role="presentation"><Link to="/edocx/documents">All Documents</Link></li>
+          <li role="presentation"><Link to="/edocx/documents/mydocuments" name="mine">My Documents</Link></li>
+          <li role="presentation"><Link to="/edocx/documents/roledocuments">{role} Documents</Link></li>
+          <li role="presentation" className="active"><Link to="/edocx/documents/newdocument" name="new">New Document</Link></li>
+        </ul>
         <div className="wrapper">
           <MuiThemeProvider>
             <Card>

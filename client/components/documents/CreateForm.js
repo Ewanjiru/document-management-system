@@ -9,6 +9,7 @@ import ReactNotify from 'react-notify';
 import TextField from 'material-ui/TextField';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import Header from '../common/Header';
+import SubHeader from '../common/SubHeader';
 import authenticate from '../../api/helper';
 import './Document.scss';
 
@@ -84,12 +85,7 @@ export class CreateForm extends React.Component {
       <div>
         <Header />
         <div className="wrapper">
-          <ul className="nav nav-pills">
-            <li role="presentation"><a href="/edocx/documents" name="view">All Documents</a></li>
-            <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
-            <li role="presentation"><a href="/edocx/documents/roledocuments">{role} Documents</a></li>
-            <li role="presentation" className="active"><a href="/edocx/documents/newdocument">New Document</a></li>
-          </ul>
+          <SubHeader role={role} />
           <MuiThemeProvider>
             <Card>
               <div>

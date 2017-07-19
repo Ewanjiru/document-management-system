@@ -12,6 +12,7 @@ import ReactNotify from 'react-notify';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as DocumentActions from '../../actions/DocumentsAction';
 import Header from '../common/Header';
+import SubHeader from '../common/SubHeader';
 import authenticate from '../../api/helper';
 import './Document.scss';
 
@@ -143,12 +144,7 @@ class RoleBased extends React.Component {
       <div>
         <Header />
         <div className="wrapper">
-          <ul className="nav nav-pills">
-            <li role="presentation"><a href="/edocx/documents">All Documents</a></li>
-            <li role="presentation"><a href="/edocx/documents/mydocuments">My Documents</a></li>
-            <li role="presentation" className="active"><a href="/edocx/documents/roledocuments">{role} Documents</a></li>
-            <li role="presentation"><a href="/edocx/documents/newdocument">New Document</a></li>
-          </ul>
+          <SubHeader role={role} />
           <div>
             <MuiThemeProvider>
               <Dialog

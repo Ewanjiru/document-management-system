@@ -130,9 +130,13 @@ class View extends React.Component {
   }
 
   handleSearchChange(event) {
-    this.setState({
-      searchText: event.target.value,
-    });
+    if (event.target.value) {
+      this.setState({
+        searchText: event.target.value,
+      });
+    } else {
+      window.location.reload();
+    }
   }
 
   handleSearch() {
@@ -263,7 +267,19 @@ class View extends React.Component {
           </Dialog>
         </div>
         <Card>
-          <input type="text" name="search" className="searchField" placeholder="search by title" onChange={this.handleSearchChange} /><RaisedButton Primary name="search" onClick={this.handleSearch}>Search</RaisedButton>
+          <input
+            type="text"
+            name="search"
+            className="searchField"
+            placeholder="search by title"
+            onChange={this.handleSearchChange}
+          />
+          <RaisedButton
+            Primary
+            name="search"
+            onClick={this.handleSearch}
+          >Search
+            </RaisedButton>
           <Table>
             <TableBody displayRowCheckbox={false}>
               <TableRow >

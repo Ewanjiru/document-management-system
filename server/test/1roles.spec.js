@@ -49,7 +49,7 @@ describe('/delete/roles/:id ', () => {
         res.body.should.have.property('message').eql('Role Deleted Successfully');
         done();
       });
-  }).timeout(10000);
+  }).timeout(30000);
 });
 
 describe('/delete/roles/:id ', () => {

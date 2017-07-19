@@ -55,8 +55,7 @@ module.exports = {
 
   logout(req, res) {
     req.body.Token = null;
-    const token = req.body;
-    return res.status(200).send(token);
+    return res.status(200).send({ message: 'Successfully logged out' });
   },
 
   list(req, res) {
@@ -176,26 +175,22 @@ module.exports = {
   },
 
   getUserDocuments(req, res) {
-    if (req.query.limit || req.query.offset) {
-      return User
-        .findById(req.params.userId, {
-          limit: req.query.limit,
-          offset: req.query.offset,
-          include: [{
-            model: Document,
-            as: 'userDocuments'
-          }],
-        })
-        .then((Users) => {
-          if (!Users) {
-            return res.status(404).send({
-              message: 'Error: That user  does not exist',
-            });
-          }
-          return res.status(200).send({ userDocuments: Users.userDocuments });
-        })
-        .catch(error => res.status(400).send(error));
-    }
+    return User
+      .findById(req.params.userId, {
+        include: [{
+          model: Document,
+          as: 'userDocuments'
+        }],
+      })
+      .then((Users) => {
+        if (!Users) {
+          return res.status(404).send({
+            message: 'Error: That user  does not exist',
+          });
+        }
+        return res.status(200).send({ userDocuments: Users.userDocuments });
+      })
+      .catch(error => res.status(400).send(error));
   },
 
   delete(req, res) {

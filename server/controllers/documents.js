@@ -109,7 +109,7 @@ module.exports = {
           .then(res.send({
             message: 'Document updated Successfully.',
           }))
-          .catch(error => res.send({ error, message: 'Error: That title already exixts' }))
+          .catch(error => res.send({ error, message: 'Error: That title already exixts' }));
       });
   },
 

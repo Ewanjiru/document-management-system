@@ -31,6 +31,10 @@ describe('dispatch actions', () => {
     expect(actions.loadDocumentsSuccess().type).to.eql('LOAD_DOCUMENTS_SUCCESS');
   });
 
+  it('should have a type of "LOAD_COUNT_SUCCESS" ', () => {
+    expect(actions.getCountSuccess().type).to.eql('LOAD_COUNT_SUCCESS');
+  });
+
   describe('createdDocument', () => {
     it('should have a type of "CREATED_DOCUMENT_SUCCESS"', () => {
       expect(actions.createdDocument().type).to.eql('CREATED_DOCUMENT_SUCCESS');

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Pagination from 'react-js-pagination';
 import ReactNotify from 'react-notify';
+import { browserHistory } from 'react-router';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { Table, TableBody, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -297,7 +298,8 @@ class View extends React.Component {
                         onClick={() => this.handleOpenView(adocument.id)}
                         primary
                       >View</RaisedButton>
-
+                    </TableRowColumn>
+                    <TableRowColumn>
                       {role === 'admin' &&
                         <RaisedButton
                           onClick={() => this.handleOpen(adocument.id)}

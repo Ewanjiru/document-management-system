@@ -71,7 +71,7 @@ export class ViewRoles extends React.Component {
                       <TableRowColumn>{arole.id}</TableRowColumn>
                       <TableRowColumn>{arole.role}</TableRowColumn>
                       <TableRowColumn>
-                        {arole.role !== 'admin' &&
+                        {arole.role !== 'admin' && arole.role !== 'support engineer' &&
                           <RaisedButton
                             onClick={() => this.handleDelete(arole.id)}
                             primary

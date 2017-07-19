@@ -128,9 +128,13 @@ class ViewUsers extends React.Component {
   }
 
   handleSearchChange(event) {
-    this.setState({
-      searchText: event.target.value,
-    });
+    if (event.target.value) {
+      this.setState({
+        searchText: event.target.value,
+      });
+    } else {
+      window.location.reload();
+    }
   }
 
   handleSearch() {
@@ -296,7 +300,7 @@ class ViewUsers extends React.Component {
                     <TableRowColumn>{[new Date(auser.createdAt).getDate(), new Date(auser.createdAt).getMonth(), new Date(auser.createdAt).getFullYear()].join('/')}</TableRowColumn>
                     <TableRowColumn colSpan="2">{auser.roleType}</TableRowColumn>
                     <TableRowColumn>
-                      {role === 'admin' && auser.roleType !== 'admin' &&
+                      {role === 'admin' && auser.email !== 'admin@test.com' &&
                         <RaisedButton
                           onClick={() => this.handleDelete(auser.id)}
                           primary

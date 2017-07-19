@@ -154,8 +154,8 @@ class MyDocuments extends React.Component {
     return (
       <div>
         <Header />
+        <SubHeader role={role} />
         <div className="wrapper">
-          <SubHeader role={role} />
           <div>
             <MuiThemeProvider>
               <Dialog

@@ -4,7 +4,12 @@ Welcome to eDocz Document System.
 
 Introduction
 
-eDocz is a system built for the purpose of making document management easier. Through this system, one can be able to perform CRUD opeartions: create,delete,retrieve and update; operations on their private documents and the role documents. 
+eDocz is an api consuming system built for the purpose of making document management easier. Through this system, one can be able to perform CRUD opeartions: create,delete,retrieve and update; operations on their private documents and the role documents. 
+
+Api Documentation
+
+Find the api documenation below:
+  https://github.com/Ewanjiru/document-management-system/blob/feature/%23147202533/create-documents-components/documentation.apib
 
 Development Process
 

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm-run-all --parallel open:src",
     "open:src": "nodemon ./bin/www --exec babel-node ",
-    "pretest:backend": "sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test",
+    "pretest:backend": "sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test && sequelize db:seed:all --env test",
     "lint": "node_modules/.bin/esw webpack.config.* client server server.*",
     "lint:watch": "npm run lint -- --watch",
     "migrate": "export NODE_ENV=staging && sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",

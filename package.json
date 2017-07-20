@@ -1,7 +1,7 @@
 {
   "name": "dms",
   "version": "1.0.0",
-  "description": "a document managemt system",
+  "description": "A document managemt system",
   "main": "index.js",
   "scripts": {
     "start": "npm-run-all --parallel open:src",
@@ -11,7 +11,7 @@
     "lint:watch": "npm run lint -- --watch",
     "migrate": "export NODE_ENV=staging && sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "test": "npm run test:backend && npm run test:frontend",
-    "test:backend": "export NODE_ENV=test && babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha  -R spec ./server/test/*.spec.js",
+    "test:backend": "export NODE_ENV=test && babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha  -R ./server/test/*.spec.js",
     "coverage": "./node_modules/.bin/coveralls < coverage/lcov.info",
     "test:frontend": "jest ./client/test/*.spec.js",
     "test:e2e": "istanbul cover ./node_modules/.bin/_mocha ./client/test/e2eTests/*.spec.js"

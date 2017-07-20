@@ -10,8 +10,9 @@
     "lint": "node_modules/.bin/esw webpack.config.* client server server.*",
     "lint:watch": "npm run lint -- --watch",
     "migrate": "export NODE_ENV=staging && sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
+    "migrate:dev": "export NODE_ENV=development && sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "test": "npm run test:backend && npm run test:frontend",
-    "test:backend": "export NODE_ENV=test && babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha  -R ./server/test/*.spec.js",
+    "test:backend": "export NODE_ENV=test && babel-node ./node_modules/.bin/istanbul cover --dir coverage ./node_modules/.bin/_mocha  -R ./server/test/*.spec.js /coverage",
     "coverage": "./node_modules/.bin/coveralls < coverage/lcov.info",
     "test:frontend": "jest ./client/test/*.spec.js",
     "test:e2e": "istanbul cover ./node_modules/.bin/_mocha ./client/test/e2eTests/*.spec.js"
@@ -32,7 +33,7 @@
     },
     "setupTestFrameworkScriptFile": "mock-local-storage",
     "collectCoverage": true,
-    "coverageDirectory": "<rootDir>/coverall",
+    "coverageDirectory": "<rootDir>/coveralls",
     "verbose": true,
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/"

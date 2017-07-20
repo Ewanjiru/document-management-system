@@ -2,5 +2,37 @@
 
 Welcome to eDocz Document System.
 
-Summary
-eDocz allow 
+Introduction
+
+eDocz is a system built for the purpose of making document management easier. Through this system, one can be able to perform CRUD opeartions: create,delete,retrieve and update; operations on their private documents and the role documents. 
+
+Development Process
+
+The breakdown of the app building process can be found on pivotal
+  https://www.pivotaltracker.com/n/projects/2041335
+
+Installation
+
+For purpose of further development or just inspection you can have the app running in your localhost by:
+
+ clonning this repo using git@github.com:Ewanjiru/document-management-system.git
+ in the root folder, run the command npm install to install all required dependencies
+ ensure you have postgres installed
+ create a database using createdb dms_dev
+ load the migrations using npm run migrate:dev
+ launch the app using npm start
+ open the app on your browser on http://localhost:8000
+ app has pre exixting admin with below credentials for login:
+    email: admin@test.com
+    password: Qwerty@1234
+
+
+Deployment
+
+The system is currently deployed on heroku and can be accessed using below link:
+
+  https://docsystem.herokuapp.com/
+
+
+
+

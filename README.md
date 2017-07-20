@@ -2,4 +2,5 @@
 
 Welcome to eDocz Document System.
 
-We have made this system enable you to seemless
+Summary
+eDocz allow 

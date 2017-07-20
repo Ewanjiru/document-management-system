@@ -10,7 +10,7 @@
   "test": {
     "username": "Niccie",
     "password": null,
-    "database": "dms-test",
+    "database": "dms_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

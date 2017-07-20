@@ -13,4 +13,4 @@ script:
 after_script:
   - npm run coverage
 env:
-  - SECRET_TOKEN_KEY=nottheactualthing NODE_ENV=test
+  - secret=wrongtokensecret NODE_ENV=test

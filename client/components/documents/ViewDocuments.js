@@ -87,11 +87,9 @@ class View extends React.Component {
   }
 
   update() {
-    this.props.actions.countDocuments().then(
-      this.props.actions.loadDocuments().then(() => {
-        this.showNotification(this.props.error.error.response.data.message);
-      })
-    );
+    this.props.actions.countDocuments();
+    this.props.actions.loadDocuments();
+    this.showNotification(this.props.error.error.response.data.message);
   }
 
   handleOpen(id) {
@@ -101,11 +99,19 @@ class View extends React.Component {
 
   handleEdit(event) {
     event.preventDefault();
-    this.props.actions.editDocument(this.state.id, this.state.edit).then(() => {
-      this.showNotification(this.props.error.error);
+    const editPromise = new Promise((resolve, reject) => {
+      resolve(this.props.actions.editDocument(this.state.id, this.state.edit));
     });
-    window.location.reload();
-    this.setState({ openView: false, openEdit: false, edit: { title: '', content: '', access: '' } });
+    const closPromise = new Promise((resolve, reject) => {
+      resolve(this.setState({ openView: false, openEdit: false, edit: { title: '', content: '', access: '' } }));
+    });
+
+    editPromise.then(() => {
+      this.showNotification(this.props.error.error);
+      closPromise.then(() => {
+        window.location.reload();
+      });
+    });
   }
 
   handleClose() {
@@ -118,10 +124,17 @@ class View extends React.Component {
   }
 
   handleDelete() {
-    this.props.actions.deleteDocument(this.state.id).then(() => {
-      this.handleClose();
+    const deletePromise = new Promise((resolve, reject) => {
+      resolve(this.props.actions.deleteDocument(this.state.id));
+    });
+    const closePromise = new Promise((resolve, reject) => {
+      resolve(this.handleClose());
+    });
+    deletePromise.then(() => {
       this.showNotification(this.props.error.error);
-      window.location.reload();
+      closePromise.then(() => {
+        window.location.reload();
+      });
     });
   }
 

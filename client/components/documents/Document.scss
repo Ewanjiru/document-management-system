@@ -1,0 +1,36 @@
+.mainframe{
+  width: 100%
+}
+.nav{
+  padding-bottom: 2%;
+  a{
+    font-family:'Georgia', Times, serif;
+    font-size: medium;
+  }
+}
+.nav-pills{
+  width: 90%;
+  margin-left: 5%;
+}
+.wrapper{
+  margin-left: 5%;
+  margin-right: 5%;
+  box-shadow: 10px 10px 5px #888888;
+  
+ input[type="text"] {
+    width: 80%;
+    height: 40px;
+    border-bottom-color: black;
+}
+form{
+   .row{
+     margin-top: 0px;
+    }
+    #textarea{
+      width: 100%;
+    }
+    #access{
+      width: 100%;
+    }
+}
+}
